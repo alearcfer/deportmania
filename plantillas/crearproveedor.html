@@ -1,0 +1,24 @@
+{% extends 'master.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <h3>Nuevo Proveedor</h3>
+    <form method="post" action="/crearproveedor" class="form-horizontal">{% csrf_token %}
+        <label for="nombre">Nombre</label>
+        <input type="text" class="form-control" placeholder="Nombre" id="nombre" name="nombre">
+
+        <label for="direccion">Direccion</label>
+        <input type="text" class="form-control" placeholder="Direccion" id="direccion" name="direccion">
+
+        <label for="contacto">Contacto</label>
+        <input type="text" class="form-control" placeholder="Contacto" name="contacto">
+        <label class="padding-top-2"></label>
+        <input type="submit" value="Crear" name="submit" class="btn btn-primary">
+    </form>
+
+
+</div>
+
+{% endblock %}

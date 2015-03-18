@@ -1,0 +1,21 @@
+{% extends 'master.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="container-fluid">
+        <h3>Modificar familia</h3>
+          <form action="" role="form" method="post">{% csrf_token %}
+  <div class="form-group">
+    <label for="nombre">Nombre</label>
+    <input type="text" class="form-control" name="nombre" id="nombre" placeholder="{{ fam.nombre }}">
+  </div>
+  <div class="form-group">
+    <label for="pesomedio">Peso Medio(g)</label>
+    <input type="number" class="form-control" id="pesomedio" name="pesomedio" placeholder="{{ fam.pesomedio }}">
+  </div>
+  <input type="submit" class="btn btn-info" name="modify" value="Modificar">
+  <input type="submit" class="btn btn-danger" name="delete" value="Borrar">
+</form>
+    </div>
+</div>
+{% endblock %}

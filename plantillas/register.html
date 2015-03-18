@@ -1,0 +1,213 @@
+{% extends 'master.html' %}
+
+{% block content %}
+    <h1 class="text-center padding-top-2">Registro en Deportmania</h1>
+    <div class="row padding-top-2  container center-block">
+        <div class="padding-left-25 padding-right-25">
+            <div class="panel col-lg-12 ">
+                <form class="form-signup-custom" action="/register" role="form" enctype="multipart/form-data"
+                      method="post"> {% csrf_token %}
+                    <div id="divUsername" class=" ">
+                        <label for="username">Nombre de usuario</label>
+                        <input type="text" class="form-control" id="username" name="username"
+                               placeholder="Enter username" onblur="validateusr(false)">
+                        <span id="spantick" class="hidden glyphicon glyphicon-ok form-control-feedback"></span>
+                        <span id="spantickerror" class="hidden glyphicon glyphicon-remove form-control-feedback"></span>
+
+                        <div id="alertusn" class="hidden alert alert-danger">Sorry, username in use. Please try another
+                            one
+                        </div>
+                    </div>
+
+                    <div id="divEmail" class="form-group has-feedback">
+                        <label for="email">Correo electronico</label>
+                        <input type="email" class="form-control" id="email" name="email" onblur="validatemail(false)"
+                               placeholder="Enter email">
+                        <span id="spantick1" class="hidden glyphicon glyphicon-ok form-control-feedback"></span>
+                        <span id="spantickerror1"
+                              class="hidden glyphicon glyphicon-remove form-control-feedback"></span>
+
+                        <div id="alertema" class="hidden alert alert-danger">Sorry, email in use. Please try another
+                            one
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label for="password">Contraseña</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                               placeholder="Password" onkeyup="passWeakness()">
+
+                        <div class="progress">
+                            <div id="progressBar" class="progress-bar active" role="progressbar" aria-valuenow="0"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100">
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group ">
+                        <label for="birthday">Fecha de nacimiento (YYYY-MM-DD)</label>
+                        <input type="date" class="form-control" id="birthday" name="birthday" placeholder="YYYY-MM-DD">
+                    </div>
+                    <div class="form-group select-custom">
+                        <label for="option1">Genero</label>
+                        <select id="gender" name="gender" class="form-control select-custom">
+                            <option id="option1" value="f">Mujer</option>
+                            <option id="option2" value="m">Hombre</option>
+                        </select>
+                    </div>
+
+                    <div id="profileimage" class="form-group">
+                        <label for="poblacion">Poblacion</label>
+                        <input id="poblacion" class="form-control" name="poblacion" type="text" placeholder="Poblacion">
+                    </div>
+                    <div class="help-block ">
+                        <p class="help-block text-center">Aceptando el formulario, aceptas nuestros <a href="/terms">terminos &
+                            condiciones</a>.</p>
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="submit" name="submit" class="btn btn-info">Registrarse</button>
+                    </div>
+
+                    <div class="hidden">
+                        <input name="inORup" value="up">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+<script>
+
+    {% if loginw == True %}
+        $(document).ready(function () {
+            $('#btnsignin').trigger('click');
+        });
+
+        $("#wrongCredentials").removeClass("hidden");
+
+
+    {% endif %}
+
+    function validateusr(stop) {
+
+        {% for elem in uservform %}
+
+            if (!stop) {
+                if ("{{ elem.username }}" != $("#username").val()) {
+
+                    $("#divUsername").addClass("has-success");
+
+                    $("#spantick").removeClass("hidden");
+                    //remove if errors before
+                    $("#divUsername").removeClass("has-error");
+
+                    $("#spantickerror").addClass("hidden");
+                    $("#alertusn").addClass("hidden");
+
+
+                } else if ("{{ elem.username }}" == $("#username").val()) {
+                    $("#divUsername").addClass("has-error");
+
+                    $("#spantickerror").removeClass("hidden");
+                    //remove if success before
+                    $("#divUsername").removeClass("has-success");
+
+                    $("#spantick").addClass("hidden");
+                    //alert
+                    $("#alertusn").removeClass("hidden");
+                    stop = true;
+                }
+            }
+
+
+        {% endfor %}
+    }
+
+    function validatemail(stop) {
+        {% for elem in uservform %}
+            if (!stop) {
+                if ("{{ elem.email }}" != $("#email").val()) {
+
+                    $("#divEmail").addClass("has-success");
+
+                    $("#spantick1").removeClass("hidden");
+                    //remove if errors before
+                    $("#divEmail").removeClass("has-error");
+
+                    $("#spantickerror1").addClass("hidden");
+                    $("#alertema").addClass("hidden");
+
+                } else {
+                    $("#divEmail").addClass("has-error");
+
+                    $("#spantickerror1").removeClass("hidden");
+                    //remove if success before
+                    $("#divEmail").removeClass("has-success");
+
+                    $("#spantick1").addClass("hidden");
+                    $("#alertema").removeClass("hidden");
+                    stop = true;
+                }
+            }
+        {% endfor %}
+    }
+
+    function passWeakness() {
+        var twoUpper = new RegExp('(?=.*[A-Z].*[A-Z])');
+        var oneSpecial = new RegExp('(?=.*[!@#$&*])');
+        var hasTwoDigits = new RegExp('(?=.*[0-9].*[0-9])');
+        var threeLower = new RegExp('(?=.*[a-z].*[a-z].*[a-z])');
+        var length8 = new RegExp('.{8}');
+        var valeur = 0;
+
+        $('.progress-bar').css('width', valeur + '%').attr('aria-valuenow', valeur);
+
+        if ($("#password").val().match(twoUpper)) {
+
+            valeur += 20;
+            $('.progress-bar').css('width', valeur + '%').attr('aria-valuenow', valeur);
+
+
+        }
+        if ($("#password").val().match(oneSpecial)) {
+            valeur += 20;
+            $('.progress-bar').css('width', valeur + '%').attr('aria-valuenow', valeur);
+        }
+        if ($("#password").val().match(hasTwoDigits)) {
+            valeur += 20;
+            $('.progress-bar').css('width', valeur + '%').attr('aria-valuenow', valeur);
+        }
+        if ($("#password").val().match(length8)) {
+            valeur += 20;
+            $('.progress-bar').css('width', valeur + '%').attr('aria-valuenow', valeur);
+        }
+        if ($("#password").val().match(threeLower)) {
+            valeur += 20;
+            $('.progress-bar').css('width', valeur + '%').attr('aria-valuenow', valeur);
+        }
+
+
+        if (0 < valeur) {
+            $('.progress-bar').addClass('progress-bar-danger');
+            $('.progress-bar').removeClass('progress-bar-warning');
+            $('.progress-bar').removeClass('progress-bar-success');
+            $('.progress-bar').html("Weak password");
+
+        }
+        if (40 < valeur) {
+            $('.progress-bar').addClass('progress-bar-warning');
+            $('.progress-bar').removeClass('progress-bar-success');
+            $('.progress-bar').removeClass('progress-bar-danger');
+            $('.progress-bar').html("Medium password");
+        }
+        if (valeur > 60) {
+            $('.progress-bar').addClass('progress-bar-success');
+            $('.progress-bar').removeClass('progress-bar-danger');
+            $('.progress-bar').removeClass('progress-bar-warning');
+            $('.progress-bar').html("Strong password");
+        }
+    }
+</script>

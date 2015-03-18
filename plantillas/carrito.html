@@ -1,0 +1,38 @@
+{% extends 'master.html' %}
+
+{% block content %}
+<div class="container">
+<h1>Carrito</h1>
+<p>A continuacion, se muestran los articulos incluidos en el carrito</p>
+<div class="container-fluid padding-top-5">
+    <table class="table table-striped table-estilo1">
+    <thead>
+    <tr>
+    <th style="width: 600px;">Articulo</th>
+    <th>Precio</th>
+    <th class="txt-centrado">Opciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for elem in articulos %}
+    <tr>
+    <td><a href="{% url 'articulo_info' articulo_id=elem.id %}">{{ elem.nombre }} <img style="height:50px; width: 50px;"class="img-circle" src="{{ MEDIA_URL }}{{ elem.imagen }}"></a>
+
+    </td>
+    <td>{{ elem.precio }} €</td>
+    <td class="txt-centrado">
+    <a href="/eliminarDelCarrito">Eliminar</a>
+    <div style="display: none;" class="showupdate" id="opt_18983804">
+    <a href="#" class="update" id="upd_18983804">Actualizar</a>
+    </div>
+    </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+</div>
+    </div>
+
+{% endblock %}
+

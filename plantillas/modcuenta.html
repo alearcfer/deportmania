@@ -1,0 +1,15 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+<div class="container">
+
+<form action="" method="post">{% csrf_token %}
+    <label for="cuenta">Numero de cuenta</label>
+    <input type="number" id="cuenta" name="cuenta" placeholder="{{ cuenta.numero }}">
+
+    <input type="submit" class="btn btn-info" value="submit">
+</form>
+</div>
+
+{% endblock %}

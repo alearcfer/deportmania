@@ -1,0 +1,34 @@
+{% extends 'master.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <h2>Nueva Compañia</h2>
+    <form action="/crearcompania" class="form-horizontal" role="form" method="post">{% csrf_token %}
+
+    <label for="nombre">Nombre</label>
+    <input type="text" class="form-control"  name="nombre" id="nombre" placeholder="Nombre">
+
+    <label for="contacto">Contacto</label>
+    <input type="text" class="form-control"  id="contacto" name="contacto" placeholder="Contacto">
+
+    <label for="preciopeso1">Precio Peso 1</label>
+    <input type="number" class="form-control" id="preciopeso1" name="preciopeso1" placeholder="Precio Peso 1">
+
+    <label for="preciopeso2">Precio Peso 2</label>
+    <input type="number" class="form-control" id="preciopeso2" name="preciopeso2" placeholder="Precio Peso 2">
+
+    <label for="preciopeso3">Precio Peso 3</label>
+    <input type="number" class="form-control" id="preciopeso3" name="preciopeso3" placeholder="Precio Peso 3">
+
+    <label for="gastoextra">Gastos Extra</label>
+    <input type="number" class="form-control" id="gastoextra" name="gastoextra" placeholder="Gastos Extra">
+    <label class="padding-top-2"></label>
+    <input type="submit" class="btn btn-primary" name="submit" value="Crear">
+</form>
+
+</div>
+
+
+
+{% endblock %}

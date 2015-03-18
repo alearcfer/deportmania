@@ -1,0 +1,48 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+<div class="container-fluid">
+     <h3>Nuevo Articulo</h3>
+    <form method="post" action="/creararticulo" class="form-horizontal">{% csrf_token %}
+        <label for="nombre">Nombre</label>
+        <input type="text" class="form-control" placeholder="Nombre" id="nombre" name="nombre">
+
+    <label for="famili">Familia</label>
+    <select class="form-control" name="famili" >
+     {% for elem in familias %}
+     <option value="{{ elem.nombre }}" id="famili">{{ elem.nombre }}</option>
+     {% endfor %}
+    </select>
+
+        <label for="talla">Talla</label>
+        <input type="text" class="form-control" placeholder="Talla" name="talla" id="talla">
+        <label for="existencias">Existencias de la talla</label>
+        <input type="number" class="form-control" placeholder="Existencias" name="existencias" id="existencias">
+        <label for="precio">Precio</label>
+        <input type="number" class="form-control" placeholder="Precio" name="precio" id="precio">
+        <label for="marca">Marca</label>
+        <input type="text" class="form-control" placeholder="Marca" name="marca" id="marca">
+        <label for="devolucion">Periodo de Devolucion</label>
+        <input type="number" class="form-control" placeholder="Nº de Dias" name="devolucion" id="devolucion">
+
+    <label for="proveedor">Proveedor</label>
+    <select class="form-control" name="proveedor" >
+     {% for elem in proveedores %}
+     <option value="{{ elem.nombre }}" id="proveedor">{{ elem.nombre }}</option>
+     {% endfor %}
+    </select>
+    <label for="imagen">Imagen</label>
+    <input id="imagen" class="form-control" name="imagen" type="file">
+      <label for="slug">Slug</label>
+    <input id="slug" class="form-control" name="slug" type="text">
+
+    <label for="fecha">Fecha añadido</label>
+    <input type="datetime" class="form-control" id="fecha" name="fecha">
+    <label class="padding-top-2"></label>
+     <input type="submit" class="btn btn-primary" value="Crear" name="submit">
+    </form>
+
+</div>
+
+{% endblock %}

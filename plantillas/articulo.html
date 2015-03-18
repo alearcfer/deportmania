@@ -1,0 +1,148 @@
+{% extends 'master.html' %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+<div class="pull-left padding-left-2">
+   <ul class="list-group"><h2>Categorias</h2>
+        {% for elem1 in familias %}
+        <li class="list-group-item"><a href="{% url 'fami_info' familia_id=elem1.id %}">{{ elem1.nombre }}</a></li>
+       {% endfor %}
+
+    </ul>
+</div>
+<div class="container">
+    <div class="col-md-5 padding-top-5 padding-left-10">
+    <img src="{{ MEDIA_URL}}{{ articulo.imagen }}" style="width: 350px;height: 350px;">
+    </div>
+    <div class="align-right col-md-6 padding-top-5 padding-left-10">
+
+        <table>
+            <tr>
+                <td class="text-center">
+                    <h4>{{ producto.name }}</h4>
+                </td>
+            </tr>
+            <tr class="text-center">
+                <td><h2 style="color: deepskyblue">{{ producto.unit_price }}€</h2>
+                <span style="color: #808080">IVA incluido</span></td>
+            </tr>
+            <tr class="text-center">
+                <form method="post" action="{% url 'cart' %}">{% csrf_token %}
+                <td><h5>Tallas:</h5>
+                <select name="option">
+                <option selected>Elige tu talla</option>
+                    {% for elem1 in tallas %}
+                <option>{{ elem1.nombre }}, {{ elem1.existencias }} existencias
+                </option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" name="option">
+
+            </tr>
+            <tr class="text-center">
+                <td><h5>Marca : {{ articulo.marca }}</h5></td>
+            </tr>
+
+        <tr>
+            <td class="text-center">Existencias: {{ existencias }}</td>
+        </tr>
+        <tr class="text-center">
+            <td>{{ articulo.devolucion }} dia/s para devolverlo desde el recibo del mismo</td>
+        </tr>
+        {% if request.user.is_authenticated %}
+        <tr>
+            <td class="padding-top-5 text-center">
+
+                     <input type="hidden" name="add_item_id" value="{{producto.id}}">
+                     <input type="hidden" name="add_item_quantity" value="1">
+                     <input type="submit" class="btn btn-primary" value="Añadir al carrito">
+                 </form>
+            </td>
+        </tr>
+        {% endif %}
+        </table>
+
+
+    <div class="padding-top-2"></div>
+
+    </div>
+    <div class="col-md-12 padding-left-10 padding-top-8 ">
+    <ul class="nav nav-tabs nav-pills" role="tablist" id="myTab">
+    <li role="presentation" class="active"><a href="#articulo" aria-controls="articulo" role="tab" data-toggle="tab">Comentario Sobre Articulo</a></li>
+
+    {% if request.user.is_authenticated %}
+    <li role="presentation"><a href="#comenarti" aria-controls="comenarti" role="tab" data-toggle="tab">Añadir Opinion Sobre Articulo</a></li>
+
+    {% endif %}
+    </ul>
+
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active padding-top-2" id="articulo">
+    <h3 class="text-center">Comentarios sobre el producto</h3>
+      {% for elem in comenarticulo %}
+      <div class="thumbnail">
+      <h4 style="color: #808080">{{ elem.user.username }}</h4>
+      <p>{{ elem.opinion }}</p>
+      <p>¿Recomendarias su compra?:{% if elem.recomendar == True %}
+      Si{% else %}
+      No{% endif %}</p>
+      <p>Valoracion:{{ elem.valoracion }}  </p>
+      </div>
+
+      {% endfor %}
+  </div>
+  <div role="tabpanel" class="tab-pane padding-top-2" id="compra">
+  <h3 class="text-center">Comentarios de usuarios que han comprado este producto</h3>
+      {% for elem in comencompra %}
+        <div class="thumbnail">
+        <h4 style="color: #808080">{{ elem.user.username }}</h4>
+        <p>{{ elem.opinion }}</p>
+        </div>
+      {% endfor %}
+  </div>
+  <div role="tabpanel" class="tab-pane padding-top-2" id="comenarti">
+
+<form action="" method="post" >{% csrf_token %}
+<h2>Escribir opinión</h2>
+<div class="">
+<p>
+<strong>Condiciones de uso:</strong>:
+Le rogamos que <strong>su opinion acerca del artículo sea lo más objetiva posible</strong>, ya que <strong>puede influir en la decisión de clientes a la hora de comprar o desechar este artículo</strong>.
+Por favor, use un lenguaje apropiado, no se permitirán opiniones ofensivas. Tampoco se permitirán mensajes no relacionados con este artículo o aquellas opiniones que hablen única y exclusivamente del precio del mismo.
+    </p>
+    </div>
+    <label for="opinion">Opinion
+    <textarea class="form-control" id="opinion" name="opinion" cols="50" rows="5"></textarea>
+    </label>
+    <label for="valoracion">Valoración
+    <input type="number" id="valoracion" name="valoracion" placeholder="Valoracion" class="form-control" >
+         <div class="padding-top-2"></div>
+    <label for="recomendar">¿Recomendaria este producto?</label>
+    Si<input type="radio" value="si"  name="recomendar" id="recomendar">
+    No<input type="radio" value="no" name="recomendar" id="recomendar">
+    <label>
+
+    <input class="btn-primary" type="submit" value="Insertar opinion" id="submit" name="submit">
+    </label>
+    <input name="user" id="user" value="{{ request.user }}" type="hidden">
+
+</label>
+</form>
+
+  </div>
+
+</div>
+
+
+<script>
+  $(function () {
+    $('#myTab a:last').tab('show')
+  })
+</script>
+    </div>
+</div>
+</div>
+
+{% endblock %}

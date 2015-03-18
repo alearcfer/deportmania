@@ -1,0 +1,62 @@
+{% extends 'master.html' %}
+{% block content %}
+    <div class="row container center-block scape-top-custom">
+
+
+        <div class="padding-right-25 padding-left-25">
+            <div class="panel col-md-12">
+                <div class="panel-heading">
+                    <h4 class="modal-title text-center">
+                        <img src="{{ STATIC_URL }}img/logo.jpg" style="width: 200px;height: 100px;" class="img-rounded ">
+                        Log in
+                    </h4>
+                </div>
+
+                <table class="table">
+                    <tr>
+                        <td style="width:50%">
+                            <div class="form-signup">
+
+
+                                <form id="formulario2" class="form-signup" method="post" action="">{% csrf_token %}
+                                    {% if not loginw %}
+                                    <div id="wrongCredentials" class="text-center alert alert-danger hidden"> Credenciales erroneas
+                                    </div>
+                                    {% endif %}
+                                    <div class="input-group col-md-10 ">
+
+                                        <input id="usernamex" type="text" name="usernamelogin" class="form-control"
+                                               placeholder="username">
+                                    </div>
+                                    <br>
+
+                                    <div class="input-group col-md-10">
+
+                                        <input id="passwordx" type="password" name="passwordlogin" class="form-control"
+                                               placeholder="password">
+                                    </div>
+
+
+                                    <div class="hidden">
+                                        <input name="inORup" value="in">
+                                    </div>
+                                    <div class=" padding-top-5 padding-bottom-5 padding-left-25">
+                                        <input type=submit value="Log in" class="btn btn-success"/>
+                                    </div>
+
+
+                                </form>
+
+
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

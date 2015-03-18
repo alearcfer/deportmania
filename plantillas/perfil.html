@@ -1,0 +1,47 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+<div class="container padding-top-5">
+{% if msg != "" %}
+<p class="text-green">{{ msg }}</p>
+
+{% endif %}
+
+<div class="thumbnail col-md-4">
+    <h4 class="text-left">Datos del usuario</h4>
+    <div>
+        <p>Nombre de usuario: {{ user.djangoUser.username }}</p>
+        <p>Correo: {{ user.djangoUser.email }}</p>
+        <p>Nacimiento: {{ user.birthday }}</p>
+        <p>Poblacion: {{ user.poblacion }}</p>
+    </div>
+
+    <a href="/editperfil" class="btn btn-info">Modificar informacion</a>
+</div>
+<div class="padding-left-10">
+
+</div>
+ <div class="thumbnail col-md-4 ">
+    <h4 class="text-left">Datos de compras</h4>
+     <div>
+
+     </div>
+    </div>
+
+
+
+
+<div class="col-md-10 thumbnail">
+    <h3 class="text-center">Gustos</h3>
+        {% for elem in gusto.marca.all %}
+        <p class="text-center">Marca: {{ elem.nombre }}</p>
+        {% endfor %}
+    <h6 class="text-center"><a href="/nuevogusto">Añadir gusto</a></h6>
+    <h6 class="text-center"><a href="/eliminarmarca" >Eliminar gusto</a></h6>
+</div>
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+<div class="container">
+<div class="container-fluid">
+     <ul class="list-unstyled">
+        {% for elem in articulo %}
+         <li>
+        <a href="{% url 'art_info' articulo_id=elem.id %}">{{ elem.name}}</a>
+         </li>
+        {% endfor %}
+        </ul>
+</div>
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+<div class="container">
+<h3>Eliminar gustos</h3>
+<p>A continuacion, puede eliminar una de las marcas seleccionadas como favoritas.</p>
+    <form method="post">{% csrf_token %}
+
+        <select class="form-control" name="marca" multiple >
+        {% for elem in gusto.marca.all %}
+        <option value="{{ elem.nombre }}" id="marca">{{ elem.nombre }}</option>
+
+        {% endfor %}
+        </select>
+        <input type="submit" class="btn-link" name="submit" value="Borrar">
+
+
+    </form>
+</div>
+
+
+{% endblock %}

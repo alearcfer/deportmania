@@ -1,0 +1,19 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="pull-left padding-left-2">
+   <ul class="list-group"><h2 >Categorias</h2>
+        {% for elem1 in familias %}
+        <li class="list-group-item"><a href="{% url 'fami_info' familia_id=elem1.id %}">{{ elem1.nombre }}</a></li>
+       {% endfor %}
+
+    </ul>
+</div>
+</div>
+
+    <div class="container">
+
+</div>
+{% endblock %}

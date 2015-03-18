@@ -1,0 +1,731 @@
+/* paddings */
+.padding-left-15 {
+    padding-left: 15%;
+}
+
+.padding-left-20 {
+    padding-left: 20%;
+}
+
+.padding-left-25 {
+    padding-left: 25%;
+}
+
+.padding-right-15 {
+    padding-right: 15%;
+}
+
+.padding-right-20 {
+    padding-right: 20%;
+}
+
+.padding-right-25 {
+    padding-right: 25%;
+}
+
+.padding-top-5 {
+    padding-top: 5%;
+}
+
+.padding-bottom-5 {
+    padding-bottom: 5%;
+}
+
+/* plan.html */
+.img-lg {
+    max-height: 50px;
+    max-width: 100px;
+    min-height: 100px;
+    min-width: 120px;
+}
+
+.glyphicon-topright {
+    position: absolute;
+    top: 2%;
+    right: 2%;
+}
+
+.glyphicon-topright2 {
+    position: absolute;
+    top: 2%;
+    right: 5%;
+}
+
+.glyphicon-topright:hover {
+    color: #f0ad4e;
+}
+
+.glyphicon-topright2:hover {
+    color: #f0ad4e;
+}
+
+.img-export {
+    max-height: 150px;
+    max-width: 200px;
+    min-height: 150px;
+    min-width: 200px;
+}
+
+.text-default {
+    color: #f0ad4e;
+}
+
+/* todo.html */
+
+.overlap-wishTitle-custom {
+    position: absolute;
+    top: 3%;
+    color: #ffffff;
+    margin: 0%;
+}
+
+.overlap-wish-custom {
+    position: absolute;
+    bottom: 3%;
+    color: #ffffff;
+    margin: 0%;
+}
+
+.overlap-wish-custom > a {
+    color: #ffffff;
+}
+
+.overlap-wish-custom > a :hover {
+    color: orange;
+}
+
+/* activity.html */
+.text-green {
+    color: green;
+}
+
+.overlap-carousel-leftcontrol-custom {
+    position: absolute;
+    top: 0%;
+}
+
+.overlap-carousel-rightcontrol-custom {
+    position: absolute;
+    top: 0%;
+    right: 0%
+}
+
+.top-separator-custom {
+    border-top-color: darkgray;
+
+}
+
+.right-separator-custom {
+    border-right-color: darkgray;
+}
+
+.left-separator-custom {
+    border-left-color: darkgray;
+}
+
+.img-lg-custom {
+    max-height: 250px;
+    max-width: 290px;
+    min-height: 250px;
+    min-width: 290px;
+
+}
+
+.img-xxs-custom {
+    max-height: 30px;
+    max-width: 40px;
+    min-height: 30px;
+    min-width: 40px;
+
+}
+
+/* welcome.html */
+
+.img-md-custom {
+    max-height: 100px;
+    max-width: 140px;
+    min-height: 100px;
+    min-width: 140px;
+}
+
+.text-success-custom {
+    color: greenyellow;
+}
+
+.text-xs {
+    font-size: small;
+}
+
+.text-lg {
+    font-size: x-large;
+}
+
+.text-darkorange {
+    color: darkorange;
+}
+
+.escape-top-welcome-custom {
+    padding-top: 1%;
+}
+
+.left-margin-login-custom {
+    margin-right: 5%;
+}
+
+.transparent {
+    opacity: 0.8;
+    filter: alpha(opacity=80); /* For IE8 and earlier */
+}
+
+.text-white-custom {
+    color: #ffffff;
+}
+
+.background-custom {
+    height: 400px;
+}
+
+.nexus-size {
+    height: 550px;
+}
+
+.overlap-panel-custom {
+    position: absolute; /* reposition logo from the natural layout*/
+    padding-left: 0%;
+
+    top: 40%;
+    z-index: 2;
+}
+
+.bottom-custom {
+    bottom: 0;
+    position: absolute;
+}
+
+.text-orange {
+    color: orange;
+}
+
+.footer-welcome-custom {
+    margin-top: 40%;
+
+}
+
+/* master_page.html */
+
+body {
+    background-color: #eee;
+    height: 100%;
+}
+
+.navbar-default {
+    background-color: #ffffff;
+
+}
+
+.activecustom {
+
+    background-color: #f8f8f8;
+    border-bottom-style: solid;
+    border-bottom-color: darkorange;
+
+}
+
+.activecustom > a:hover {
+
+}
+
+#btnsignin, #btnsignup {
+    color: orange;
+}
+
+#internaz > a {
+    color: white;
+}
+
+.activecustom:focus {
+    color: white;
+}
+
+.active-a > text {
+    color: darkorange;
+}
+
+.nonactivecustom {
+    color: white;
+    background-color: #f0ad4e;
+    border-bottom-color: #f0ad4e;
+
+}
+
+.nonactive-a > text:hover {
+    color: darkorange;
+
+}
+
+.nonactivecustom:hover {
+    color: white;
+    border-bottom-style: solid;
+    border-bottom-color: #5cb85c;
+
+}
+
+.a-nonactivecustom:hover {
+    color: white;
+    border: none;
+
+}
+
+.navbar-custom {
+    background-color:#285e8e;
+    /*border-bottom-color: darkorange;*/
+    border-bottom-style: none;
+
+}
+
+.nav-tabs-custom {
+    margin-top: 5%;
+    background-color: #f0ad4e;
+    border-bottom-style: none;
+
+}
+
+.nav-tabs-custom > li > a:hover {
+    background-color: #f0ad4e;
+
+    border-bottom: none;
+
+}
+
+.nav-tabs-custom > li:hover {
+    background-color: #f0ad4e;
+
+}
+
+.nav-tabs-custom:hover {
+    background-color: #f0ad4e;
+    background: #f0ad4e;
+    border-bottom: none;
+
+}
+
+.navbar-logo-nonlog-custom {
+    margin-left: 10%;
+    margin-top: -0.5%;
+
+}
+
+.navbar-logo-custom {
+    margin-left: 10%;
+
+}
+
+.scape-top-custom {
+    padding-top: 7%;
+}
+
+.button-orange {
+    color: white;
+    background-color: darkorange;
+
+}
+
+.button-orange:hover {
+    color: white;
+    background-color: darkorange;
+    font-size: 110%;
+    border-color: darkorange;
+}
+
+.button-orange:focus {
+    color: darkorange;
+    background-color: white;
+    font-size: 110%;
+    border: 1px 1px 1px 1px;
+    border-color: darkorange;
+}
+
+.img-upload-custom {
+
+}
+
+.select-custom {
+    background-color: #ffffff;
+}
+
+.content {
+    height: 100%;
+}
+
+.panel-footer-custom {
+    position: absolute;
+    width: 100%;
+    background-color: #eee;
+    margin-top: 0%;
+    bottom: -100%;
+    color: #000000;
+}
+
+.panel-footer-custom > a {
+    margin-left: 5%;
+    color: #f0ad4e;
+
+}
+
+.form-input-header-custom {
+    margin-top: 5%;
+
+}
+
+.nav-divider-custom {
+    border-left: 5px;
+
+    border-left-color: #f0ad4e;
+}
+
+.form-input-header-custom:focus {
+    border-color: #F5D0A9;
+    box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+    webkit-box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+
+}
+
+.avatar-35 {
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    margin-top: 2%;
+}
+
+.metadata {
+    display: block;
+    font-size: 10;
+    padding-left: 45%;
+}
+
+.name {
+    padding-left: 40%;
+    font-size: 14px;
+}
+
+.glyphicon-search-custom {
+    margin-top: 4%;
+}
+
+.glyphicon-search-custom:hover {
+    border-color: #F5D0A9;
+    background-color: #ffffff;
+    box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+    webkit-box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+}
+
+.button-profile {
+    border: none;
+    float: right;
+    background-color: #f0ad4e;
+
+}
+
+.button-profile:hover {
+    background-color: #ffffff;
+}
+
+.button-profile:focus {
+    background-color: #ffffff;
+}
+
+.dropdown-menu-right-custom {
+    width: 50px;
+}
+
+.dropdown-menu-right-custom > li > a:hover {
+    color: darkorange;
+    background-color: #ffffff;
+}
+
+.col-centered{
+    margin: 0 auto;
+    float: none;
+}
+
+.btn-group-right-custom {
+    float: right;
+    position: relative;
+    margin-right: 12%;
+    margin-left: 2%;
+}
+
+.img-xs-custom {
+    margin-top: 12%;
+    margin-right: 10%;
+    min-height: 50px;
+    max-height: 50px;
+    max-width: 50px;
+    min-width: 50px;
+}
+
+.dropdown-login {
+    border: 2px 2px 2px 2px;
+    border-color: darkorange;
+    background-color: white;
+    height: 100px;
+}
+
+.form-signup-custom > div > input:hover {
+    border-color: #F5D0A9;
+    background-color: #ffffff;
+    outline: 0;
+    box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+    webkit-box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+}
+
+.form-signup-custom > div > select:hover {
+    border-color: #F5D0A9;
+    background-color: #ffffff;
+    box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+    webkit-box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+}
+
+.form-signup-custom > div > input > ::-moz-placeholder {
+    border-color: #F5D0A9;
+    background-color: #ffffff;
+    box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+    webkit-box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+}
+
+.form-signup-custom > div > select > :selection {
+    border-color: #F5D0A9;
+    background-color: #ffffff;
+    box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+    webkit-box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+}
+
+/* Automatic plan for non logged*/
+
+.overlap-carousel-leftcontrollg-custom {
+    position: absolute;
+    top: 50%;
+    left: 4%;
+}
+
+.overlap-carousel-rightcontrollg-custom {
+    position: absolute;
+    top: 50%;
+    right: 4%
+}
+
+.carousel-img-custom {
+    max-height: 45%;
+    min-width: 100%;
+}
+
+.carousel-whitelg-custom {
+    background-color: white;
+    min-width: 100%;
+}
+
+.div-card-plan-info {
+    margin-top: 20%;
+    opacity: 0.8;
+    filter: alpha(opacity=80); /* For IE8 and earlier */
+
+}
+
+.div-card-plan-thumbnail {
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 270px;
+    max-height: 270px;
+
+}
+
+.div-card-plan-thumbnail:hover {
+    box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+    -moz-box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+    webkit-box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+
+}
+
+.div-card-plan-quit {
+    color: blue;
+
+}
+
+.btn-twitter {
+    background-color: #4099FF;
+    color: white;
+}
+
+.btn-twitter:hover {
+    background-color: #4090FF;
+    color: white;
+}
+
+.espacio {
+    width: 100%;
+    height: 40%;
+
+}
+
+.div-card-plan-quit:hover {
+    color: darkorange;
+
+}
+
+.div-card-plan-whole {
+
+}
+
+.button-orange-plan {
+    color: white;
+    background-color: darkorange;
+    margin-top: 5%;
+
+}
+
+.button-orange-plan:hover {
+
+    color: white;
+    background-color: darkorange;
+    border: solid;
+    border-color: darkorange;
+
+}
+
+.google-map-canvas {
+box-sizing(content-box);
+}
+
+#contenido {
+    margin-top: 100px;
+}
+
+#contenido {
+    margin-top: 100px;
+
+}
+
+#plans {
+    margin-left: 200px;
+    width: 1000px;
+}
+
+#tarjetas {
+    width: 1000px;
+}
+
+.img {
+    margin-bottom: 10px;
+}
+
+.more {
+    float: right;
+    margin-top: 5%;
+
+    margin-right: 15%;
+}
+
+.more2 {
+    float: right;
+    margin-top: 20%;
+    margin-right: -4%;
+
+}
+
+.activities {
+    width: 300px;
+    padding-left: 10%;
+}
+
+#flecha1 {
+    margin-left: -700px;
+    margin-top: 25px;
+}
+
+#flecha2 {
+    margin-left: 210px;
+    margin-top: 35px;
+}
+
+.filteragain {
+    padding-left: 550px;
+    padding-top: 150px;
+}
+
+#focus:hover {
+    border-color: #d58512;
+    outline: 0;
+    outline: thin dotted \9;
+    -moz-box-shadow: 0 0 8px #d58512);
+    box-shadow: 0 0 8px #d58512
+}
+
+.espacioleft {
+    margin-left: 10%;
+}
+
+/* HOME */
+.image-xs-custom {
+    min-height: 70px;
+    min-width: 90%;
+    max-height: 70px;
+    max-width: 90%;
+
+}
+
+.image-xxs-custom {
+    min-height: 60px;
+    min-width: 70%;
+    max-height: 60px;
+    max-width: 70%;
+
+}
+
+.image-md-custom {
+    min-height: 100px;
+    min-width: 100%;
+    max-height: 100px;
+    max-width: 100%;
+}
+
+.thumbnail-xs-custom {
+    min-height: 50%;
+    min-width: 90%;
+    max-height: 50%;
+    max-width: 90%;
+}
+
+.quitamargen {
+    padding-top: 10%;
+
+}
+
+.mapa {
+    height: 50%;
+    width: 50%;
+}
+
+.img-comment {
+    position: absolute;
+    left: 10%;
+    top: 10%;
+    z-index: 2;
+
+}
+
+.textoderecha {
+    position: absolute;
+    top: 13%;
+    left: 16%;
+    color: #ffffff;
+    font-size: 18px;
+    z-index: 2;
+}
+
+.textociudad {
+    position: absolute;
+    bottom: 48%;
+    right: 46%;
+    color: #ffffff;
+    font-size: 28px;
+}

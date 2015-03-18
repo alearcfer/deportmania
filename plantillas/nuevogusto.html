@@ -1,0 +1,21 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+<div class="container">
+<h3 class="padding-top-5 text-justify">Añadir gustos</h3>
+<p>A continuacion, seleccione sus marcas preferidas de la lista que se le proporciona, con el fin de poder recomendarle productos acordes a sus gustos</p>
+    <form method="post">{% csrf_token %}
+<select class="form-control" name="marca" multiple size="{{ size }}">
+{% for elem in marcas %}
+    <option value="{{ elem.id}}" id="marca" name="marca">{{ elem.nombre }}</option>
+{% endfor %}
+</select>
+    <div class="padding-top-2"></div>
+    <input type="submit" value="Guardar gustos" class="btn btn-default" name="submit">
+</form>
+
+</div>
+
+
+{% endblock %}

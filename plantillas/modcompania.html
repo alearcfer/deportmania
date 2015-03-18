@@ -1,0 +1,37 @@
+{% extends 'master.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="container-fluid">
+        <h3>Modificar Compañia</h3>
+          <form action="" role="form" method="post">{% csrf_token %}
+  <div class="form-group">
+    <label for="nombre">Nombre</label>
+    <input type="text" class="form-control" name="nombre" id="nombre" placeholder="{{ comp.nombre }}">
+  </div>
+  <div class="form-group">
+    <label for="contacto">Contacto</label>
+    <input type="text" class="form-control" id="contacto" name="contacto" placeholder="{{ comp.contacto }}">
+  </div>
+   <div class="form-group">
+    <label for="peso1">Precio Peso 1</label>
+    <input type="number" class="form-control" id="peso1" name="peso1" placeholder="{{ comp.preciopeso1 }}">
+  </div>
+     <div class="form-group">
+    <label for="peso2">Precio Peso 2</label>
+    <input type="number" class="form-control" id="peso2" name="peso2" placeholder="{{ comp.preciopeso2 }}">
+  </div>
+     <div class="form-group">
+    <label for="peso3">Precio Peso 3</label>
+    <input type="number" class="form-control" id="peso3" name="peso3" placeholder="{{ comp.preciopeso3 }}">
+  </div>
+     <div class="form-group">
+    <label for="gastoextra">Gasto Extra</label>
+    <input type="number" class="form-control" id="gastoextra" name="gastoextra" placeholder="{{ comp.gastoextra }}">
+  </div>
+  <input type="submit" class="btn btn-info" name="modify" value="Modificar">
+  <input type="submit" class="btn btn-danger" name="delete" value="Borrar">
+</form>
+    </div>
+</div>
+{% endblock %}

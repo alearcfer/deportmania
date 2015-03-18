@@ -1,0 +1,18 @@
+{% extends 'master.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="container-fluid">
+     <p class="text-green">{{ msg }}</p>
+        <ul class="list-unstyled">
+        {% for elem in ofertas %}
+         <li>
+        <a href="{% url 'oferta_info' oferta_id=elem.id %}">Oferta a :{{ elem.articulo }}</a>
+         </li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+
+
+{% endblock %}

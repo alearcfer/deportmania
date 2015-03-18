@@ -1,0 +1,18 @@
+{% extends 'master.html' %}
+
+{% block content %}
+<div class="container">
+<h2>Formulario de contacto</h2>
+<form method="post" action="">{% csrf_token %}
+    <label for="nombre">Nombre</label>
+    <input class="form-control" type="text" id="nombre" name="nombre" placeholder="Nombre">
+    <label for="email">E-Mail</label>
+    <input class="form-control" type="email" id="email" name="email" placeholder="E-Mail" required="">
+    <label for="comentario">Comentarios</label>
+    <textarea class="form-control" name="comentario" id="comentario" cols="50" rows="7"></textarea>
+    <div class="padding-top-2"></div>
+    <input type="submit" id="submit" class="btn btn-primary" value="Enviar" name="submit">
+</form>
+</div>
+
+{% endblock %}

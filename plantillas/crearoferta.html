@@ -1,0 +1,29 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+<div class="container-fluid">
+    <h2>Nueva Oferta</h2>
+    <form action="/crearoferta" class="form-horizontal" role="form" method="post">{% csrf_token %}
+
+    <label for="descuento">Descuento(%)</label>
+    <input type="number" class="form-control"  name="descuento" id="descuento" placeholder="Descuento">
+
+    <label for="fechainicio">Fecha de inicio (YYYY-MM-DD)</label>
+    <input type="date" class="form-control"  id="fechainicio" name="fechainicio" placeholder="YYYY-MM-DD">
+
+    <label for="fechafin">Fecha de finalizacion (YYYY-MM-DD)</label>
+    <input type="date" class="form-control" id="fechafin" name="fechafin" placeholder="YYYY-MM-DD">
+
+    <label for="articulo">Articulo</label>
+    <select class="form-control" name="articulo" >
+     {% for elem in articulos %}
+     <option value="{{ elem.name}}" id="articulo">{{ elem.name }}</option>
+     {% endfor %}
+    </select>
+    <label class="padding-top-2"></label>
+    <input type="submit" class="btn btn-primary" value="Crear" name="submit">
+    </form>
+
+</div>
+{% endblock %}

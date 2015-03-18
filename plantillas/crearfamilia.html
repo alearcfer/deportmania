@@ -1,0 +1,19 @@
+{% extends 'master.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2>Nueva Familia</h2>
+    <form action="/crearfamilia" role="form" method="post">{% csrf_token %}
+  <div class="form-group">
+    <label for="nombre">Nombre</label>
+    <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre Familia">
+  </div>
+  <div class="form-group">
+    <label for="pesomedio">Peso Medio(g)</label>
+    <input type="number" class="form-control" id="pesomedio" name="pesomedio" placeholder="Peso Medio(g)">
+  </div>
+  <input type="submit" class="btn btn-primary" name="submit" value="Crear">
+</form>
+</div>
+
+{% endblock %}
