@@ -20,12 +20,13 @@
                 </div>
                 <div class="derecha" style="width: 400px">
                     <h4> <a href="{% url 'articulo_info' articulo_id=elem.id %}">{{ elem.nombre }}</a></h4>
-                    <p>{{ elem.precio }}EUR</p>
+                    <p>{{ elem.unit_price }} EUR</p>
                  <div class="padding-top-39">
                      {% if request.user.is_authenticated %}
-                <form action="" method="post">{% csrf_token %}
-                 <input type="submit" class="btn btn-info" value="Añadir al carrito" name="carrito">
-                    <input type="hidden" name="idarticulo" value="{{ elem.id }}">
+                <form action="{% url 'cart' %}" method="post">{% csrf_token %}
+                 <input type="hidden" name="add_item_id" value="{{elem.id}}">
+                     <input type="hidden" name="add_item_quantity" value="1">
+                     <input type="submit" class="btn btn-primary" value="Añadir al carrito">
                  </form>
                      {% endif %}
                  </div>

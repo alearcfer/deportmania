@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -25,7 +25,8 @@
             </div>
 
             <div class="">
-                <form class="navbar-form navbar-left padding-left-25" role="search" action="/search" method="post">{% csrf_token %}
+                <form class="navbar-form navbar-left padding-left-25" role="search" action="/search" method="">
+                    {% csrf_token %}
                     <div class="form-group">
                         <input type="text" name="search" class="form-control buscador">
 
