@@ -19,27 +19,10 @@ from shop.models.productmodel import Product
 from paypal.standard.forms import PayPalPaymentsForm
 from django.core.urlresolvers import reverse
 
-def view_that_asks_for_money(request):
-
-    # What you want the button to do.
-    paypal_dict = {
-        "business": settings.PAYPAL_RECEIVER_EMAIL,
-        "amount": "10000000.00",
-        "item_name": "name of the item",
-        "invoice": "unique-invoice-id",
-        "notify_url": "https://127.0.0.1:8000" + reverse('paypal-ipn'),
-        "return_url": "https://127.0.0.1:8000/home/",
-        "cancel_return": "https://www.example.com/your-cancel-location/",
-
-    }
-
-    # Create the instance.
-    form = PayPalPaymentsForm(initial=paypal_dict)
-    context = {"form": form}
-    return render_to_response("payment.html", context)
 
 def home(request):
     articulos= Articulo.objects.all().filter(esoferta=False)
+    print("HOLA",articulos)
     familias=Familia.objects.all()
     productos=[]
     for elem in articulos:

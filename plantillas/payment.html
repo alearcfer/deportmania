@@ -1,21 +1,4 @@
-{% extends "master.html" %}
-
-{% block content %}
-
-{% if paid %}
-&lt;h2&gt;Thank you! You are currently subscribed.&lt;/h2&gt;
-&lt;p id="page-intro"&gt;You can cancel anytime online using your PayPal account or from this page.
-	If you have any questions or problems please &lt;a href="mailto:you@example.com"&gt;email us&lt;/a&gt;.
-	&lt;/p&gt;
-
-	&lt;A HREF="https://www.paypal.com/cgi-bin/webscr?cmd=_subscr-find&amp;alias={{ encoded_email }}" _fcksavedurl="https://www.paypal.com/cgi-bin/webscr?cmd=_subscr-find&amp;alias={{ encoded_email }}"&gt;&lt;IMG BORDER="0" SRC="https://www.paypal.com/en_US/i/btn/btn_unsubscribe_LG.gif"&gt;&lt;/A&gt;
-{% else %}
-	&lt;!-- Page Head --&gt;
-	&lt;h2&gt;Please subscribe to Example using PayPal.&lt;/h2&gt;
-	&lt;p id="page-intro"&gt;You can cancel anytime online using your PayPal account or on this page.
-		If you have any questions or problems please &lt;a href="mailto:you@example.com"&gt;email us&lt;/a&gt;.
-		&lt;/p&gt;
-
-	{{ form.render }}
-{% endif %}
-{% endblock %}
+{% load i18n %}
+<h1>{% trans "Paypal" %}</h1>
+{# TODO: switch this to form.render #}
+{{ form.sandbox }}

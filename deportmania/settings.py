@@ -59,12 +59,12 @@ INSTALLED_APPS = (
 
 PAYPAL_RECEIVER_EMAIL = "deportmania@point-sport.com"
 PAYPAL_CURRENCY_CODE ="EUR"
-SHOP_SHIPPING_FLAT_RATE = '10'
+SHOP_SHIPPING_FLAT_RATE = '0'
 SHOP_SHIPPING_BACKENDS = [
-    'deportmania.shipping.SkipShippingBackend',
+    'deportmania.shipping.FlatRateShipping',
 ]
 SHOP_PAYMENT_BACKENDS = [
-    'shop.payment.backends.pay_on_delivery.PayOnDeliveryBackend'
+    'shop_paypal.offsite_paypal.OffsitePaypalBackend'
 ]
 
 SHOP_CART_MODIFIERS = ['deportmania.modifiers.Fixed7PercentTaxRate','shop_simplevariations.cart_modifier.ProductOptionsModifier',
@@ -108,7 +108,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'deportmania',                      # Or path to database file if using sqlite3.
         'USER': 'root',                      # Not used with sqlite3.
-        'PASSWORD': 'alejandro21992',                  # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
