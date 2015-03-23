@@ -5,7 +5,6 @@ South==1.0.2
 Twisted==13.2.0
 altgraph==0.12
 bdist-mpkg==0.5.0
-bonjour-py==0.3
 django-classy-tags==0.6.1
 django-paypal==0.2
 django-polymorphic==0.6.1
