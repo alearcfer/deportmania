@@ -3,6 +3,18 @@
 
 {% block content %}
 
+ <div class="content center-block container scape-top-custom row">
 
+
+        {% for a1 in res.all %}
+
+           <a href="{% url 'articulo_info' articulo_id=a1.id %}">
+               <img class="img img-lg-custom img-circle" src="{{ MEDIA_URL }}{{ a1.imagen }}"></a>
+                {{ a1.name }}
+        {% empty %}
+            <h2>Sorry, no results matching your query were found.</h2>
+        {% endfor %}
+
+    </div>
 
 {% endblock %}

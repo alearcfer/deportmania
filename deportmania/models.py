@@ -2,6 +2,7 @@ __author__ = 'alejandroarciniegafernandez'
 from django.db import models
 from django.contrib.auth.models import User
 from shop.models import Product
+from shop.models import Order
 
 
 class Proveedor(models.Model):
@@ -55,16 +56,15 @@ class Talla(models.Model):
 
 class Articulo(Product):
     familia=models.ForeignKey(Familia)
-    tallas=models.ManyToManyField(Talla)
+    tallas=models.ManyToManyField(Talla, blank=True)
     marca= models.CharField(max_length=255)
-    devolucion= models.CharField(max_length=255)
+    devolucion= models.CharField(max_length=255,blank=True)
     esoferta=models.BooleanField(blank=True)
-    imagen= models.ImageField(upload_to='media')
-    proveedor= models.ForeignKey(Proveedor)
+    imagen= models.ImageField(upload_to='media', blank=True)
+    proveedor= models.ForeignKey(Proveedor,blank=True)
 
     class Meta:
         ordering = ['marca']
-
 
 
 
@@ -74,14 +74,6 @@ class Oferta(models.Model):
     fechafin=models.DateField()
     precioviejo=models.DecimalField(max_digits=5, decimal_places=2, blank=True)
     articulo=models.OneToOneField(Product)
-
-
-
-class FormaPago(models.Model):
-    nombre = models.CharField(max_length=255)
-
-    def __unicode__(self):
-        return self.nombre
 
 
 class Compania(models.Model):
@@ -96,20 +88,6 @@ class Compania(models.Model):
         return self.nombre
 
 
-class Compra(models.Model):
-    fechacompra= models.DateField()
-    cantidad= models.IntegerField()
-    formaenvio= models.CharField(max_length=255)
-    precio= models.DecimalField(max_digits=5, decimal_places=2)
-    deporuser = models.OneToOneField(DeporUser)
-    articulo= models.ManyToManyField(Articulo)
-    formapago=models.OneToOneField(FormaPago)
-    compania=models.OneToOneField(Compania)
-
-    def __unicode__(self):
-        return self.identificador
-
-
 class ComentaArticulo(models.Model):
     valoracion= models.IntegerField()
     opinion= models.CharField(max_length=255)
@@ -122,22 +100,12 @@ class ComentaArticulo(models.Model):
         return self.opinion
 
 
-class ComentaCompra(models.Model):
-    opinion= models.CharField(max_length=255)
-    compra= models.OneToOneField(Compra)
-    user = models.OneToOneField(User)
-    fecha= models.DateField()
-
-    def __unicode__(self):
-        return self.opinion
-
-
 class Factura(models.Model):
     nfactura= models.IntegerField()
     nif= models.CharField(max_length=255)
     precio=models.DecimalField(max_digits=5, decimal_places=2)
     direccion= models.CharField(max_length=255)
-    compra = models.ForeignKey(Compra)
+    compra = models.ForeignKey(Order)
     precioenvio= models.DecimalField(max_digits=5, decimal_places=2)
 
     def __unicode__(self):

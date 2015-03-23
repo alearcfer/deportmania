@@ -18,6 +18,7 @@
 </div>
 
 <div class="container">
+
         <div class="row padding-top-5 padding-left-15">
 
         {% for elem in articulos %}
@@ -28,7 +29,7 @@
                 <div class="caption">
                     <h4>{{ elem.name }}{{ elem1 }}</h4>
                     <p>{{ elem.unit_price}}€</p>
-                   <a href="{% url 'articulo_info' articulo_id=elem.id %}">More</a>
+                   <a href="{% url 'articulo_info' articulo_id=elem.id %}">+Info</a>
                 </div>
             </div>
 
@@ -45,6 +46,9 @@
 
 </div>
 </div>
+
+
+
 
 </div>
 {% endblock %}

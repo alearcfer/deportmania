@@ -45,6 +45,8 @@ urlpatterns = patterns('',
     url(r'^eliminarmarca/$','deportmania.views.eliminargusto'),
     url(r'^editperfil/$','deportmania.views.editarperfil'),
     url(r'^perfil/$','deportmania.views.perfil'),
+    url(r'^search','deportmania.views.search'),
+    url(r'^actualizacion/$','deportmania.views.actualizacion'),
     (r'^shop/cart/', include(simplevariations_urls)),
     (r'^shop/', include(shop_urls)),
 

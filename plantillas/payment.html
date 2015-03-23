@@ -1,4 +1,13 @@
+{% extends 'master.html' %}
+
 {% load i18n %}
-<h1>{% trans "Paypal" %}</h1>
-{# TODO: switch this to form.render #}
+
+{% block content %}
+<div class="container" xmlns="http://www.w3.org/1999/html">
+<h1>{% trans "Pago" %}</h1>
+<p>A continuacion, el siguiente boton le direccionara el sitio paypal para realizar el pago del pedido</p>
+    </br>
 {{ form.sandbox }}
+</div>
+
+{% endblock %}

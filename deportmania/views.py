@@ -12,17 +12,19 @@ from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import auth
 from django.contrib.auth.hashers import make_password, pbkdf2
-from datetime import date
+from datetime import datetime,date
 from django.conf import settings
 from django.core.mail import send_mail
 from shop.models.productmodel import Product
-from paypal.standard.forms import PayPalPaymentsForm
-from django.core.urlresolvers import reverse
+from shop.models.ordermodel import Order
+from shop.util.cart import get_or_create_cart
+from django.utils import timezone
+
+
 
 
 def home(request):
     articulos= Articulo.objects.all().filter(esoferta=False)
-    print("HOLA",articulos)
     familias=Familia.objects.all()
     productos=[]
     for elem in articulos:
@@ -42,13 +44,10 @@ def articulo(request,articulo_id):
     producto=get_object_or_404(Product,id=objeto.product_ptr_id)
     familias=Familia.objects.all()
     comenarticulo=ComentaArticulo.objects.all()
-    comentacompra=ComentaCompra.objects.all()
     tallas=Talla.objects.all().filter(articulo=objeto)
-    compra=Compra.objects.all().filter(articulo=objeto)
     existencias=0
     for elem in tallas:
         existencias=existencias+elem.existencias
-    print("Compra",compra)
     print("post",request.POST)
     if request.method == 'POST' and 'submit' in request.POST:
         print("entra")
@@ -64,10 +63,8 @@ def articulo(request,articulo_id):
     if request.method == 'POST' and 'submitcompra' in request.POST:
         user=User.objects.get(username=request.POST['user'])
         opinion=request.POST['opinion']
-        ComentaCompra.objects.create(opinion=opinion,compra=compra,user=user,fecha=date.today())
     return render_to_response('articulo.html',{'articulo':objeto,'familias':familias,
                                                'comenarticulo':comenarticulo,
-                                               'comencompra':comentacompra,
                                                'tallas':tallas,'existencias':existencias,
                                               'producto':producto}, context_instance=RequestContext(request))
 
@@ -82,7 +79,6 @@ def oferta(request,oferta_id):
     articulo=get_object_or_404(Articulo,id=objeto.id)
     producto=get_object_or_404(Product,id=articulo.product_ptr_id)
     comenarticulo=ComentaArticulo.objects.all()
-    comentacompra=ComentaCompra.objects.all()
     tallas=Talla.objects.all().filter(articulo=articulo)
     print("post",request.POST)
 
@@ -99,7 +95,6 @@ def oferta(request,oferta_id):
         ComentaArticulo.objects.create(valoracion=valoracion,opinion=opinion,articulo=objeto,user=user,fecha=date.today(),recomendar=res)
     return render_to_response('oferta.html',{'articulo':articulo,'familias':familias,
                                                'comenarticulo':comenarticulo,'oferta':objeto,
-                                               'comencompra':comentacompra,
                                                'tallas':tallas,
                                                 'producto':producto}, context_instance=RequestContext(request))
 ''
@@ -139,6 +134,7 @@ def register(request):
             # Now we save the UserProfile model instance.
             profile.save()
             print("registro ok")
+            Gusto.objects.create(fecha=date.today(),deporuser=profile)
             username = request.POST['username']
             hashpassword = request.POST['password']
             UserAccount = authenticate(username=username, password=hashpassword)
@@ -148,12 +144,14 @@ def register(request):
         else:
             print(djangoform.errors)
             print(userform.errors)
+            return render_to_response('register.html',locals(), context_instance=RequestContext(request))
     return render_to_response('register.html', context_instance=RequestContext(request))
 
 
 def logeo(request):
     #validation
-    loginw = False
+    msg=""
+    error=False
     if request.method == 'POST':
         username = request.POST['usernamelogin']
         hashpassword = request.POST['passwordlogin']
@@ -166,7 +164,6 @@ def logeo(request):
                 login(request, user)
                 # Llevar a la vista principal
                 print("Login correcto")
-                request.session['carritodecompra'] = []
                 return HttpResponseRedirect("/home")
 
             else:
@@ -174,15 +171,14 @@ def logeo(request):
                 return HttpResponseRedirect("/error")
         else:
             # Login incorrecto
+            error=True
             print("Login incorrecto")
-            loginw = True
+            msg="El usuario o password introducido no es correcto"
             return render_to_response('login.html',
-                                      {'loginw': loginw},
+                                      locals(),
                                       context_instance=RequestContext(request))
 
-    return render_to_response('login.html',
-                              {'loginw': loginw},
-                              context_instance=RequestContext(request))
+    return render_to_response('login.html',context_instance=RequestContext(request))
 
 
 def terminos(request):
@@ -297,33 +293,29 @@ def creararticulo(request):
     print("Files",request.FILES)
     if request.method == 'POST' and 'submit' in request.POST:
         prov=Proveedor.objects.get(nombre=request.POST['proveedor'])
-        print("Probeedor",prov)
+        print("Proveedor",prov)
         famili=Familia.objects.get(nombre=request.POST['famili'])
         print("Familia",famili)
-        if 'imagen' in request.POST:
+        if "imagen" in request.POST:
             image=request.POST['imagen']
-            print(image)
-            producto=Product.objects.create(name=request.POST['nombre'], slug=request.POST['slug'], active=1,
-                                            date_added=request.POST['fecha'], last_modified=fecha, unit_price=request.POST['precio'])
-            producto.save()
-            print("Producto Creado")
-            print("Date_added",producto.date_added)
-            talla=Talla.objects.create(nombre=request.POST['talla'], existencias=request.POST['existencias'])
-            talla.save()
-            print("Talla creada")
-            print(request.POST['devolucion'])
-            print(request.POST['imagen'])
-            print(prov)
-            arti=Articulo.objects.create(product_ptr_id=producto.id,familia=famili,marca=request.POST['marca'],
+        producto=Product.objects.create(name=request.POST['nombre'], active=1,
+                                         unit_price=request.POST['precio'])
+        producto.save()
+        print("Producto Creado")
+        talla=Talla.objects.create(nombre=request.POST['talla'], existencias=request.POST['existencias'])
+        talla.save()
+        print("Talla creada")
+        print(prov)
+        arti=Articulo.objects.create(product_ptr_id=producto.id,familia=famili,marca=request.POST['marca'],
                                     devolucion=request.POST['devolucion'],imagen=image,proveedor=prov,esoferta=False)
-            msg="Articulo creado correctamente"
+        msg="Articulo creado correctamente"
 
-            arti.save()
-            tallas=request.POST.getlist('tallas')
-            print("tallas",tallas)
-            for elem in tallas:
-                arti.tallas.add(elem)
-            return render_to_response('homeadmin.html',{'msg':msg},context_instance=RequestContext(request))
+        arti.save()
+        tallas=request.POST.getlist('tallas')
+        print("tallas",tallas)
+        for elem in tallas:
+            arti.talla.add(elem)
+        return render_to_response('homeadmin.html',{'msg':msg},context_instance=RequestContext(request))
     else:
         print("Error")
     print("No hace nada")
@@ -554,8 +546,11 @@ def categoria(request,familia_id):
 def perfil(request):
     djangouser=request.user
     deportuser=DeporUser.objects.get(djangoUser=djangouser)
-    gusto=Gusto.objects.get(deporuser=deportuser)
-    return render_to_response('perfil.html',{'user':deportuser,'gusto':gusto},context_instance=RequestContext(request))
+    pedidos=[]
+    if Order.objects.all().filter(user=djangouser)>=1:
+        pedidos=Order.objects.all().filter(user=djangouser)
+    print(pedidos)
+    return render_to_response('perfil.html',{'user':deportuser,'pedidos':pedidos},context_instance=RequestContext(request))
 
 
 @login_required(login_url='/home')
@@ -564,7 +559,6 @@ def nuevogusto(request):
     deportuser=DeporUser.objects.get(djangoUser=djangouser)
     marcas=Marca.objects.all()
     size=len(marcas)
-    fecha=date.today()
     gusto=Gusto.objects.get(deporuser=deportuser)
     if request.method == 'POST' and 'submit' in request.POST:
         marcas=request.POST.getlist('marca')
@@ -607,15 +601,22 @@ def editarperfil(request):
         email=request.POST['email']
         nacimiento=request.POST['nacimiento']
         poblacion=request.POST['poblacion']
+        hashpassword=request.POST['pass']
+        genero=request.POST['genero']
         if username != "":
-            deportuser.djangoUser.username=username
+            djangouser.username=username
         if email != "":
-            deportuser.djangoUser.email=email
+            djangouser.email=email
         if nacimiento != "":
             deportuser.birthday=nacimiento
         if poblacion != "":
             deportuser.poblacion=poblacion
+        if hashpassword != "":
+            djangouser.set_password(hashpassword)
+        if genero != "":
+            deportuser.gender=genero
         deportuser.save()
+        djangouser.save()
         msg="Datos modificados correctamente"
         return render_to_response('perfil.html',{'user':deportuser,'gusto':gusto,'msg':msg},context_instance=RequestContext(request))
     if request.method == 'POST' and 'delete' in request.POST:
@@ -628,8 +629,31 @@ def editarperfil(request):
 
 
 
+
 def search(request):
+    # Es necesario ejecutar el siguiente codigo en la db para que esto funcione
+    # CREATE FULLTEXT INDEX shop_product_name ON shop_product(name);
     search_query = request.POST['search']
     print(len(search_query))
-    res = Articulo.objects.filter(name__search=search_query)
-    return render_to_response('search_result.html', {'res': res}, context_instance=RequestContext(request))
+    res = Product.objects.filter(name__search=search_query)
+    return render_to_response('resultadobusqueda.html', {'res': res}, context_instance=RequestContext(request))
+
+
+def actualizacion(request):
+    articulos= Articulo.objects.all().filter(esoferta=False)
+    familias=Familia.objects.all()
+    productos=[]
+    for elem in articulos:
+        prod=get_object_or_404(Product,id=elem.product_ptr_id)
+        productos.append(prod)
+    duser=request.user
+    nombre=request.POST['nombre']
+    prod1=get_object_or_404(Product,name=nombre)
+    arti1=get_object_or_404(Articulo,product_ptr_id=prod1.id)
+    talla=Talla.objects.all().filter(articulo=arti1)
+    print("Producto",prod1)
+    print("Articulo",arti1)
+    print("Talla",talla)
+    cart_object = get_or_create_cart(request)
+    cart_object.empty()
+    return render_to_response('home.html',locals(),context_instance=RequestContext(request))

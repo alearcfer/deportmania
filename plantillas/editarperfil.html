@@ -9,12 +9,19 @@
             <form method="post">{% csrf_token %}
                 <h6 class="text-center"><label class="center-block" form="username">Username</label></h6>
                 <input type="text" class="form-control" name="username" id="username" placeholder="{{ deportuser.djangoUser.username }}">
+                <h6 class="text-center"><label class="center-block" form="pass">Password</label></h6>
+                <input type="password" class="form-control" name="pass" id="email" placeholder="Introduzca su nueva contraseña, en caso contrario se mantendra la misma">
                  <h6 class="text-center"><label class="center-block" form="email">Email</label></h6>
                 <input type="email" class="form-control" name="email" id="email" placeholder="{{ deportuser.djangoUser.email}}">
                  <h6 class="text-center"><label class="center-block" form="nacimiento">Nacimiento</label></h6>
                 <input type="date" class="form-control" name="nacimiento" id="nacimiento" placeholder="{{ deportuser.birthday }}">
                  <h6 class="text-center"><label class="center-block" form="poblacion">Poblacion</label></h6>
                 <input type="text" class="form-control" name="poblacion" id="poblacion" placeholder="{{ deportuser.poblacion}}">
+                <h6 class="text-center"><label for="genero">Genero</label></h6>
+                        <select id="genero" name="genero" class="form-control select-custom">
+                            <option id="option1" value="f">Mujer</option>
+                            <option id="option2" value="m">Hombre</option>
+                        </select>
                 </br>
                     <input type="submit" class="btn btn-primary" name="submit" value="Modificar"> <input type="submit" class="btn btn-danger" name="delete" value="Eliminar cuenta">
             </form>

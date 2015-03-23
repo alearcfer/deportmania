@@ -15,6 +15,11 @@
         <p>Correo: {{ user.djangoUser.email }}</p>
         <p>Nacimiento: {{ user.birthday }}</p>
         <p>Poblacion: {{ user.poblacion }}</p>
+        <p>Genero: {% if user.gender == "m" %}Hombre
+        {% else %}
+            Mujer
+            {% endif %}
+        </p>
     </div>
 
     <a href="/editperfil" class="btn btn-info">Modificar informacion</a>
@@ -25,7 +30,12 @@
  <div class="thumbnail col-md-4 ">
     <h4 class="text-left">Datos de compras</h4>
      <div>
+        {% for elem in pedidos %}
+             <li>
+      <a href="{{ elem.get_absolute_url }}">{{ elem }}</a>
 
+    </li>
+        {% endfor %}
      </div>
     </div>
 

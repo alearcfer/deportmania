@@ -34,6 +34,9 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+USE_TZ = True
+
+
 
 # Application definition
 
@@ -59,6 +62,7 @@ INSTALLED_APPS = (
 
 PAYPAL_RECEIVER_EMAIL = "deportmania@point-sport.com"
 PAYPAL_CURRENCY_CODE ="EUR"
+
 SHOP_SHIPPING_FLAT_RATE = '0'
 SHOP_SHIPPING_BACKENDS = [
     'deportmania.shipping.FlatRateShipping',
@@ -108,7 +112,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'deportmania',                      # Or path to database file if using sqlite3.
         'USER': 'root',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
+        'PASSWORD': 'alejandro21992',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }

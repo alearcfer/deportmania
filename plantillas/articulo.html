@@ -28,18 +28,20 @@
                 <td><h2 style="color: deepskyblue">{{ producto.unit_price }}€</h2>
                 <span style="color: #808080">IVA incluido</span></td>
             </tr>
+        <form method="post" action="{% url 'cart' %}">{% csrf_token %}
+        {% if tallas != empty %}
             <tr class="text-center">
-                <form method="post" action="{% url 'cart' %}">{% csrf_token %}
+
                 <td><h5>Tallas:</h5>
-                <select name="option">
-                <option selected>Elige tu talla</option>
+                <select name="option" required>
+
                     {% for elem1 in tallas %}
                 <option>{{ elem1.nombre }}, {{ elem1.existencias }} existencias
                 </option>
                     {% endfor %}
                 </select>
                 <input type="hidden" name="option">
-
+            {% endif %}
             </tr>
             <tr class="text-center">
                 <td><h5>Marca : {{ articulo.marca }}</h5></td>
@@ -68,10 +70,9 @@
     <div class="padding-top-2"></div>
 
     </div>
-    <div class="col-md-12 padding-left-10 padding-top-8 ">
+    <div class="col-md-12 padding-left-15 padding-top-8 ">
     <ul class="nav nav-tabs nav-pills" role="tablist" id="myTab">
     <li role="presentation" class="active"><a href="#articulo" aria-controls="articulo" role="tab" data-toggle="tab">Comentario Sobre Articulo</a></li>
-
     {% if request.user.is_authenticated %}
     <li role="presentation"><a href="#comenarti" aria-controls="comenarti" role="tab" data-toggle="tab">Añadir Opinion Sobre Articulo</a></li>
 
@@ -88,7 +89,7 @@
       <p>¿Recomendarias su compra?:{% if elem.recomendar == True %}
       Si{% else %}
       No{% endif %}</p>
-      <p>Valoracion:{{ elem.valoracion }}  </p>
+      <p>Valoracion: {{ elem.valoracion }} /5  </p>
       </div>
 
       {% endfor %}
@@ -113,19 +114,21 @@ Le rogamos que <strong>su opinion acerca del artículo sea lo más objetiva posi
 Por favor, use un lenguaje apropiado, no se permitirán opiniones ofensivas. Tampoco se permitirán mensajes no relacionados con este artículo o aquellas opiniones que hablen única y exclusivamente del precio del mismo.
     </p>
     </div>
-    <label for="opinion">Opinion
+    <div>
+    <label for="opinion">Opinion</label>
     <textarea class="form-control" id="opinion" name="opinion" cols="50" rows="5"></textarea>
-    </label>
-    <label for="valoracion">Valoración
+    </div>
+    <label for="valoracion">Valoración</label>
     <input type="number" id="valoracion" name="valoracion" placeholder="Valoracion" class="form-control" >
          <div class="padding-top-2"></div>
+    <div>
     <label for="recomendar">¿Recomendaria este producto?</label>
     Si<input type="radio" value="si"  name="recomendar" id="recomendar">
     No<input type="radio" value="no" name="recomendar" id="recomendar">
-    <label>
+    </div>
 
-    <input class="btn-primary" type="submit" value="Insertar opinion" id="submit" name="submit">
-    </label>
+    <input class="btn btn-info" type="submit" value="Insertar opinion" id="submit" name="submit">
+
     <input name="user" id="user" value="{{ request.user }}" type="hidden">
 
 </label>
