@@ -1,0 +1,28 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+<div class="container">
+<p>A continuacion, seleccion el articulo, la talla correspondiente, y las existencias de esa talla para el articulo seleccionado</p>
+<form method="post">{% csrf_token %}
+<label>Articulo</label>
+<select class="form-control" name="articulo">
+    {% for elem in articulos %}
+    <option value="{{ elem.name }}">{{ elem}}</option>
+    {% endfor %}
+</select>
+<label>Talla</label>
+<select class="form-control" name="talla">
+    {% for elem1 in tallas %}
+    <option value="{{ elem1.nombre }}">{{ elem1.nombre }}</option>
+    {% endfor %}
+</select>
+<label>Existencias</label>
+<input type="number" class="form-control" name="existencias" placeholder="Existencias">
+<div class="padding-top-2"></div>
+<input type="submit" value="Enviar" name="submit" class="btn btn-info">
+</form>
+</div>
+
+
+{% endblock %}

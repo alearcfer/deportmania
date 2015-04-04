@@ -11,7 +11,10 @@
                         Log in
                     </h4>
                 </div>
-
+                {% if error == True %}
+                                    <div  class="text-center alert alert-danger col-md-10"> {{ msg }}
+                                    </div>
+                                    {% endif %}
                 <table class="table">
                     <tr>
                         <td style="width:45%">
@@ -19,10 +22,7 @@
 
 
                                 <form id="formulario2" class="form-signup" method="post" action="">{% csrf_token %}
-                                    {% if error == True %}
-                                    <div  class="text-center alert alert-danger col-md-10"> {{ msg }}
-                                    </div>
-                                    {% endif %}
+
                                     <div class="input-group col-md-10 ">
 
                                         <input id="usernamex" type="text" name="usernamelogin" class="form-control"

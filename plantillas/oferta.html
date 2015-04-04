@@ -4,15 +4,19 @@
 {% block content %}
 <div class="container-fluid">
 <div class="pull-left padding-left-2">
-   <ul class="list-group"><h2>Categorias</h2>
+
+<h3 class="text-justify">
+    <a href="/ofertas" class="quitazul"> Ofertas destacadas</a></h3>
+    <ul class="list-group"><h2 >Categorias</h2>
         {% for elem1 in familias %}
         <li class="list-group-item"><a href="{% url 'fami_info' familia_id=elem1.id %}">{{ elem1.nombre }}</a></li>
        {% endfor %}
 
     </ul>
 </div>
+
 <div class="container">
-    <div class="col-md-5 padding-top-5 padding-left-10">
+    <div class="col-md-4 padding-top-5 padding-left-10">
     <img src="{{ MEDIA_URL}}{{ articulo.imagen }}" style="width: 350px;height: 350px;">
     </div>
     <div class="col-md-6 padding-top-5 padding-left-10">
@@ -67,8 +71,7 @@
     <div class="col-md-10 padding-left-20 padding-top-8 ">
     <ul class="nav nav-tabs nav-pills" role="tablist" id="myTab">
     <li role="presentation" class="active"><a href="#articulo" aria-controls="articulo" role="tab" data-toggle="tab">Comentario Sobre Articulo</a></li>
-    <li role="presentation"><a href="#compra" aria-controls="compra" role="tab" data-toggle="tab">Comentario Sobre Compra</a></li>
-    {% if request.user.is_authenticated %}
+        {% if request.user.is_authenticated %}
     <li role="presentation"><a href="#comenarti" aria-controls="comenarti" role="tab" data-toggle="tab">Añadir Opinion</a></li>
    {% endif %}
     </ul>

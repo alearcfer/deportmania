@@ -18,14 +18,16 @@ from django.core.mail import send_mail
 from shop.models.productmodel import Product
 from shop.models.ordermodel import Order
 from shop.util.cart import get_or_create_cart
-from django.utils import timezone
-
+from shop.util.order import get_order_from_request
+from deportmania.recommendations import calculateSimilarItems
+from deportmania.recommendations import getRecommendedItems
 
 
 
 def home(request):
     articulos= Articulo.objects.all().filter(esoferta=False)
     familias=Familia.objects.all()
+    print(articulos)
     productos=[]
     for elem in articulos:
         prod=get_object_or_404(Product,id=elem.product_ptr_id)
@@ -39,14 +41,13 @@ def home(request):
 
 
 def articulo(request,articulo_id):
-    print (request.session.session_key)
     objeto=get_object_or_404(Articulo,id=articulo_id)
     producto=get_object_or_404(Product,id=objeto.product_ptr_id)
     familias=Familia.objects.all()
-    comenarticulo=ComentaArticulo.objects.all()
-    tallas=Talla.objects.all().filter(articulo=objeto)
+    comenarticulo=ComentaArticulo.objects.all().filter(articulo=objeto)
+    tallaarticulo=TallaArticulo.objects.all().filter(articulo=objeto)
     existencias=0
-    for elem in tallas:
+    for elem in tallaarticulo:
         existencias=existencias+elem.existencias
     print("post",request.POST)
     if request.method == 'POST' and 'submit' in request.POST:
@@ -65,7 +66,8 @@ def articulo(request,articulo_id):
         opinion=request.POST['opinion']
     return render_to_response('articulo.html',{'articulo':objeto,'familias':familias,
                                                'comenarticulo':comenarticulo,
-                                               'tallas':tallas,'existencias':existencias,
+                                               'existencias':existencias,
+                                               'talla':tallaarticulo,
                                               'producto':producto}, context_instance=RequestContext(request))
 
 def ofertas(request):
@@ -229,18 +231,23 @@ def crearoferta(request):
     productos=Product.objects.all()
     print(request.POST)
     if request.method == 'POST' and 'submit' in request.POST:
-        articu=Product.objects.get(name=request.POST['articulo'])
-        art=get_object_or_404(Articulo,product_ptr_id=articu.id)
-        print(articu)
+        producto=get_object_or_404(Product,name=request.POST['articulo'])
+        art=get_object_or_404(Articulo,product_ptr_id=producto.id)
+        print(producto)
         descuento=request.POST['descuento']
-        final=(int(articu.unit_price)*int(descuento))/100
-        precionuevo=int(articu.unit_price)-final
-        ofer=Oferta.objects.create(descuento=request.POST['descuento'], fechainicio=request.POST['fechainicio'],fechafin=request.POST['fechafin'],precioviejo=articu.unit_price, articulo=articu)
+        final=(int(producto.unit_price)*int(descuento))/100
+        precionuevo=int(producto.unit_price)-final
+        producto.unit_price=precionuevo
+        ofer=Oferta.objects.create(descuento=request.POST['descuento'], fechainicio=request.POST['fechainicio'],fechafin=request.POST['fechafin'],precioviejo=producto.unit_price, articulo=producto)
         ofer.save()
         art.esoferta=True
-        articu.unit_price=precionuevo
-        articu.save()
+        producto.unit_price=precionuevo
+        producto.save()
+        if producto.save():
+            print("Precio actualizado")
         art.save()
+        if art.save():
+            print("prueba")
         msg="Oferta creada correctamente"
         return render_to_response('homeadmin.html',{'msg':msg},context_instance=RequestContext(request))
     else:
@@ -259,6 +266,9 @@ def modoferta(request,oferta_id):
     producto=get_object_or_404(Product,name=oferta.articulo)
     if request.method == 'POST' and 'delete' in request.POST:
         msg=""
+        oferta.articulo.esoferta=False
+        oferta.articulo.unit_price=oferta.precioviejo
+        oferta.articulo.save()
         oferta.delete()
         msg="Oferta eliminada correctamente"
         return render_to_response('homeadmin.html',{'msg':msg},context_instance=RequestContext(request))
@@ -287,8 +297,6 @@ def modoferta(request,oferta_id):
 def creararticulo(request):
     familias=Familia.objects.all()
     proveedores=Proveedor.objects.all()
-    tallas=Talla.objects.all()
-    fecha=date.today()
     print(request.POST)
     print("Files",request.FILES)
     if request.method == 'POST' and 'submit' in request.POST:
@@ -298,28 +306,21 @@ def creararticulo(request):
         print("Familia",famili)
         if "imagen" in request.POST:
             image=request.POST['imagen']
+            print(request.POST['nombre'])
         producto=Product.objects.create(name=request.POST['nombre'], active=1,
                                          unit_price=request.POST['precio'])
         producto.save()
         print("Producto Creado")
-        talla=Talla.objects.create(nombre=request.POST['talla'], existencias=request.POST['existencias'])
-        talla.save()
-        print("Talla creada")
+
         print(prov)
-        arti=Articulo.objects.create(product_ptr_id=producto.id,familia=famili,marca=request.POST['marca'],
+        Articulo.objects.create(product_ptr_id=producto.id,familia=famili,marca=request.POST['marca'],
                                     devolucion=request.POST['devolucion'],imagen=image,proveedor=prov,esoferta=False)
         msg="Articulo creado correctamente"
-
-        arti.save()
-        tallas=request.POST.getlist('tallas')
-        print("tallas",tallas)
-        for elem in tallas:
-            arti.talla.add(elem)
         return render_to_response('homeadmin.html',{'msg':msg},context_instance=RequestContext(request))
     else:
         print("Error")
     print("No hace nada")
-    return render_to_response('creararticulo.html',{'familias':familias,'proveedores':proveedores,'tallas':tallas}, context_instance=RequestContext(request))
+    return render_to_response('creararticulo.html',{'familias':familias,'proveedores':proveedores}, context_instance=RequestContext(request))
 
 @login_required(login_url='/home')
 def listararticulo(request):
@@ -336,7 +337,6 @@ def modarticulo(request,articulo_id):
     articulo=get_object_or_404(Articulo,id=articulo_id)
     familias=Familia.objects.all()
     proveedores=Proveedor.objects.all()
-    tallas=Talla.objects.all()
     tallasarticulo=Talla.objects.all().filter(articulo=articulo)
     print(request.POST)
     if request.method == 'POST' and 'delete' in request.POST:
@@ -348,13 +348,10 @@ def modarticulo(request,articulo_id):
         msg=""
         nombre=request.POST['nombre']
         familia=Familia.objects.get(nombre=request.POST['familia'])
-        tallas=request.POST.getlist('tallas')
         precio=request.POST['precio']
         marca=request.POST['marca']
         devolucion=request.POST['devolucion']
         proveedor=Proveedor.objects.get(nombre=request.POST['proveedor'])
-        for elem1 in articulo.tallas.all():
-            articulo.tallas.remove(elem1)
         if 'imagen' in request.POST:
             imagen=request.POST['imagen']
             articulo.imagen=imagen
@@ -362,9 +359,6 @@ def modarticulo(request,articulo_id):
             articulo.name=nombre
         if familia != "":
             articulo.familia=familia
-        if tallas != "":
-            for elem in tallas:
-                articulo.tallas.add(elem)
         if precio != "":
             articulo.unit_price=precio
         if marca != "":
@@ -380,12 +374,11 @@ def modarticulo(request,articulo_id):
             imagen=request.POST['img']
             articulo.imagen=imagen
         articulo.save()
-        if nombre!= "" or tallas != "" or familia != "" or precio != "" or marca != "" or devolucion != "" or proveedor != "" or imagen != "":
+        if nombre!= ""  or familia != "" or precio != "" or marca != "" or devolucion != "" or proveedor != "" or imagen != "":
             msg="Articulo Actualizado"
             print(msg)
         return render_to_response('homeadmin.html',{'msg':msg},context_instance=RequestContext(request))
     return render_to_response('modarticulo.html',{'articulo':articulo,'familias':familias,
-                                                  'tallas':tallas,
                                                   'tallasarticulo':tallasarticulo,
                                                   'proveedores':proveedores},context_instance=RequestContext(request))
 
@@ -632,7 +625,8 @@ def editarperfil(request):
 
 def search(request):
     # Es necesario ejecutar el siguiente codigo en la db para que esto funcione
-    # CREATE FULLTEXT INDEX shop_product_name ON shop_product(name);
+    # CREATE FULLTEXT INDEX shop_product_name ON shop_product(name)
+    # Usarlo con un SELECT;
     search_query = request.POST['search']
     print(len(search_query))
     res = Product.objects.filter(name__search=search_query)
@@ -647,13 +641,75 @@ def actualizacion(request):
         prod=get_object_or_404(Product,id=elem.product_ptr_id)
         productos.append(prod)
     duser=request.user
-    nombre=request.POST['nombre']
-    prod1=get_object_or_404(Product,name=nombre)
-    arti1=get_object_or_404(Articulo,product_ptr_id=prod1.id)
-    talla=Talla.objects.all().filter(articulo=arti1)
-    print("Producto",prod1)
-    print("Articulo",arti1)
-    print("Talla",talla)
     cart_object = get_or_create_cart(request)
     cart_object.empty()
     return render_to_response('home.html',locals(),context_instance=RequestContext(request))
+
+
+def ponertalla(request):
+    mgs=""
+    articulos= Articulo.objects.all().filter(esoferta=False)
+    productos=[]
+    for elem in articulos:
+        prod=get_object_or_404(Product,id=elem.product_ptr_id)
+        productos.append(prod)
+    tallas=Talla.objects.all()
+
+    if request.method == "POST" and "submit" in request.POST:
+        producto=Product.objects.get(name=request.POST['articulo'])
+        articulo=Articulo.objects.get(product_ptr_id=producto.id)
+        talla=Talla.objects.get(nombre=request.POST['talla'])
+        TallaArticulo.objects.create(articulo=articulo,talla=talla,existencias=request.POST['existencias'])
+        msg="Talla incluida correctamente"
+        return render_to_response('homeadmin.html', {'msg':msg}, context_instance=RequestContext(request))
+    return render_to_response('ponertalla.html',locals(),context_instance=RequestContext(request))
+
+
+def modificartalla(request):
+    tallasyarticulos=TallaArticulo.objects.all()
+
+    return render_to_response('modificartalla.html',locals(),context_instance=RequestContext(request))
+
+def tallainfo(request,tallaarticulo_id):
+    tallaarticulo=get_object_or_404(TallaArticulo,id=tallaarticulo_id)
+    msg=""
+    if "modificar" in request.POST:
+        tallaarticulo.existencias=request.POST['existencias']
+        tallaarticulo.save()
+        msg="Existencias de la talla modificada correctamente"
+        return render_to_response('homeadmin.html', {'msg':msg}, context_instance=RequestContext(request))
+    if "borrar" in request.POST:
+        tallaarticulo.delete()
+        msg="Relacion eliminada Correctamente"
+        return render_to_response('homeadmin.html', {'msg':msg}, context_instance=RequestContext(request))
+    return render_to_response("tallainfo.html",locals(),context_instance=RequestContext(request))
+
+
+def recomendacion(request):
+    username = request.user
+    userForm = DeporUser.objects.all().filter(djangoUser = username)
+    fix=""
+    articulos=[]
+    for user2 in userForm:
+        fix=user2
+        users = User.objects.all()
+
+        ratingDic1 = {}
+
+    for user in users:
+        articuloRating = Articulo_rating.objects.all().filter(user = user)
+        ratingDic2 = {}
+    for rating in articuloRating:
+        ratingDic2[rating.articulo.name] = (rating.rating * 1.0)
+        ratingDic1[user] = ratingDic2
+
+    itemMatch = calculateSimilarItems(ratingDic1)
+
+    recommendations = getRecommendedItems(ratingDic1, itemMatch, userForm)
+
+    for recomenda in recommendations:
+            s=recomenda[1]
+            articulo.append(Articulo.objects.filter(name=s)[0])
+    return render_to_response('recomendacion.html', {'articulos_search':articulos,'showForm':False},
+                                      context_instance=RequestContext(request))
+

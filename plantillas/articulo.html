@@ -2,10 +2,12 @@
 
 {% block content %}
 
-
 <div class="container-fluid">
 <div class="pull-left padding-left-2">
-   <ul class="list-group"><h2>Categorias</h2>
+
+<h3 class="text-justify">
+    <a href="/ofertas" class="quitazul"> Ofertas destacadas</a></h3>
+    <ul class="list-group"><h2 >Categorias</h2>
         {% for elem1 in familias %}
         <li class="list-group-item"><a href="{% url 'fami_info' familia_id=elem1.id %}">{{ elem1.nombre }}</a></li>
        {% endfor %}
@@ -13,7 +15,7 @@
     </ul>
 </div>
 <div class="container">
-    <div class="col-md-5 padding-top-5 padding-left-10">
+    <div class="col-md-4 padding-top-5 padding-left-10">
     <img src="{{ MEDIA_URL}}{{ articulo.imagen }}" style="width: 350px;height: 350px;">
     </div>
     <div class="align-right col-md-6 padding-top-5 padding-left-10">
@@ -29,19 +31,18 @@
                 <span style="color: #808080">IVA incluido</span></td>
             </tr>
         <form method="post" action="{% url 'cart' %}">{% csrf_token %}
-        {% if tallas != empty %}
+
             <tr class="text-center">
 
                 <td><h5>Tallas:</h5>
                 <select name="option" required>
-
-                    {% for elem1 in tallas %}
-                <option>{{ elem1.nombre }}, {{ elem1.existencias }} existencias
+                    {% for elem1 in talla %}
+                <option>{{ elem1.talla }},{{ elem1.existencias }} existencias
                 </option>
                     {% endfor %}
                 </select>
                 <input type="hidden" name="option">
-            {% endif %}
+
             </tr>
             <tr class="text-center">
                 <td><h5>Marca : {{ articulo.marca }}</h5></td>
@@ -82,7 +83,11 @@
 <div class="tab-content">
   <div role="tabpanel" class="tab-pane active padding-top-2" id="articulo">
     <h3 class="text-center">Comentarios sobre el producto</h3>
-      {% for elem in comenarticulo %}
+      {% if comenarticulo.len == 0 %}
+        <p class="text-info">Actualmente no hay comentarios</p>
+
+        {% else %}
+             {% for elem in comenarticulo %}
       <div class="thumbnail">
       <h4 style="color: #808080">{{ elem.user.username }}</h4>
       <p>{{ elem.opinion }}</p>
@@ -93,15 +98,10 @@
       </div>
 
       {% endfor %}
-  </div>
-  <div role="tabpanel" class="tab-pane padding-top-2" id="compra">
-  <h3 class="text-center">Comentarios de usuarios que han comprado este producto</h3>
-      {% for elem in comencompra %}
-        <div class="thumbnail">
-        <h4 style="color: #808080">{{ elem.user.username }}</h4>
-        <p>{{ elem.opinion }}</p>
-        </div>
-      {% endfor %}
+  {% endif %}
+
+          <a href="#top" class="padding-bottom-5 padding-left-2"><img class="" style="width: 50px;height: 50px" src="{{ STATIC_URL }}img/scroll.png"></a>
+
   </div>
   <div role="tabpanel" class="tab-pane padding-top-2" id="comenarti">
 

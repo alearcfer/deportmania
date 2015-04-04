@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from shop.models import Product
 from shop.models import Order
+from django.core.validators import MinValueValidator
+from django.core.validators import MaxValueValidator
 
 
 class Proveedor(models.Model):
@@ -48,15 +50,15 @@ class numerocuenta(models.Model):
 
 class Talla(models.Model):
     nombre=models.CharField(max_length=5)
-    existencias=models.IntegerField()
 
     def __unicode__(self):
         return self.nombre
 
 
+
 class Articulo(Product):
     familia=models.ForeignKey(Familia)
-    tallas=models.ManyToManyField(Talla, blank=True)
+    tallas=models.ManyToManyField(Talla, blank=True, through="TallaArticulo")
     marca= models.CharField(max_length=255)
     devolucion= models.CharField(max_length=255,blank=True)
     esoferta=models.BooleanField(blank=True)
@@ -66,6 +68,19 @@ class Articulo(Product):
     class Meta:
         ordering = ['marca']
 
+
+class Articulo_rating(models.Model):
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    user = models.ForeignKey(DeporUser, related_name="rating_articulo_luser")
+    articulo= models.ForeignKey(Articulo)
+
+    def __unicode__(self):
+        return str(self.rating)
+
+class TallaArticulo(models.Model):
+    articulo=models.ForeignKey(Articulo)
+    talla=models.ForeignKey(Talla)
+    existencias=models.IntegerField()
 
 
 class Oferta(models.Model):

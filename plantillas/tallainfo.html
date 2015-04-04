@@ -1,0 +1,19 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+<div class="container">
+<p>A continuacion,Se puede modificar las existencias de una talla, modificar la talla, o eliminar la relacion existente</p>
+<form method="post">{% csrf_token %}
+<p>Articulo: {{ tallaarticulo.articulo }}</p>
+<p>Talla : {{ tallaarticulo.talla }}</p>
+<label>Existencias</label>
+<input type="number" class="form-control" name="existencias" placeholder="{{ tallaarticulo.existencias }}">
+<div class="padding-top-2"></div>
+<input type="submit" value="Modificar" name="modificar" class="btn btn-info">
+<input type="submit" value="Borrar Relacion" name="borrar" class="btn btn-danger">
+</form>
+</div>
+
+
+{% endblock %}

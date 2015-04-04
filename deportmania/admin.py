@@ -16,4 +16,6 @@ admin.site.register(Oferta)
 admin.site.register(Compania)
 admin.site.register(DeporUser)
 admin.site.register(Talla)
+admin.site.register(TallaArticulo)
+admin.site.register(Articulo_rating)
 

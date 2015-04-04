@@ -5,6 +5,7 @@ from shop import urls as shop_urls
 from shop_simplevariations import urls as simplevariations_urls
 admin.autodiscover()
 
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'deportmania.views.home', name='home'),
@@ -46,7 +47,11 @@ urlpatterns = patterns('',
     url(r'^editperfil/$','deportmania.views.editarperfil'),
     url(r'^perfil/$','deportmania.views.perfil'),
     url(r'^search','deportmania.views.search'),
-    url(r'^actualizacion/$','deportmania.views.actualizacion'),
+    url(r'^ponertalla/$','deportmania.views.ponertalla'),
+    url(r'^modificartalla/$','deportmania.views.modificartalla'),
+    url(r'^tallainfo/(?P<tallaarticulo_id>\w+)/$','deportmania.views.tallainfo', name="talla_info"),
+    url(r'^shop/checkout/thank_you/actualizacion$','deportmania.views.actualizacion'),
+    url(r'^recomendacion$','deportmania.views.recomendacion'),
     (r'^shop/cart/', include(simplevariations_urls)),
     (r'^shop/', include(shop_urls)),
 

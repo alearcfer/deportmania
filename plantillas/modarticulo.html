@@ -18,17 +18,7 @@
      <option value="{{ elem.nombre }}" id="familia">{{ elem.nombre }}</option>
      {% endif %}
      {% endfor %}
-     </select>
-    <label for="talla">Talla</label>
-    <p>Escoge una de las creadas</p>
-    <select class="form-control" name="tallas" multiple >
-     {% for elem in tallas %}
-         {% if elem in tallasarticulo %}
-     <option value="{{ elem.id }}" id="tallas" selected>{{ elem.nombre }}, {{ elem.existencias }}existencias</option>
-         {% else %}
-         <option value="{{ elem.id }}" id="tallas">{{ elem.nombre }}, {{ elem.existencias }}existencias</option>
-         {% endif %}
-     {% endfor %}
+
 
     </select>
         <label for="precio">Precio</label>

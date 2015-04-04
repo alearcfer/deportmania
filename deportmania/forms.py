@@ -13,7 +13,6 @@ class userDjangoForm(ModelForm):
         fields = ('username', 'email', 'password')
 
 
-
 class DeporUserRegistrationForm(ModelForm):
     class Meta:
         model = DeporUser
@@ -36,3 +35,9 @@ class CompaniaForm(ModelForm):
         model=Compania
         fields=('preciopeso1','preciopeso2','preciopeso3','gastoextra','nombre','contacto')
 
+
+class SearchUserForm(forms.Form):
+    username = forms.CharField(label='username', max_length=100)
+
+class SearchArticulo(forms.Form):
+    filter = forms.CharField(label='', max_length=100)

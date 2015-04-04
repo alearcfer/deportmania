@@ -1,0 +1,16 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+<div class="container">
+<ul class="list-unstyled">
+{% for elem in tallasyarticulos %}
+<li>
+<a href="{% url 'talla_info' tallaarticulo_id=elem.id %}">Articulo:{{ elem.articulo }},Talla:{{ elem.talla }}</a>
+    </li>
+{% endfor %}
+</ul>
+
+</div>
+
+{% endblock %}
