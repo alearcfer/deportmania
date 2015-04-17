@@ -1,0 +1,28 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+
+    {{ resultado }}
+
+
+    <div class="container">
+        <h4>Te recomendamos</h4>
+
+      {% for elem in articulos %}
+
+        <div class="col-lg-1" >
+            <div class="thumbnail">
+               <a href="{% url 'articulo_info' articulo_id=elem.id %}"><img class="img-responsive" src="{{ MEDIA_URL }}{{ elem.imagen }}"></a>
+                <div class="caption">
+                    <h4>{{ elem.name }}{{ elem1 }}</h4>
+                    <p>{{ elem.unit_price}}€</p>
+                   <a href="{% url 'articulo_info' articulo_id=elem.id %}">+Info</a>
+                </div>
+            </div>
+
+        </div>
+
+         {% endfor %}
+    </div>
+{% endblock %}

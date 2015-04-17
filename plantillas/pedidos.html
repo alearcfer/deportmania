@@ -1,0 +1,53 @@
+{% extends 'master.html' %}
+
+
+
+{% block content %}
+<div class="container">
+<table class="table table-responsive">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Usuario</th>
+          <th>Estado</th>
+          <th>Total</th>
+          <th>Fecha</th>
+          <th>Factura</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for pedido in pedidos %}
+          <form method="post" action="/factura">{% csrf_token %}
+        <tr>
+          <th>{{ pedido.id }}</th>
+          <td>{{ pedido.user }}</td>
+          <td>{% if pedido.status == 10 %}
+                Procesando
+              {% elif pedido.status == 20 %}
+                Confirmando
+              {% elif pedido.status == 30 %}
+                Confirmado
+              {% elif pedido.status == 40 %}
+                Completado
+              {% elif pedido.status == 50 %}
+                Enviado
+              {% elif pedido.status == 60 %}
+                Cancelado
+              {% endif %}
+          </td>
+          <td >{{ pedido.order_total }}</td>
+          <td>{{ pedido.created }}</td>
+          <td>
+              <input type="submit" class="btn btn-primary" value="descargar">
+          </td>
+        </tr>
+          </form>
+      {% endfor %}
+      </tbody>
+</table>
+
+</div>
+
+
+
+{% endblock %}

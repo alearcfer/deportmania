@@ -7,7 +7,11 @@
 <h1>{% trans "Pago" %}</h1>
 <p>A continuacion, el siguiente boton le direccionara el sitio paypal para realizar el pago del pedido</p>
     </br>
-{{ form.sandbox }}
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+    {% csrf_token %}
+        {{ form.render}}
+
+    </form>
 </div>
 
 {% endblock %}

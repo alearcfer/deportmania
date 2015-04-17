@@ -29,6 +29,9 @@ class Familia(models.Model):
     nombre = models.CharField(max_length=255)
     pesomedio = models.DecimalField(max_digits=5, decimal_places=2)
 
+    def __unicode__(self):
+        return self.nombre
+
 
 class Marca(models.Model):
     nombre = models.CharField(max_length=255)
@@ -67,7 +70,8 @@ class Articulo(Product):
 
     class Meta:
         ordering = ['marca']
-
+    def __unicode__(self):
+        return self.name
 
 class Articulo_rating(models.Model):
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])

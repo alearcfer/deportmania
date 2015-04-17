@@ -729,3 +729,7 @@ box-sizing(content-box);
     color: #ffffff;
     font-size: 28px;
 }
+
+.margenrecomendacionarticulo{
+    margin-left: 8%;
+}

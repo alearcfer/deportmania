@@ -18,4 +18,4 @@ admin.site.register(DeporUser)
 admin.site.register(Talla)
 admin.site.register(TallaArticulo)
 admin.site.register(Articulo_rating)
-
+admin.site.register(Product)

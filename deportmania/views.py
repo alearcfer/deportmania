@@ -1,17 +1,12 @@
 __author__ = 'Alejandro'
-from deportmania.models import *
 from deportmania.forms import *
 from django.contrib.auth.models import User
-from django.shortcuts import render_to_response, get_object_or_404
-from django.utils import formats
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, get_object_or_404
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import auth
-from django.contrib.auth.hashers import make_password, pbkdf2
 from datetime import datetime,date
 from django.conf import settings
 from django.core.mail import send_mail
@@ -19,34 +14,63 @@ from shop.models.productmodel import Product
 from shop.models.ordermodel import Order
 from shop.util.cart import get_or_create_cart
 from shop.util.order import get_order_from_request
-from deportmania.recommendations import calculateSimilarItems
-from deportmania.recommendations import getRecommendedItems
+from deportmania.recommendations import valoraciones
+from deportmania.recommendations import getRecommendations
+from deportmania.recommendations import sim_pearson
+from shop.models.ordermodel import OrderItem
+from shop.models.defaults.product import Product as usar
 
 
+
+
+def recomendacion(request):
+    djangouser = request.user.id
+    usuarioactual=get_object_or_404(User,id=djangouser)
+    resultado = getRecommendations(valoraciones,usuarioactual.username,similarity=sim_pearson)
+    res=[]
+    for elem in resultado:
+        art=get_object_or_404(Articulo,name=elem[1])
+        res.append(art)
+    return res
+    #return render_to_response("recomendacion.html",locals(),context_instance=RequestContext(request))
+
+def secure_required(view_func):
+    """Decorator makes sure URL is accessed over https."""
+    def _wrapped_view_func(request, *args, **kwargs):
+        if not request.is_secure():
+            if getattr(settings, 'HTTPS_SUPPORT', True):
+                request_url = request.build_absolute_uri(request.get_full_path())
+                secure_url = request_url.replace('http://', 'https://')
+                return HttpResponseRedirect(secure_url)
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view_func
 
 def home(request):
     articulos= Articulo.objects.all().filter(esoferta=False)
     familias=Familia.objects.all()
-    print(articulos)
+    resultado=[]
+    if request.user.is_authenticated():
+        if request.user.username != "ispp":
+            resultado=recomendacion(request)
     productos=[]
     for elem in articulos:
         prod=get_object_or_404(Product,id=elem.product_ptr_id)
         productos.append(prod)
     duser=request.user
     ofertas=Oferta.objects.all()
-    print (request.session.session_key)
-    print("User",duser)
-    print("productos",productos)
-    return render_to_response('home.html',{'articulos':articulos,'productos':productos,'user':duser,'familias':familias,'ofertas':ofertas}, context_instance=RequestContext(request))
+    return render_to_response('home.html',{'recomendaciones':resultado,'articulos':articulos,'productos':productos,'user':duser,'familias':familias,'ofertas':ofertas}, context_instance=RequestContext(request))
 
 
 def articulo(request,articulo_id):
+    resultado=[]
     objeto=get_object_or_404(Articulo,id=articulo_id)
     producto=get_object_or_404(Product,id=objeto.product_ptr_id)
     familias=Familia.objects.all()
     comenarticulo=ComentaArticulo.objects.all().filter(articulo=objeto)
     tallaarticulo=TallaArticulo.objects.all().filter(articulo=objeto)
     existencias=0
+    if request.user.is_authenticated():
+        resultado=recomendacion(request)
     for elem in tallaarticulo:
         existencias=existencias+elem.existencias
     print("post",request.POST)
@@ -68,17 +92,21 @@ def articulo(request,articulo_id):
                                                'comenarticulo':comenarticulo,
                                                'existencias':existencias,
                                                'talla':tallaarticulo,
-                                              'producto':producto}, context_instance=RequestContext(request))
+                                              'producto':producto,
+                                              'recomendaciones':resultado}, context_instance=RequestContext(request))
 
 def ofertas(request):
     ofertas=Oferta.objects.all()
     familias=Familia.objects.all()
-    return render_to_response('ofertas.html',{'ofertas':ofertas,'familias':familias}, context_instance=RequestContext(request))
+    resultado=[]
+    if request.user.is_authenticated():
+        resultado=recomendacion(request)
+    return render_to_response('ofertas.html',{'ofertas':ofertas,'familias':familias,'recomendaciones':resultado}, context_instance=RequestContext(request))
 
 def oferta(request,oferta_id):
     objeto=get_object_or_404(Oferta,id=oferta_id)
     familias=Familia.objects.all()
-    articulo=get_object_or_404(Articulo,id=objeto.id)
+    articulo=get_object_or_404(Articulo,id=objeto.articulo.id)
     producto=get_object_or_404(Product,id=articulo.product_ptr_id)
     comenarticulo=ComentaArticulo.objects.all()
     tallas=Talla.objects.all().filter(articulo=articulo)
@@ -237,12 +265,14 @@ def crearoferta(request):
         descuento=request.POST['descuento']
         final=(int(producto.unit_price)*int(descuento))/100
         precionuevo=int(producto.unit_price)-final
-        producto.unit_price=precionuevo
-        ofer=Oferta.objects.create(descuento=request.POST['descuento'], fechainicio=request.POST['fechainicio'],fechafin=request.POST['fechafin'],precioviejo=producto.unit_price, articulo=producto)
-        ofer.save()
+        ofer=Oferta.objects.create(descuento=request.POST['descuento'], fechainicio=request.POST['fechainicio']
+                                   ,fechafin=request.POST['fechafin'],precioviejo=producto.unit_price, articulo=producto)
+        ofer.descuento=request.POST['descuento']
+        ofer.fechainicio=request.POST['fechainicio']
+        ofer.fechafin=request.POST['fechafin']
         art.esoferta=True
-        producto.unit_price=precionuevo
-        producto.save()
+        art.unit_price=precionuevo
+        ofer.save()
         if producto.save():
             print("Precio actualizado")
         art.save()
@@ -303,18 +333,24 @@ def creararticulo(request):
         prov=Proveedor.objects.get(nombre=request.POST['proveedor'])
         print("Proveedor",prov)
         famili=Familia.objects.get(nombre=request.POST['famili'])
+        nombre=request.POST['nombre']
+        precio=request.POST['precio']
+        print("nombre",nombre)
+        print("precio",precio)
         print("Familia",famili)
         if "imagen" in request.POST:
             image=request.POST['imagen']
-            print(request.POST['nombre'])
-        producto=Product.objects.create(name=request.POST['nombre'], active=1,
-                                         unit_price=request.POST['precio'])
-        producto.save()
+        prod=usar.objects.create(name=nombre,active=1,unit_price=precio)
+        prod.name=nombre
+        print(prod)
         print("Producto Creado")
-
-        print(prov)
-        Articulo.objects.create(product_ptr_id=producto.id,familia=famili,marca=request.POST['marca'],
+        prod.save()
+        articulo=Articulo.objects.create(product_ptr_id=prod.id,familia=famili,marca=request.POST['marca'],
                                     devolucion=request.POST['devolucion'],imagen=image,proveedor=prov,esoferta=False)
+        articulo.name=nombre
+        articulo.unit_price=precio
+        articulo.active=1
+        articulo.save()
         msg="Articulo creado correctamente"
         return render_to_response('homeadmin.html',{'msg':msg},context_instance=RequestContext(request))
     else:
@@ -527,12 +563,6 @@ def categoria(request,familia_id):
     articulos_familia=Articulo.objects.filter(familia=familia,esoferta=False)
     print(articulos_familia)
     print("POST",request.POST)
-    if request.method == 'POST' and 'carrito' in request.POST:
-        objeto=request.POST['idarticulo']
-        articulo=get_object_or_404(Articulo,id=objeto)
-        lista=request.session['carritodecompra']
-        lista.append(articulo)
-        request.session['carritodecompra']=lista
     return render_to_response('familia.html',{'familia':familia,'familias':familias,'articulos':articulos_familia},context_instance=RequestContext(request))
 
 @login_required(login_url='/home')
@@ -540,10 +570,8 @@ def perfil(request):
     djangouser=request.user
     deportuser=DeporUser.objects.get(djangoUser=djangouser)
     pedidos=[]
-    if Order.objects.all().filter(user=djangouser)>=1:
-        pedidos=Order.objects.all().filter(user=djangouser)
     print(pedidos)
-    return render_to_response('perfil.html',{'user':deportuser,'pedidos':pedidos},context_instance=RequestContext(request))
+    return render_to_response('perfil.html',{'user':deportuser},context_instance=RequestContext(request))
 
 
 @login_required(login_url='/home')
@@ -628,8 +656,7 @@ def search(request):
     # CREATE FULLTEXT INDEX shop_product_name ON shop_product(name)
     # Usarlo con un SELECT;
     search_query = request.POST['search']
-    print(len(search_query))
-    res = Product.objects.filter(name__search=search_query)
+    res = Product.objects.filter(name__icontains=search_query)
     return render_to_response('resultadobusqueda.html', {'res': res}, context_instance=RequestContext(request))
 
 
@@ -642,6 +669,24 @@ def actualizacion(request):
         productos.append(prod)
     duser=request.user
     cart_object = get_or_create_cart(request)
+    order=get_order_from_request(request)
+    print(order)
+    talla=get_object_or_404(Talla,id=11)
+    productos=OrderItem.objects.all().filter(order=order)
+    print(productos)
+    for elem in productos:
+        elem1=get_object_or_404(Articulo,name=elem.product_name)
+        print("Articulo",elem1)
+        print("Id",elem1.id)
+        tallaarticulo=TallaArticulo.objects.get(articulo=elem1.id,talla=talla.id)
+        print("Existencias antes",tallaarticulo.existencias)
+        tallaarticulo.existencias=tallaarticulo.existencias-1
+        if tallaarticulo.existencias == 0:
+            tallaarticulo.delete()
+            print("Se acabaron las tallas")
+        else:
+            tallaarticulo.save()
+        print("Existencias despues",tallaarticulo.existencias)
     cart_object.empty()
     return render_to_response('home.html',locals(),context_instance=RequestContext(request))
 
@@ -685,31 +730,35 @@ def tallainfo(request,tallaarticulo_id):
     return render_to_response("tallainfo.html",locals(),context_instance=RequestContext(request))
 
 
-def recomendacion(request):
-    username = request.user
-    userForm = DeporUser.objects.all().filter(djangoUser = username)
-    fix=""
-    articulos=[]
-    for user2 in userForm:
-        fix=user2
-        users = User.objects.all()
+def pedidos(request):
+    djangouser=request.user
+    pedidos=Order.objects.all()
+    #if Order.objects.all().filter(user=djangouser)>=1:
+    pedidos=Order.objects.all().filter(user=djangouser)
+    return render_to_response('pedidos.html',locals(),context_instance=RequestContext(request))
 
-        ratingDic1 = {}
+from reportlab.pdfgen import canvas
 
-    for user in users:
-        articuloRating = Articulo_rating.objects.all().filter(user = user)
-        ratingDic2 = {}
-    for rating in articuloRating:
-        ratingDic2[rating.articulo.name] = (rating.rating * 1.0)
-        ratingDic1[user] = ratingDic2
+def factura(request):
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=hello.pdf'
+    p = canvas.Canvas(response)
+    p.drawString(100,100,"Prueba")
+    p.showPage()
+    p.save()
+    return response
 
-    itemMatch = calculateSimilarItems(ratingDic1)
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_protect
 
-    recommendations = getRecommendedItems(ratingDic1, itemMatch, userForm)
+@csrf_exempt
+def finalizarorder(request):
+    order=get_order_from_request(request)
+    print("ORDER",order)
+    if order and order.status == Order.COMPLETED:
+        order.status == 40
+        print("Hola")
+        order.save()
+    return render_to_response('shop/checkout/thank_you.html',locals(),context_instance=RequestContext(request))
 
-    for recomenda in recommendations:
-            s=recomenda[1]
-            articulo.append(Articulo.objects.filter(name=s)[0])
-    return render_to_response('recomendacion.html', {'articulos_search':articulos,'showForm':False},
-                                      context_instance=RequestContext(request))
 

@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="container-fluid">
-<div class="pull-left padding-left-2">
+<div class="pull-left padding-left-2 col-md-2">
 
 <h3 class="text-justify">
     <a href="/ofertas" class="quitazul"> Ofertas destacadas</a></h3>
@@ -33,16 +33,13 @@
         <form method="post" action="{% url 'cart' %}">{% csrf_token %}
 
             <tr class="text-center">
-
                 <td><h5>Tallas:</h5>
                 <select name="option" required>
                     {% for elem1 in talla %}
-                <option>{{ elem1.talla }},{{ elem1.existencias }} existencias
+                <option value="{{ elem1.talla }}" id="option" name="option">{{ elem1.talla }},{{ elem1.existencias }} existencias
                 </option>
                     {% endfor %}
                 </select>
-                <input type="hidden" name="option">
-
             </tr>
             <tr class="text-center">
                 <td><h5>Marca : {{ articulo.marca }}</h5></td>
@@ -57,7 +54,7 @@
         {% if request.user.is_authenticated %}
         <tr>
             <td class="padding-top-5 text-center">
-
+                     <input type="hidden" value="prueba" value="prueba">
                      <input type="hidden" name="add_item_id" value="{{producto.id}}">
                      <input type="hidden" name="add_item_quantity" value="1">
                      <input type="submit" class="btn btn-primary" value="Añadir al carrito">
@@ -71,7 +68,27 @@
     <div class="padding-top-2"></div>
 
     </div>
-    <div class="col-md-12 padding-left-15 padding-top-8 ">
+    {% if request.user.is_authenticated %}
+    <div class="col-md-10 padding-top-5">
+        <h4 class="text-center">Recomendaciones personalizadas</h4>
+    {% for elem2 in recomendaciones %}
+    <div class="col-md-2 thumbnail margenrecomendacionarticulo">
+
+               <a style="font-size: small" href="{% url 'articulo_info' articulo_id=elem2.id %}"><img class="img-responsive img-xs-custom" src="{{ MEDIA_URL }}{{ elem2.imagen }}"></a>
+                <div class="caption">
+                    <h6>{{ elem2.name }}</h6>
+                    <p style="font-size: small">{{ elem2.unit_price}}€</p>
+                   <a style="font-size: small" href="{% url 'articulo_info' articulo_id=elem2.id %}">+Info</a>
+                </div>
+
+
+    </div>
+
+    {% endfor %}
+    {% endif %}
+    </div>
+
+    <div class="col-md-12 padding-left-15 padding-top-2 ">
     <ul class="nav nav-tabs nav-pills" role="tablist" id="myTab">
     <li role="presentation" class="active"><a href="#articulo" aria-controls="articulo" role="tab" data-toggle="tab">Comentario Sobre Articulo</a></li>
     {% if request.user.is_authenticated %}

@@ -2,17 +2,19 @@
 
 
 {% block content %}
+    <h3 class="text-center">Resultados de la busqueda</h3>
 
  <div class="content center-block container scape-top-custom row">
 
-
         {% for a1 in res.all %}
-
+        <div class="col-md-3 margenrecomendacionarticulo">
            <a href="{% url 'articulo_info' articulo_id=a1.id %}">
                <img class="img img-lg-custom img-circle" src="{{ MEDIA_URL }}{{ a1.imagen }}"></a>
-                {{ a1.name }}
+                <p class="text-center">{{ a1.name }}</p>
+            </div>
         {% empty %}
-            <h2>Sorry, no results matching your query were found.</h2>
+            <h2>Losiento, la busqueda realizada no contiene resultados. Pruebe a intentarlo nuevamente</h2>
+
         {% endfor %}
 
     </div>

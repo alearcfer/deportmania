@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container-fluid">
-<div class="pull-left padding-left-2">
+<div class="pull-left padding-left-2 col-md-2">
     <ul class="list-group"><h2>Categorias</h2>
         {% for elem1 in familias %}
         <li class="list-group-item"><a href="{% url 'fami_info' familia_id=elem1.id %}">{{ elem1.nombre }}</a></li>
@@ -14,12 +14,12 @@
 <div class="container">
         <div class="padding-left-15">
         {% for elem in articulos %}
-        <div class="bordebajo padding-top-2" style="height: 300px">
+        <div class="bordebajo padding-top-2" >
                 <div class="float-left" style="width: 290px">
-               <a class=""  href="{% url 'articulo_info' articulo_id=elem.id %}"><img class="img img-lg-custom float-left" src="{{ MEDIA_URL }}{{ elem.imagen }}"></a>
+               <a class=""  href="{% url 'articulo_info' articulo_id=elem.id %}"><img class="img-responsive float-left" src="{{ MEDIA_URL }}{{ elem.imagen }}"></a>
                 </div>
                 <div class="derecha" style="width: 400px">
-                    <h4> <a href="{% url 'articulo_info' articulo_id=elem.id %}">{{ elem.nombre }}</a></h4>
+                    <h4> <a href="{% url 'articulo_info' articulo_id=elem.id %}">{{ elem.name }}</a></h4>
                     <p>{{ elem.unit_price }} EUR</p>
                  <div class="padding-top-39">
                      {% if request.user.is_authenticated %}
