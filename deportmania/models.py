@@ -15,7 +15,6 @@ class Proveedor(models.Model):
     def __unicode__(self):
         return self.nombre
 
-
 class DeporUser(models.Model):
     djangoUser = models.OneToOneField(User)
     birthday = models.DateField()

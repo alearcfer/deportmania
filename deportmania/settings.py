@@ -8,10 +8,10 @@ EMAIL_PORT=EMAIL_PORT
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 TEMPLATE_DIRS = (
-os.path.join(BASE_DIR,'plantillas'),
+
+    os.path.join(BASE_DIR,'plantillas'),
 
 )
-
 
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -24,7 +24,7 @@ SECRET_KEY = '1m8g5&hjlsfi@obef1d4a6&bu)x1+o-0s__h4ct*dp#mm+8^*1'
 DEBUG = True
 TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
-USE_TZ = True
+
 # Application definition
 INSTALLED_APPS = (
 'django.contrib.admin',
@@ -35,6 +35,7 @@ INSTALLED_APPS = (
 'django.contrib.staticfiles',
 'django.contrib.sites',
 'django.contrib.admindocs',
+'south',
 'polymorphic', # We need polymorphic installed for the shop
 'shop', # The django SHOP application
 'shop_simplevariations',
@@ -42,7 +43,6 @@ INSTALLED_APPS = (
 'deportmania',
 'paypal.standard.ipn',
 'shop_paypal',
-'south'
 )
 
 PAYPAL_RECEIVER_EMAIL = "deportmania@point-sport.com"
@@ -91,7 +91,7 @@ SOUTH_DATABASE_ADAPTERS = {
 DATABASES = {
 'default': {
 'ENGINE': 'django.db.backends.mysql',
-'NAME': 'deporte', # Or path to database file if using sqlite3.
+'NAME': 'deportmania', # Or path to database file if using sqlite3.
 'USER': 'root', # Not used with sqlite3.
 'PASSWORD': '', # Not used with sqlite3.
 'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
@@ -147,12 +147,7 @@ TEMPLATE_LOADERS = (
 'django.template.loaders.app_directories.Loader',
 # 'django.template.loaders.eggs.Loader',
 )
-TEMPLATE_DIRS = (
-# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-# Always use forward slashes, even on Windows.
-# Don't forget to use absolute paths, not relative paths.
-os.path.join(BASE_DIR, "plantillas"),
-)
+
 TEMPLATE_CONTEXT_PROCESSORS = (
 'django.core.context_processors.request',
 'django.contrib.auth.context_processors.auth',

@@ -1,5 +1,6 @@
 __author__ = 'Alejandro'
 from deportmania.forms import *
+from deportmania.models import Articulo
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
@@ -17,8 +18,9 @@ from shop.util.order import get_order_from_request
 from deportmania.recommendations import valoraciones
 from deportmania.recommendations import getRecommendations
 from deportmania.recommendations import sim_pearson
-from shop.models.ordermodel import OrderItem
+from shop.models.cartmodel import CartItem
 from shop.models.defaults.product import Product as usar
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 
@@ -32,34 +34,32 @@ def recomendacion(request):
         art=get_object_or_404(Articulo,name=elem[1])
         res.append(art)
     return res
-    #return render_to_response("recomendacion.html",locals(),context_instance=RequestContext(request))
 
-def secure_required(view_func):
-    """Decorator makes sure URL is accessed over https."""
-    def _wrapped_view_func(request, *args, **kwargs):
-        if not request.is_secure():
-            if getattr(settings, 'HTTPS_SUPPORT', True):
-                request_url = request.build_absolute_uri(request.get_full_path())
-                secure_url = request_url.replace('http://', 'https://')
-                return HttpResponseRedirect(secure_url)
-        return view_func(request, *args, **kwargs)
-    return _wrapped_view_func
 
 def home(request):
-    articulos= Articulo.objects.all().filter(esoferta=False)
+    articulos1= Articulo.objects.all().filter(esoferta=False)
     familias=Familia.objects.all()
+    tallasarticulos=TallaArticulo.objects.all()
     resultado=[]
     if request.user.is_authenticated():
         if request.user.username != "ispp":
             resultado=recomendacion(request)
     productos=[]
-    for elem in articulos:
-        prod=get_object_or_404(Product,id=elem.product_ptr_id)
-        productos.append(prod)
+    for elem in articulos1:
+       prod=get_object_or_404(Product,id=elem.product_ptr_id)
+       productos.append(prod)
     duser=request.user
-    ofertas=Oferta.objects.all()
-    return render_to_response('home.html',{'recomendaciones':resultado,'articulos':articulos,'productos':productos,'user':duser,'familias':familias,'ofertas':ofertas}, context_instance=RequestContext(request))
-
+    paginator = Paginator(articulos1, 6)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+    return render_to_response('home.html', paginate_by = 6 ,{'contacts':contacts,'recomendaciones':resultado,'articulos':articulos1,'productos':productos,'user':duser,'familias':familias}, context_instance=RequestContext(request))
 
 def articulo(request,articulo_id):
     resultado=[]
@@ -68,6 +68,7 @@ def articulo(request,articulo_id):
     familias=Familia.objects.all()
     comenarticulo=ComentaArticulo.objects.all().filter(articulo=objeto)
     tallaarticulo=TallaArticulo.objects.all().filter(articulo=objeto)
+    print("Tallaarticulo",tallaarticulo)
     existencias=0
     if request.user.is_authenticated():
         resultado=recomendacion(request)
@@ -672,15 +673,14 @@ def actualizacion(request):
     order=get_order_from_request(request)
     print(order)
     talla=get_object_or_404(Talla,id=11)
-    productos=OrderItem.objects.all().filter(order=order)
+    productos=CartItem.objects.all()
     print(productos)
     for elem in productos:
-        elem1=get_object_or_404(Articulo,name=elem.product_name)
-        print("Articulo",elem1)
-        print("Id",elem1.id)
-        tallaarticulo=TallaArticulo.objects.get(articulo=elem1.id,talla=talla.id)
+        talla=get_object_or_404(Talla,nombre=elem.talla)
+        articulo=get_object_or_404(Articulo,product_ptr_id=elem.product)
+        tallaarticulo=TallaArticulo.objects.get(articulo=articulo.id,talla=talla.id)
         print("Existencias antes",tallaarticulo.existencias)
-        tallaarticulo.existencias=tallaarticulo.existencias-1
+        tallaarticulo.existencias=tallaarticulo.existencias-elem.quantity
         if tallaarticulo.existencias == 0:
             tallaarticulo.delete()
             print("Se acabaron las tallas")

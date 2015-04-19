@@ -33,34 +33,41 @@
         <form method="post" action="{% url 'cart' %}">{% csrf_token %}
 
             <tr class="text-center">
+            {% if talla  %}
+
                 <td><h5>Tallas:</h5>
-                <select name="option" required>
+                <select name="talla" required>
                     {% for elem1 in talla %}
-                <option value="{{ elem1.talla }}" id="option" name="option">{{ elem1.talla }},{{ elem1.existencias }} existencias
+                <option value="{{ elem1.talla.nombre }}" id="talla" name="talla">{{ elem1.talla }},{{ elem1.existencias }} existencias
                 </option>
                     {% endfor %}
                 </select>
+                <tr>
+            <td class="text-center">Existencias: {{ existencias }}</td>
+                </tr>
+            {% else %}
+               <td class="bg-danger text-danger">Producto agotado temporalmente.</td>
+            {% endif %}
             </tr>
             <tr class="text-center">
                 <td><h5>Marca : {{ articulo.marca }}</h5></td>
             </tr>
 
-        <tr>
-            <td class="text-center">Existencias: {{ existencias }}</td>
-        </tr>
+
         <tr class="text-center">
             <td>{{ articulo.devolucion }} dia/s para devolverlo desde el recibo del mismo</td>
         </tr>
         {% if request.user.is_authenticated %}
+        {% if talla %}
         <tr>
             <td class="padding-top-5 text-center">
-                     <input type="hidden" value="prueba" value="prueba">
                      <input type="hidden" name="add_item_id" value="{{producto.id}}">
                      <input type="hidden" name="add_item_quantity" value="1">
                      <input type="submit" class="btn btn-primary" value="Añadir al carrito">
                  </form>
             </td>
         </tr>
+        {% endif %}
         {% endif %}
         </table>
 
