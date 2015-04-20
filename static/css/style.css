@@ -20,9 +20,9 @@ border-right: 1px solid #FFF
 
 .footer{
     width: 100%;
-    height: 215px;
+    height: 100px;
     position:absolute;
-
+    margin-top: 20px;
 
 }
 
@@ -55,6 +55,7 @@ h3{
 
 .bordebajo{
     border-bottom: 2px solid darkgrey;
+    max-height:340px;
 }
 
 .cantidad{
@@ -148,5 +149,18 @@ padding: 15px 15px;
 }
 
 .margenselection{
-margin-right: 10%;
+
+    margin-right: 10%;
+
+}
+
+.posicioncorrectaflecha{
+    position: relative;
+    left: 1187px;
+
+}
+
+.copyright{
+    position: relative;
+    top: 45px;
 }

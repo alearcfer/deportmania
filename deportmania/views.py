@@ -23,8 +23,6 @@ from shop.models.defaults.product import Product as usar
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
-
-
 def recomendacion(request):
     djangouser = request.user.id
     usuarioactual=get_object_or_404(User,id=djangouser)
@@ -49,7 +47,7 @@ def home(request):
        prod=get_object_or_404(Product,id=elem.product_ptr_id)
        productos.append(prod)
     duser=request.user
-    paginator = Paginator(articulos1, 6)
+    paginator = Paginator(articulos1, 9)
     page = request.GET.get('page')
     try:
         contacts = paginator.page(page)
@@ -59,7 +57,7 @@ def home(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
-    return render_to_response('home.html', paginate_by = 6 ,{'contacts':contacts,'recomendaciones':resultado,'articulos':articulos1,'productos':productos,'user':duser,'familias':familias}, context_instance=RequestContext(request))
+    return render_to_response('home.html', {'contacts':contacts,'recomendaciones':resultado,'articulos':articulos1,'productos':productos,'user':duser,'familias':familias}, context_instance=RequestContext(request))
 
 def articulo(request,articulo_id):
     resultado=[]
