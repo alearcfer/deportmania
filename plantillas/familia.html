@@ -14,11 +14,11 @@
 <div class="container">
         <div class="padding-left-15">
         {% for elem in articulos %}
-        <div class="bordebajo padding-top-2" >
+        <div class="bordebajo padding-top-2 padding-left-15" >
                 <div class="float-left" style="width: 290px">
                <a class=""  href="{% url 'articulo_info' articulo_id=elem.id %}"><img class="img-responsive float-left" src="{{ MEDIA_URL }}{{ elem.imagen }}"></a>
                 </div>
-                <div class="derecha" style="width: 400px">
+                <div class="derecha padding-left-20" style="width: 400px">
                     <h4> <a href="{% url 'articulo_info' articulo_id=elem.id %}">{{ elem.name }}</a></h4>
                     <br/>
                     <p>{{ elem.unit_price }} EUR</p>
@@ -35,9 +35,10 @@
         </div>
          {% endfor %}
         </div>
-          <a href="#top" class="padding-bottom-5 padding-left-2 "><img class="" style="width: 50px;height: 50px" src="{{ STATIC_URL }}img/scroll.png"></a>
 
 </div>
+          <a href="#top" class="padding-bottom-5 padding-left-2"><img class="" style="width: 50px;height: 50px" src="{{ STATIC_URL }}img/scroll.png"></a>
+
 </div>
 
 {% endblock %}

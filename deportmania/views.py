@@ -21,7 +21,8 @@ from deportmania.recommendations import sim_pearson
 from shop.models.cartmodel import CartItem
 from shop.models.defaults.product import Product as usar
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from django.core.mail import EmailMessage
+from django.core.mail import send_mail
 
 def recomendacion(request):
     djangouser = request.user.id
@@ -137,9 +138,7 @@ def contacto(request):
         msg=""
         mensaje=request.POST['comentario']
         email=request.POST['email']
-        subjet="Duda Deportmania"
-        to_list=[settings.EMAIL_HOST_USER]
-        send_mail(subjet, mensaje, email,to_list, fail_silently=True)
+        send_mail('Duda Deportmania', mensaje, email, ['alemaki92@gmail.com'], fail_silently=False)
         msg="Mensaje enviado correctamente"
         return render_to_response('home.html',{'msg':msg},context_instance=RequestContext(request))
     return render_to_response('contacto.html',context_instance=RequestContext(request))

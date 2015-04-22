@@ -1,0 +1,24 @@
+{% extends "shop/base.html" %}
+{% load url from future %}
+{% load i18n %}
+{% load shop_tags %}
+
+{% block body %}
+<div class="container">
+  <h1>Gracias por la compra</h1>
+  <p>Tu pedido se ha completado con exito</p>
+    <form action="actualizacion" method="post">
+        {% csrf_token %}
+    {% if cart_items %}
+        {{ formset.management_form }}
+            {% for form in formset %}
+              {% with form.quantity as field %}
+                  <input type="hidden" name="nombre" value="{{ form.instance.product.get_name }}">
+                    {{form.instance.product.get_name}}
+                {% endwith %}
+            {% endfor %}
+    {% endif %}
+        <p><input type="submit" class="btn btn-success"  value="Continuar"/></p>
+      </form>
+    </div>
+{% endblock %}

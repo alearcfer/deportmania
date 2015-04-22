@@ -16,6 +16,7 @@ border-right: 1px solid #FFF
 
 .quitazul:hover{
     color: #000000;
+    text-decoration: none;
 }
 
 .footer{
@@ -56,6 +57,11 @@ h3{
 .bordebajo{
     border-bottom: 2px solid darkgrey;
     max-height:340px;
+}
+
+.bordealto{
+        border-top: 2px solid darkgrey;
+
 }
 
 .cantidad{
@@ -149,9 +155,7 @@ padding: 15px 15px;
 }
 
 .margenselection{
-
     margin-right: 10%;
-
 }
 
 .posicioncorrectaflecha{
@@ -163,4 +167,15 @@ padding: 15px 15px;
 .copyright{
     position: relative;
     top: 45px;
+}
+
+.articuloshome{
+    margin-left: 70px;
+    max-height: 368px;
+    max-width: 300px;
+}
+
+.imagenhome{
+    height: 180px;
+    width: 220px;
 }

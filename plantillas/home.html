@@ -45,10 +45,10 @@
          {% endfor %}
         {% for elem in contacts %}
     {# Each "contact" is a Contact model object. #}
-             <div class="col-md-4" >
-            <div class="thumbnail">
-               <a href="{% url 'articulo_info' articulo_id=elem.id %}"><img class="img-responsive" src="{{ MEDIA_URL }}{{ elem.imagen }}"></a>
-                <div class="caption">
+             <div class="col-md-3 articuloshome " >
+            <div class="thumbnail" style="max-height: 368px;">
+               <a href="{% url 'articulo_info' articulo_id=elem.id %}"><img class="img-responsive imagenhome" src="{{ MEDIA_URL }}{{ elem.imagen }}"></a>
+                <div class="caption" style="height: 128px">
                     <h4>{{ elem.name }}{{ elem1 }}</h4>
                     <p>{{ elem.unit_price}}€</p>
                    <a href="{% url 'articulo_info' articulo_id=elem.id %}">+Info</a>

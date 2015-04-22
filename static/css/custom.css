@@ -90,7 +90,7 @@
     color: #ffffff;
 }
 
-.overlap-wish-custom > a :hover {
+a :hover {
     color: orange;
 }
 
@@ -734,4 +734,6 @@ box-sizing(content-box);
     margin-left: 8%;
 }
 
-
+.socialmargin{
+    bottom: 18px;
+}

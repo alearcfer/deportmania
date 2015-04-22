@@ -1,9 +1,3 @@
-
-from .email import EMAIL_HOST,EMAIL_HOST_USER,EMAIL_PORT,EMAIL_USER_TLS
-EMAIL_USER_TLS=EMAIL_USER_TLS
-EMAIL_HOST=EMAIL_HOST
-EMAIL_HOST_USER=EMAIL_HOST_USER
-EMAIL_PORT=EMAIL_PORT
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -24,6 +18,16 @@ SECRET_KEY = '1m8g5&hjlsfi@obef1d4a6&bu)x1+o-0s__h4ct*dp#mm+8^*1'
 DEBUG = True
 TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
+
+
+#Email definition
+
+EMAIL_USER_TLS= True
+EMAIL_HOST= 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER= 'alemaki92@gmail.com'
+EMAIL_HOST_PASSWORD = 'alejandro21992'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Application definition
 INSTALLED_APPS = (

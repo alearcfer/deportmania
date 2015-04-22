@@ -1,0 +1,18 @@
+{% extends "shop/base.html" %}
+{% load i18n %}
+{% load shop_tags %}
+
+{% block body %}
+<div class="container">
+  <h1>{{ object }}</h1>
+</div>
+
+    <div class="table table-hover">
+  {% order object %}
+</div>
+
+    <form method="post" action="/pdf">
+ <input type="submit" class="btn btn-info" value="Generar Factura">
+    </form>
+
+{% endblock %}

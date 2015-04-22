@@ -1,0 +1,29 @@
+{% extends "shop/base.html" %}
+{% load url from future %}
+
+{% block body %}
+<div class="container">
+  <h1>Product list:</h1>
+  <hr />
+  {% for object in object_list %}
+  <a href="{% url 'product_detail' object.slug %}">{{object.get_name}}</a><br />
+  {{object.slug}}<br />
+  {{object.short_description}}<br />
+  {{object.long_description}}<br />
+  {{object.active}}<br />
+
+  {{object.date_added}}<br />
+  {{object.last_modified}}<br />
+
+  {{object.unit_price}}<br />
+
+  {% if object.category %}
+  {{object.category.name}}<br />
+  {% else %}
+  (Product is at root category)<br />
+  {% endif %}
+  <hr />
+
+  {% endfor %}
+</div>
+{% endblock %}
