@@ -159,8 +159,6 @@ padding: 15px 15px;
 }
 
 .posicioncorrectaflecha{
-    position: relative;
-    left: 1187px;
 
 }
 
@@ -178,4 +176,21 @@ padding: 15px 15px;
 .imagenhome{
     height: 180px;
     width: 220px;
+}
+
+.padding-top-15{
+    padding-top: 15%;
+}
+
+.panellomasnuevo{
+    background: #28a4c9;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    color:#ffffff;
+    padding: 11px 10px 9px;
+    font: 400 18px/17px Lato,Arial,Verdana,sans-serif;
+}
+
+.padding-left-4{
+    padding-left:4%;
 }

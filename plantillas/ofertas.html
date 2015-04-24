@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="container-fluid">
-<div class="pull-left padding-left-2 col-md-2">
+<div class="float-left padding-left-2 col-md-2">
 
 <h3 class="text-justify">
     <a href="/ofertas" class="quitazul"> Ofertas destacadas</a></h3>
@@ -14,6 +14,7 @@
 
     </ul>
     {% if request.user.is_authenticated %}
+        {% if request.user.username != "ispp" %}
     <h4 class="text-justify">Recomendaciones personalizadas</h4>
     {% for elem2 in recomendaciones %}
     <div class="col-md-1 thumbnail-xs-custom">
@@ -29,12 +30,12 @@
     </div>
 
     {% endfor %}
-
+    {% endif %}
     {% endif %}
 </div>
 
 
-    <div class="container">
+    <div class="float-right">
     {% for elem in ofertas %}
          <div class="row padding-top-5 padding-left-15">
 

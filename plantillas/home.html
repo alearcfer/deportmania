@@ -5,7 +5,7 @@
         <div class="text-green" xmlns="http://www.w3.org/1999/html">{{ msg }}</div>
     {% endif %}
 <div class="container-fluid row-fluid">
-<div class="pull-left padding-left-2 col-md-2">
+<div class="float-left padding-left-4 col-md-2">
 
 <h3 class="text-justify">
     <a href="/ofertas" class="quitazul"> Ofertas destacadas</a></h3>
@@ -16,6 +16,7 @@
 
     </ul>
 {% if request.user.is_authenticated %}
+    {% if request.user.username != "ispp" %}
 <h4 class="text-justify">Recomendaciones personalizadas</h4>
     {% for elem2 in recomendaciones %}
     <div class="col-md-1 thumbnail-xs-custom">
@@ -32,26 +33,68 @@
 
     {% endfor %}
 {% endif %}
+{% endif %}
 </div>
 
-<div class="container">
+<div class="float-right col-md-10">
 
-        <div class="row row-fluid padding-top-5 padding-left-15">
+        <div class="row row-fluid padding-top-5 padding-left-4" style="max-width: 1050px">
+
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+    <li data-target="#myCarousel" data-slide-to="2"></li>
+    <li data-target="#myCarousel" data-slide-to="3"></li>
+  </ol>
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+    <div class="item active">
+      <img src="{{ STATIC_URL }}img/te_odiaran_predator_f50.jpg" alt="Chania">
+    </div>
+
+    <div class="item">
+      <img src="{{ STATIC_URL }}img/asics-gel-nimbus-17.jpg" alt="Chania">
+    </div>
+
+    <div class="item">
+      <img src="{{ STATIC_URL }}img/te_odiaran_predator_f50.jpg" alt="Flower">
+    </div>
+
+    <div class="item">
+      <img src="{{ STATIC_URL }}img/asics-gel-nimbus-17.jpg" alt="Flower">
+    </div>
+  </div>
+
+  <!-- Left and right controls -->
+  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+<div class="tab-pane panellomasnuevo">
+LO MÁS NUEVO
+</div>
 
         {% for elem in articulos %}
-        {% if forloop.counter <= 6 %}
 
-         {% endif %}
+
          {% endfor %}
         {% for elem in contacts %}
-    {# Each "contact" is a Contact model object. #}
+    {# Each "contact" is a Product model object. #}
              <div class="col-md-3 articuloshome " >
             <div class="thumbnail" style="max-height: 368px;">
                <a href="{% url 'articulo_info' articulo_id=elem.id %}"><img class="img-responsive imagenhome" src="{{ MEDIA_URL }}{{ elem.imagen }}"></a>
                 <div class="caption" style="height: 128px">
                     <h4>{{ elem.name }}{{ elem1 }}</h4>
                     <p>{{ elem.unit_price}}€</p>
-                   <a href="{% url 'articulo_info' articulo_id=elem.id %}">+Info</a>
+                   <a  href="{% url 'articulo_info' articulo_id=elem.id %}">+Info</a>
                 </div>
             </div>
 

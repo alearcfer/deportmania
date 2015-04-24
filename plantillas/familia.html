@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container-fluid">
-<div class="pull-left padding-left-2 col-md-2">
+<div class="float-left padding-left-2 col-md-2">
     <ul class="list-group"><h2>Categorias</h2>
         {% for elem1 in familias %}
         <li class="list-group-item"><a href="{% url 'fami_info' familia_id=elem1.id %}">{{ elem1.nombre }}</a></li>
@@ -11,18 +11,19 @@
     </ul>
 </div>
 
-<div class="container">
-        <div class="padding-left-15">
+<div class="float-right col-md-10">
+        <div class="padding-left-4">
         {% for elem in articulos %}
+            {% if forloop.revcounter != 1 %}
         <div class="bordebajo padding-top-2 padding-left-15" >
-                <div class="float-left" style="width: 290px">
-               <a class=""  href="{% url 'articulo_info' articulo_id=elem.id %}"><img class="img-responsive float-left" src="{{ MEDIA_URL }}{{ elem.imagen }}"></a>
+                <div class="" style="">
+               <a class=""  href="{% url 'articulo_info' articulo_id=elem.id %}"><img class="img-responsive img-lg-custom float-left" src="{{ MEDIA_URL }}{{ elem.imagen }}"></a>
                 </div>
-                <div class="derecha padding-left-20" style="width: 400px">
+                <div class="derecha" style=" max-width: 230px;margin-left: 25%">
                     <h4> <a href="{% url 'articulo_info' articulo_id=elem.id %}">{{ elem.name }}</a></h4>
                     <br/>
                     <p>{{ elem.unit_price }} EUR</p>
-                 <div class="padding-top-39">
+                 <div class="padding-top-15">
                      {% if request.user.is_authenticated %}
                 <form action="{% url 'cart' %}" method="post">{% csrf_token %}
                  <input type="hidden" name="add_item_id" value="{{elem.id}}">
@@ -30,6 +31,24 @@
                      <input type="submit" class="btn btn-primary" value="Añadir al carrito">
                  </form>
                      {% endif %}
+                {% else %}
+                <div class="padding-top-2 padding-left-15" >
+                <div class="" style="">
+               <a class=""  href="{% url 'articulo_info' articulo_id=elem.id %}"><img class="img-responsive img-lg-custom float-left" src="{{ MEDIA_URL }}{{ elem.imagen }}"></a>
+                </div>
+                <div class="derecha" style=" max-width: 230px;margin-left: 25%">
+                    <h4> <a href="{% url 'articulo_info' articulo_id=elem.id %}">{{ elem.name }}</a></h4>
+                    <br/>
+                    <p>{{ elem.unit_price }} EUR</p>
+                 <div class="padding-top-15">
+                     {% if request.user.is_authenticated %}
+                <form action="{% url 'cart' %}" method="post">{% csrf_token %}
+                 <input type="hidden" name="add_item_id" value="{{elem.id}}">
+                     <input type="hidden" name="add_item_quantity" value="1">
+                     <input type="submit" class="btn btn-primary" value="Añadir al carrito">
+                 </form>
+                     {% endif %}
+                 {% endif %}
                  </div>
             </div>
         </div>

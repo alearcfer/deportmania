@@ -384,9 +384,9 @@ body {
 }
 
 .form-input-header-custom:focus {
-    border-color: #F5D0A9;
-    box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
-    webkit-box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+    border-color: rgba(82, 168, 236, 0.8);
+    box-shadow: inset 0 1px 1px rgba(82, 168, 236, 0.8), rgba(82, 168, 236, 0.8);
+    webkit-box-shadow: inset 0 1px 1px rgba(82, 168, 236, 0.8), 0 0 8px rgba(82, 168, 236, 0.8);
 
 }
 
@@ -413,10 +413,10 @@ body {
 }
 
 .glyphicon-search-custom:hover {
-    border-color: #F5D0A9;
+    border-color: rgba(82, 168, 236, 0.8);
     background-color: #ffffff;
-    box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
-    webkit-box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+    box-shadow: inset 0 1px 1px rgba(82, 168, 236, 0.8), 0 0 8px rgba(82, 168, 236, 0.8);
+    webkit-box-shadow: inset 0 1px 1px rgba(82, 168, 236, 0.8), 0 0 8px rgba(82, 168, 236, 0.8);
 }
 
 .button-profile {
@@ -472,32 +472,32 @@ body {
 }
 
 .form-signup-custom > div > input:hover {
-    border-color: #F5D0A9;
+    border-color: rgba(82, 168, 236, 0.8);
     background-color: #ffffff;
     outline: 0;
-    box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
-    webkit-box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+    box-shadow: inset 0 1px 1px rgba(82, 168, 236, 0.8), 0 0 8px rgba(82, 168, 236, 0.8);
+    webkit-box-shadow: inset 0 1px 1px rgba(82, 168, 236, 0.8), 0 0 8px rgba(82, 168, 236, 0.8);
 }
 
 .form-signup-custom > div > select:hover {
-    border-color: #F5D0A9;
+    border-color: rgba(82, 168, 236, 0.8);
     background-color: #ffffff;
-    box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
-    webkit-box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+    box-shadow: inset 0 1px 1px rgba(82, 168, 236, 0.8), 0 0 8px rgba(82, 168, 236, 0.8);
+    webkit-box-shadow: inset 0 1px 1px rgba(82, 168, 236, 0.8), 0 0 8px rgba(82, 168, 236, 0.8);
 }
 
 .form-signup-custom > div > input > ::-moz-placeholder {
-    border-color: #F5D0A9;
+    border-color: rgba(82, 168, 236, 0.8);
     background-color: #ffffff;
-    box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
-    webkit-box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+    box-shadow: inset 0 1px 1px rgba(82, 168, 236, 0.8), 0 0 8px rgba(82, 168, 236, 0.8);
+    webkit-box-shadow: inset 0 1px 1px rgba(82, 168, 236, 0.8), 0 0 8px rgba(82, 168, 236, 0.8);
 }
 
 .form-signup-custom > div > select > :selection {
-    border-color: #F5D0A9;
+    border-color: rgba(82, 168, 236, 0.8);
     background-color: #ffffff;
-    box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
-    webkit-box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+    box-shadow: inset 0 1px 1px rgba(82, 168, 236, 0.8), 0 0 8px rgba(82, 168, 236, 0.8);
+    webkit-box-shadow: inset 0 1px 1px rgba(82, 168, 236, 0.8), 0 0 8px rgba(82, 168, 236, 0.8);
 }
 
 /* Automatic plan for non logged*/
@@ -539,10 +539,10 @@ body {
 
 }
 
-.div-card-plan-thumbnail:hover {
-    box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
-    -moz-box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
-    webkit-box-shadow: inset 0 1px 1px orange, 0 0 8px orange;
+.div-card-thumbnail:hover {
+    box-shadow: inset 0 1px 1px rgba(82, 168, 236, 0.8), 0 0 8px rgba(82, 168, 236, 0.8);
+    -moz-box-shadow: inset 0 1px 1px rgba(82, 168, 236, 0.8), 0 0 8px rgba(82, 168, 236, 0.8);
+    webkit-box-shadow: inset 0 1px 1px rgba(82, 168, 236, 0.8), 0 0 8px rgba(82, 168, 236, 0.8);
 
 }
 
@@ -653,11 +653,11 @@ box-sizing(content-box);
 }
 
 #focus:hover {
-    border-color: #d58512;
+    border-color: rgba(82, 168, 236, 0.8);
     outline: 0;
     outline: thin dotted \9;
-    -moz-box-shadow: 0 0 8px #d58512);
-    box-shadow: 0 0 8px #d58512
+    -moz-box-shadow: 0 0 rgba(82, 168, 236, 0.8);
+    box-shadow: 0 0 8px rgba(82, 168, 236, 0.8);
 }
 
 .espacioleft {

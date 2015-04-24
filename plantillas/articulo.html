@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="container-fluid">
-<div class="pull-left padding-left-2 col-md-2">
+<div class="float-left padding-left-2 col-md-2">
 
 <h3 class="text-justify">
     <a href="/ofertas" class="quitazul"> Ofertas destacadas</a></h3>
@@ -14,11 +14,11 @@
 
     </ul>
 </div>
-<div class="container">
+<div class="float-right">
     <div class="col-md-4 padding-top-5 padding-left-10">
     <img src="{{ MEDIA_URL}}{{ articulo.imagen }}" style="width: 350px;height: 350px;">
     </div>
-    <div class="align-right col-md-6 padding-top-5 padding-left-20">
+    <div class="align-right col-md-6 padding-top-5 padding-left-15">
         <table>
             <tr>
                 <td class="text-center">
@@ -75,7 +75,8 @@
 
     </div>
     {% if request.user.is_authenticated %}
-    <div class="col-md-10 padding-top-5">
+        {% if request.user.username != "ispp" %}
+    <div class="col-md-10 padding-top-15 padding-bottom-5">
         <h4 class="text-center">Recomendaciones personalizadas</h4>
     {% for elem2 in recomendaciones %}
     <div class="col-md-2 thumbnail margenrecomendacionarticulo">
@@ -91,6 +92,7 @@
     </div>
 
     {% endfor %}
+    {% endif %}
     {% endif %}
     </div>
 

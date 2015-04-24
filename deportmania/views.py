@@ -48,7 +48,7 @@ def home(request):
        prod=get_object_or_404(Product,id=elem.product_ptr_id)
        productos.append(prod)
     duser=request.user
-    paginator = Paginator(articulos1, 9)
+    paginator = Paginator(articulos1, 6)
     page = request.GET.get('page')
     try:
         contacts = paginator.page(page)
@@ -70,7 +70,8 @@ def articulo(request,articulo_id):
     print("Tallaarticulo",tallaarticulo)
     existencias=0
     if request.user.is_authenticated():
-        resultado=recomendacion(request)
+        if request.user.username != "ispp":
+            resultado=recomendacion(request)
     for elem in tallaarticulo:
         existencias=existencias+elem.existencias
     print("post",request.POST)
@@ -100,7 +101,8 @@ def ofertas(request):
     familias=Familia.objects.all()
     resultado=[]
     if request.user.is_authenticated():
-        resultado=recomendacion(request)
+        if request.user.username != "ispp":
+            resultado=recomendacion(request)
     return render_to_response('ofertas.html',{'ofertas':ofertas,'familias':familias,'recomendaciones':resultado}, context_instance=RequestContext(request))
 
 def oferta(request,oferta_id):
@@ -111,7 +113,6 @@ def oferta(request,oferta_id):
     comenarticulo=ComentaArticulo.objects.all()
     tallas=Talla.objects.all().filter(articulo=articulo)
     print("post",request.POST)
-
     if request.method == 'POST' and 'submit' in request.POST:
         print("entra")
         user=User.objects.get(username=request.POST['user'])
@@ -127,7 +128,6 @@ def oferta(request,oferta_id):
                                                'comenarticulo':comenarticulo,'oferta':objeto,
                                                'tallas':tallas,
                                                 'producto':producto}, context_instance=RequestContext(request))
-''
 
 def quienes(request):
     return render_to_response('quienes.html', context_instance=RequestContext(request))
