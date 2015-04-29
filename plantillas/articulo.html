@@ -1,8 +1,11 @@
 {% extends 'master.html' %}
 
 {% block content %}
-
+     {% if msg %}
+    <p class=" col-centered text-danger alert-danger bordered col-md-4">{{ msg }}</p>
+    {% endif %}
 <div class="container-fluid">
+
 <div class="float-left padding-left-2 col-md-2">
 
 <h3 class="text-justify">
@@ -15,7 +18,9 @@
     </ul>
 </div>
 <div class="float-right">
+
     <div class="col-md-4 padding-top-5 padding-left-10">
+
     <img src="{{ MEDIA_URL}}{{ articulo.imagen }}" style="width: 350px;height: 350px;">
     </div>
     <div class="align-right col-md-6 padding-top-5 padding-left-15">
@@ -125,7 +130,7 @@
       {% endfor %}
   {% endif %}
 
-          <a href="#top" class="padding-bottom-5 padding-left-2 "><img class="" style="width: 50px;height: 50px" src="{{ STATIC_URL }}img/scroll.png"></a>
+          <a href="#top" class="padding-bottom-5 padding-left-2 posicioncorrectaflecha"><img class="" style="width: 50px;height: 50px" src="{{ STATIC_URL }}img/scroll.png"></a>
 
   </div>
   <div role="tabpanel" class="tab-pane padding-top-2" id="comenarti">
@@ -133,6 +138,7 @@
 <form action="" method="post" >{% csrf_token %}
 <h2>Escribir opinión</h2>
 <div class="">
+
 <p>
 <strong>Condiciones de uso:</strong>:
 Le rogamos que <strong>su opinion acerca del artículo sea lo más objetiva posible</strong>, ya que <strong>puede influir en la decisión de clientes a la hora de comprar o desechar este artículo</strong>.
@@ -143,7 +149,7 @@ Por favor, use un lenguaje apropiado, no se permitirán opiniones ofensivas. Tam
     <label for="opinion">Opinion</label>
     <textarea class="form-control" id="opinion" name="opinion" cols="50" rows="5"></textarea>
     </div>
-    <label for="valoracion">Valoración</label>
+    <label for="valoracion">Valoración(de 1 a 5)</label>
     <input type="number" id="valoracion" name="valoracion" placeholder="Valoracion" class="form-control" >
          <div class="padding-top-2"></div>
     <div>

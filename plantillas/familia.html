@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container-fluid">
-<div class="float-left padding-left-2 col-md-2">
+<div class="float-left padding-left-4 col-md-2">
     <ul class="list-group"><h2>Categorias</h2>
         {% for elem1 in familias %}
         <li class="list-group-item"><a href="{% url 'fami_info' familia_id=elem1.id %}">{{ elem1.nombre }}</a></li>
@@ -56,7 +56,7 @@
         </div>
 
 </div>
-          <a href="#top" class="padding-bottom-5 padding-left-2"><img class="" style="width: 50px;height: 50px" src="{{ STATIC_URL }}img/scroll.png"></a>
+          <a href="#top" class="padding-bottom-5 padding-left-2 posicioncorrectaflecha"><img class="" style="width: 50px;height: 50px" src="{{ STATIC_URL }}img/scroll.png"></a>
 
 </div>
 

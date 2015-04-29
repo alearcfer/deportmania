@@ -3,7 +3,8 @@
 
 {% block content %}
 <div class="container-fluid">
-<div class="float-left padding-left-2 col-md-2">
+
+<div class="float-left padding-left-4 col-md-2">
 
 <h3 class="text-justify">
     <a href="/ofertas" class="quitazul"> Ofertas destacadas</a></h3>
@@ -36,26 +37,28 @@
 
 
     <div class="float-right">
+    <h2 class="text-center  ">Ofertas Existentes</h2>
     {% for elem in ofertas %}
-         <div class="row padding-top-5 padding-left-15">
-
-    <div class="col-md-4 col-sm-6" >
+    <div class="col-md-2 articuloshome" >
+            <img src="{{ STATIC_URL }}img/oferta.png" class="img-responsive img-xs-custom iconooferta">
             <div class="thumbnail">
-               <a href="{% url 'ofe_info' oferta_id=elem.id %}"><img class="img img-lg-custom" src="{{ MEDIA_URL }}{{ elem.articulo.imagen }}"></a>
+               <a href="{% url 'ofe_info' oferta_id=elem.id %}"><img class="img-responsive imagenhome" src="{{ MEDIA_URL }}{{ elem.articulo.imagen }}"></a>
                 <div class="caption">
                     <h4>{{ elem.articulo.name }}</h4>
-                    <p>Precio anterior:{{ elem.precioviejo}}€</p>
-                    <p>Descuento:{{ elem.descuento }}%</p>
-                    <p>Precio nuevo:{{ elem.articulo.unit_price }}</p>
+                    <p>Precio anterior: {{ elem.precioviejo}}€</p>
+                    <p>Descuento: {{ elem.descuento }}%</p>
+                    <p>Precio nuevo: {{ elem.articulo.unit_price }}€</p>
                    <a href="{% url 'ofe_info' oferta_id=elem.id %}">+Info</a>
                 </div>
             </div>
 
-        </div>
+    </div>
 
     {% endfor %}
     </div>
 
 </div>
+          <a href="#top" class="padding-bottom-5 padding-left-2 posicioncorrectaflecha"><img class="" style="width: 50px;height: 50px" src="{{ STATIC_URL }}img/scroll.png"></a>
+
 </div>
 {% endblock %}

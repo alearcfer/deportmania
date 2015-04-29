@@ -3,28 +3,52 @@
 {% load url from future %}
 {% load shop_tags %}
 {% block body %}
+ <form method="POST">
 <div class="container">
+    <ol class="breadcrumb">
+  <li >Resumen del pedido</li>
+  <li class="active">Dirección</li>
+  <li>Transporte</li>
+  <li>Pago</li>
+  <li>Confirmación</li>
+</ol>
+
   <h1>Direccion envio/facturacion</h1>
-  <form method="POST">
+<div class="col-md-6">
+    <h3 class="text-center">Dirección de envio</h3>
   {% csrf_token %}
-      <div class="col-md-12">
-  <div class="float-left thumbnail col-md-5 margenselection">
-  <h3 class="text-center">Your shipping address</h3>
       <div class="text-center">
-  {{ shipping_address.as_p }}
-          </div>
-  </div>
-  <div class="thumbnail float-right col-md-5">
-  <h3 class="text-center">Your billing address</h3>
-  <div class="text-center">{{ billing_address.as_p }}</div>
-  </div>
+      <p><label for="id_ship-name">Nombre:</label> <input required="" class="form-control text-center" id="id_ship-name" maxlength="255" name="ship-name" placeholder="Nombre" type="text"></p>
+    <p><label for="id_ship-address">Dirección:</label> <input required="" class="form-control text-center" id="id_ship-address" maxlength="255" name="ship-address" placeholder="Direccion 1" type="text"></p>
+    <p><label for="id_ship-address2">Dirección 2:</label> <input required="" class="form-control text-center" id="id_ship-address2" maxlength="255" name="ship-address2" placeholder="Direccion 2" type="text"></p>
+    <p><label for="id_ship-zip_code">Código postal:</label> <input required="" class="form-control text-center" id="id_ship-zip_code" maxlength="20" name="ship-zip_code" placeholder="Codigo Postal" type="text"></p>
+    <p><label for="id_ship-city">Ciudad:</label> <input required="" class="form-control text-center" id="id_ship-city" maxlength="20" name="ship-city" placeholder="Ciudad" type="text"></p>
+    <p><label for="id_ship-state">Provincia:</label> <input required="" class="form-control text-center" id="id_ship-state" maxlength="255" name="ship-state" placeholder="Provincia" type="text"></p>
+    <p><label for="id_ship-country">País:</label> <select required="" class="form-control text-center" id="id_ship-country" name="ship-country">
+    <option value="">---------</option>
+    <option value="1" selected="selected">España</option>
+    </select></p>
+              </div>
+      </div>
+  <div class="col-md-6 float-right">
+  <h3 class="text-center">Direccion de facturación</h3>
+  <div class="text-center"><p><label for="id_bill-name">Nombre:</label> <input required="" class="form-control text-center" id="id_bill-name" maxlength="255" name="bill-name" placeholder="Nombre" type="text"></p>
+<p><label for="id_bill-address">Dirección:</label> <input required="" class="form-control text-center" id="id_bill-address" maxlength="255" name="bill-address" placeholder="Direccion 1" type="text"></p>
+<p><label for="id_bill-address2">Dirección 2:</label> <input required="" class="form-control text-center" id="id_bill-address2" maxlength="255" name="bill-address2" placeholder="Direccion 2" type="text"></p>
+<p><label for="id_bill-zip_code">Código postal:</label> <input required="" class="form-control text-center" id="id_bill-zip_code" maxlength="20" name="bill-zip_code" placeholder="Codigo Postal" type="text"></p>
+<p><label for="id_bill-city">Ciudad:</label> <input required="" class="form-control text-center" id="id_bill-city" maxlength="20" name="bill-city" placeholder="Ciudad" type="text"></p>
+<p><label for="id_bill-state">Provincia:</label> <input required="" class="form-control text-center" id="id_bill-state" maxlength="255" name="bill-state" placeholder="Provincia" type="text"></p>
+<p><label for="id_bill-country">País:</label> <select required="" class="form-control text-center" id="id_bill-country" name="bill-country">
+<option value="">---------</option>
+<option value="1" selected="selected">España</option>
+</select></p></div>
   </div>
   <div class="text-center">
-  <h3>Payment and shipping method</h3>
+  <h3>Pago y metodo de envio</h3>
   {{ billing_shipping_form.as_p }}
   </div>
   <div class="text-center">
-  <h3>Extra info</h3>
+  <h3>Información extra</h3>
   {{ extra_info_form.as_p }}
   <button  type="submit" class="btn btn-info float-right">Save</button>
        </div>

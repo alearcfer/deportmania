@@ -16,7 +16,9 @@
 </div>
 
 <div class="float-right">
+<div>
     <div class="col-md-4 padding-top-5 padding-left-10">
+         <img src="{{ STATIC_URL }}img/oferta.png" class="img-responsive img-xs-custom iconooferta" style="margin-top: 0%;">
     <img src="{{ MEDIA_URL}}{{ articulo.imagen }}" style="width: 350px;height: 350px;">
     </div>
     <div class="col-md-6 padding-top-5 padding-left-10">
@@ -29,7 +31,7 @@
             </tr>
             <tr>
                 <td class="text-center">
-                    <h6>Oferta disponible hasta el {{ oferta.fechafin }}</h6>
+                    <h6>Oferta disponible hasta {{ oferta.fechafin }}</h6>
                 </td>
             </tr>
             <tr class="text-center">
@@ -68,7 +70,30 @@
         </table>
       </form>
     </div>
-    <div class="col-md-10 padding-left-20 padding-top-8 ">
+     {% if request.user.is_authenticated %}
+        {% if request.user.username != "ispp" %}
+    <div class="col-md-10 padding-top-5 padding-bottom-5">
+        <h4 class="text-center">Recomendaciones personalizadas</h4>
+    {% for elem2 in recomendaciones %}
+    <div class="col-md-2 thumbnail margenrecomendacionarticulo">
+
+               <a style="font-size: small" href="{% url 'articulo_info' articulo_id=elem2.id %}"><img class="img-responsive img-xs-custom" src="{{ MEDIA_URL }}{{ elem2.imagen }}"></a>
+                <div class="caption">
+                    <h6>{{ elem2.name }}</h6>
+                    <p style="font-size: small">{{ elem2.unit_price}}€</p>
+                   <a style="font-size: small" href="{% url 'articulo_info' articulo_id=elem2.id %}">+Info</a>
+                </div>
+
+
+    </div>
+
+    {% endfor %}
+    {% endif %}
+    {% endif %}
+    </div>
+
+    </div>
+    <div class="col-md-10 padding-left-20 padding-top-5">
     <ul class="nav nav-tabs nav-pills" role="tablist" id="myTab">
     <li role="presentation" class="active"><a href="#articulo" aria-controls="articulo" role="tab" data-toggle="tab">Comentario Sobre Articulo</a></li>
         {% if request.user.is_authenticated %}
@@ -85,10 +110,12 @@
       <p>¿Recomendarias su compra?:{% if elem.recomendar == True %}
       Si{% else %}
       No{% endif %}</p>
-      <p>Valoracion:{{ elem.valoracion }}  </p>
+      <p>Valoracion:{{ elem.valoracion }}/5  </p>
       </div>
 
       {% endfor %}
+            <a href="#top" class="padding-bottom-5 padding-left-2 posicioncorrectaflecha"><img class="" style="width: 50px;height: 50px" src="{{ STATIC_URL }}img/scroll.png"></a>
+
   </div>
   <div role="tabpanel" class="tab-pane padding-top-2" id="compra"></div>
   <div role="tabpanel" class="tab-pane padding-top-2" id="comenarti">

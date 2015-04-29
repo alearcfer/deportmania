@@ -91,9 +91,10 @@ color: cornflowerblue;
 }
 
 .homeicon{
-  width: 19px;
-height: 19px;
+width: 40px;
+height: 38px;
 display: block;
+margin-top: 15px;
 }
 
 .barramenu{
@@ -159,7 +160,7 @@ padding: 15px 15px;
 }
 
 .posicioncorrectaflecha{
-
+float:right;
 }
 
 .copyright{
@@ -193,4 +194,14 @@ padding: 15px 15px;
 
 .padding-left-4{
     padding-left:4%;
+}
+
+.iconooferta{
+    position: relative;
+    top: 50px;
+}
+
+.navbar-deportmania{
+    max-width: 1200px;
+margin-left: 83px;
 }

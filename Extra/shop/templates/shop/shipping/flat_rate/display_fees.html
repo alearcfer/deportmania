@@ -3,6 +3,14 @@
 {% load shop_tags %}
 {% block body %}
 <div class="container">
+      <ol class="breadcrumb">
+  <li >Resumen del pedido</li>
+  <li>Dirección</li>
+  <li class="active">Transporte</li>
+  <li>Pago</li>
+  <li>Confirmación</li>
+</ol>
+
   <p>Al pedido se le incluye {{shipping_costs}}€ de coste relacionado con gastos de envios </p><br />
   <a href="{% url 'flat_process' %}">Proceed</a>
 

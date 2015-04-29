@@ -38,10 +38,9 @@ def recomendacion(request):
 def home(request):
     articulos1= Articulo.objects.all().filter(esoferta=False)
     familias=Familia.objects.all()
-    tallasarticulos=TallaArticulo.objects.all()
     resultado=[]
     if request.user.is_authenticated():
-        if request.user.username != "ispp":
+        if request.user.is_superuser == 0:
             resultado=recomendacion(request)
     productos=[]
     for elem in articulos1:
@@ -53,10 +52,10 @@ def home(request):
     try:
         contacts = paginator.page(page)
     except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
+        # Si page no es un Integer, devolver la primera pagina
         contacts = paginator.page(1)
     except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
+        # Si esta vacio(Ultima pagina)devolver el ultimo resultado
         contacts = paginator.page(paginator.num_pages)
     return render_to_response('home.html', {'contacts':contacts,'recomendaciones':resultado,'articulos':articulos1,'productos':productos,'user':duser,'familias':familias}, context_instance=RequestContext(request))
 
@@ -69,8 +68,9 @@ def articulo(request,articulo_id):
     tallaarticulo=TallaArticulo.objects.all().filter(articulo=objeto)
     print("Tallaarticulo",tallaarticulo)
     existencias=0
+    msg=""
     if request.user.is_authenticated():
-        if request.user.username != "ispp":
+        if request.user.is_superuser  == 0:
             resultado=recomendacion(request)
     for elem in tallaarticulo:
         existencias=existencias+elem.existencias
@@ -85,24 +85,31 @@ def articulo(request,articulo_id):
         if recomendar == 'si':
             res=True
         print(recomendar)
-        ComentaArticulo.objects.create(valoracion=valoracion,opinion=opinion,articulo=objeto,user=user,fecha=date.today(),recomendar=res)
-    if request.method == 'POST' and 'submitcompra' in request.POST:
-        user=User.objects.get(username=request.POST['user'])
-        opinion=request.POST['opinion']
+        if valoracion <= 5:
+            ComentaArticulo.objects.create(valoracion=valoracion,opinion=opinion,articulo=objeto,user=user,fecha=date.today(),recomendar=res)
+        else:
+            msg="La valoracion no puede tener un valor superior a 5"
     return render_to_response('articulo.html',{'articulo':objeto,'familias':familias,
                                                'comenarticulo':comenarticulo,
                                                'existencias':existencias,
                                                'talla':tallaarticulo,
                                               'producto':producto,
-                                              'recomendaciones':resultado}, context_instance=RequestContext(request))
+                                              'recomendaciones':resultado,
+                                               'msg':msg}, context_instance=RequestContext(request))
 
 def ofertas(request):
-    ofertas=Oferta.objects.all()
+    ofertassinfiltro=Oferta.objects.all()
     familias=Familia.objects.all()
+    ofertas=[]
     resultado=[]
     if request.user.is_authenticated():
-        if request.user.username != "ispp":
+        if request.user.is_superuser == 0:
             resultado=recomendacion(request)
+    for elem in ofertassinfiltro:
+        if elem.fechafin <= date.today():
+            pass
+        else:
+            ofertas.append(elem)
     return render_to_response('ofertas.html',{'ofertas':ofertas,'familias':familias,'recomendaciones':resultado}, context_instance=RequestContext(request))
 
 def oferta(request,oferta_id):
@@ -112,7 +119,11 @@ def oferta(request,oferta_id):
     producto=get_object_or_404(Product,id=articulo.product_ptr_id)
     comenarticulo=ComentaArticulo.objects.all()
     tallas=Talla.objects.all().filter(articulo=articulo)
+    resultado=[]
     print("post",request.POST)
+    if request.user.is_authenticated():
+        if request.user.is_superuser == 0:
+            resultado=recomendacion(request)
     if request.method == 'POST' and 'submit' in request.POST:
         print("entra")
         user=User.objects.get(username=request.POST['user'])
@@ -127,7 +138,8 @@ def oferta(request,oferta_id):
     return render_to_response('oferta.html',{'articulo':articulo,'familias':familias,
                                                'comenarticulo':comenarticulo,'oferta':objeto,
                                                'tallas':tallas,
-                                                'producto':producto}, context_instance=RequestContext(request))
+                                                'producto':producto,
+                                               'recomendaciones':resultado}, context_instance=RequestContext(request))
 
 def quienes(request):
     return render_to_response('quienes.html', context_instance=RequestContext(request))
@@ -613,7 +625,6 @@ def eliminargusto(request):
 def editarperfil(request):
     djangouser=request.user
     deportuser=DeporUser.objects.get(djangoUser=djangouser)
-    gusto=Gusto.objects.get(deporuser=deportuser)
     msg=""
     if request.method == 'POST' and 'submit' in request.POST:
         username=request.POST['username']
@@ -637,7 +648,7 @@ def editarperfil(request):
         deportuser.save()
         djangouser.save()
         msg="Datos modificados correctamente"
-        return render_to_response('perfil.html',{'user':deportuser,'gusto':gusto,'msg':msg},context_instance=RequestContext(request))
+        return render_to_response('perfil.html',{'user':deportuser,'msg':msg},context_instance=RequestContext(request))
     if request.method == 'POST' and 'delete' in request.POST:
         deportuser.delete()
         djangouser.delete()

@@ -15,10 +15,10 @@
 
 
 </head>
-<nav class="navbar-default navbar bordebajo" role="navigation">
+<nav class="navbar navbar-default  bordebajo navbar-fixed-top" >
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header navbar-default">
+            <div class="navbar-header">
                 <a href="/home">
                 <img style="height: 50px;width: 150px;" src="{{ STATIC_URL }}img/logo.jpg">
                 </a>
@@ -69,7 +69,9 @@
     </ul>
         </div>
     </nav>
-<nav class="navbar ">
+
+
+<nav class="navbar navbar-default navbar-deportmania" style="margin-top: 5%;">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -79,22 +81,20 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+      <a  href="/home"><img src="{{ STATIC_URL }}img/home.png" class="homeicon"></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class=" navbar-collapse barramenu" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-collapse nav-mayor">
-        <li class="active"><a class="hover tam" href="/home"><img src="{{ STATIC_URL }}img/home.png" class="homeicon"></a></li>
-        <li ><a class="hover tam" href="/quienes">Quienes Somos</a></li>
-        <li>
-          <a class="hover tam" href="/contacto" >Contacto</a>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav" style="padding-top: 1%;">
+        <li class="hover tam"><a href="/quienes">Quienes Somos </a></li>
+        <li class="hover tam"><a href="/contacto">Contacto</a></li>
+        <li class="hover tam">
+          <a href="/politica" >Politica de Empresa </a>
         </li>
-        <li>
-            <a class="hover tam" href="/politica">Política de la Empresa</a>
-        </li>
-          <li class="pull-right socialmargin">
-
-              <h5>Siguenos en</h5>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li> <h5>Siguenos en</h5>
                   <p>
                   <a class="quitazul" href="https://www.facebook.com/profile.php?id=100009098304563">
                       <img src="{{ STATIC_URL }}img/facebook-color.png">
@@ -102,19 +102,12 @@
                   <a class="quitazul" href="">
                       <img src="{{ STATIC_URL }}img/twitter-color.png">
                   </a>
-                  </p>
+                  </p></li>
 
-         </ul>
-        </div>
-        </span>
-        </li>
-
-
-
+      </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-
 
 <body>
 

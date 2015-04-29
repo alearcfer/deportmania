@@ -12,6 +12,7 @@ from shop.util.fields import CurrencyField
 from shop.util.loader import get_model_string
 import django
 
+
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
 #==============================================================================
