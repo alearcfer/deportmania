@@ -52,11 +52,11 @@
 }
 
 .glyphicon-topright:hover {
-    color: #f0ad4e;
+    color: #285e8e;;
 }
 
 .glyphicon-topright2:hover {
-    color: #f0ad4e;
+    color: #285e8e;;
 }
 
 .img-export {
@@ -236,7 +236,7 @@ body {
 }
 
 #btnsignin, #btnsignup {
-    color: orange;
+    color:#285e8e;;
 }
 
 #internaz > a {
@@ -248,7 +248,7 @@ body {
 }
 
 .active-a > text {
-    color: darkorange;
+    color: #285e8e;;
 }
 
 .nonactivecustom {

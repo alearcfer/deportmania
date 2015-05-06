@@ -20,14 +20,6 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
-#Email definition
-
-EMAIL_USER_TLS= True
-EMAIL_HOST= 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER= 'alemaki92@gmail.com'
-EMAIL_HOST_PASSWORD = 'alejandro21992'
-
 # Application definition
 INSTALLED_APPS = (
 'django.contrib.admin',
@@ -46,7 +38,19 @@ INSTALLED_APPS = (
 'deportmania',
 'paypal.standard.ipn',
 'shop_paypal',
+
 )
+
+
+
+
+#Email definition
+
+EMAIL_USER_TLS= True
+EMAIL_HOST= 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER= 'alemaki92@gmail.com'
+EMAIL_HOST_PASSWORD = 'alejandro21992'
 
 PAYPAL_RECEIVER_EMAIL = "deportmania@point-sport.com"
 PAYPAL_CURRENCY_CODE ="EUR"

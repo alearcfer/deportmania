@@ -1,0 +1,144 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Factura Pedido {{ pedido.id }}</title>
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ STATIC_URL }}css/custom.css" rel="stylesheet">
+
+    <link href="{{ STATIC_URL }}css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+<div class="container-fluid content">
+ <button class="glyphicon glyphicon-envelope glyphicon-topright2 glyphicon-print" onclick="pr();"></button>
+<table class="col-centered padding-top-8" width="950" border="0" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <th scope="col" width="10">&nbsp;</th>
+
+    <th scope="col" width="10">&nbsp;</th>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><table width="650" border="0" cellpadding="0" cellspacing="0">
+      <tbody><tr>
+        <th scope="col" width="388">&nbsp;</th>
+        <th scope="col" width="241">&nbsp;</th>
+      </tr>
+
+      <tr>
+        <td><span class="">Deportmania</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="">C/ Fuentevieja 14</span><span class=""></span></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td><span class="">Mail: deportmania@pointsport.com</span><span class=""> Telefono: 3652145978</span></td>
+
+        <td><div align="right"><img src="{{ STATIC_URL }}img/logo.jpg" height="32" width="226"></div></td>
+      </tr>
+
+
+    </tbody></table></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="">&nbsp;</td>
+    <td>&nbsp;</td>
+
+  </tr>
+  <tr>
+    <td><table class="" width="650" border="0" cellpadding="0" cellspacing="0">
+       <tbody>
+       <tr>
+        <td class="" height="19" width="67">Nombre:</td>
+        <td colspan="6" class="">{{ nombre }}</td>
+        <td class="" width="142">Nº Factura:</td>
+        <td class="" width="126">{{ fact.id }}</td>
+        </tr>
+       <tr>
+        <td class="style6" height="19">Apellidos:</td>
+        <td colspan="6" class="style5">{{ apellidos }}</td>
+        <td class="style6">DNI:</td>
+        <td class="style5">{{ dni }}</td>
+        </tr>
+       <tr>
+        <td class="style6" height="19">Empresa:</td>
+        <td colspan="6" class="style5">{% if empresa != "" %}{{ empresa }}{% endif %}</td>
+        <td class="style6">NIF Empresa:</td>
+        <td class="style5">{% if nif != "" %}{{ nif }}{% endif %}</td>
+        </tr>
+      <tr>
+        <td class="style6" height="19">Direccion:</td>
+        <td colspan="6" class="style5">{{ pedido.billing_address_text }}</td>
+        <td class="style6">Fecha de Emisión:</td>
+        <td class="style5">{{ fact.fecha }}</td>
+        </tr>
+    </tbody></table></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+            <th>Articulo</th>
+            <th>Precio unitario</th>
+            <th>Cantidad</th>
+            <th>Precio Total</th>
+            <th>&nbsp;</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for elem in articulos %}
+
+                <tr>
+                  <td>{{ elem.product_name }}</td>
+                  <td>{{ elem.unit_price }}</td>
+                  <td>{{ elem.quantity }}</td>
+                  <td>{{ elem.line_subtotal }}</td>
+                  <td>{{form.instance.talla}}</td>
+                </tr>
+            {% endfor %}
+          </tbody>
+
+          <tfoot>
+            <tr><td colspan="2">&nbsp;</td><td>Subtotal Pedido</td><td>{{pedido.order_subtotal}}</td></tr>
+            {% for extra_price_field in cart.extra_price_fields %}
+              <tr>
+                <td colspan="2">&nbsp;</td>
+                <td>{{ extra_price_field.0 }}</td>
+                <td>{{ extra_price_field.1 }}</td>
+              </tr>
+            {% endfor %}
+            <tr><td colspan="2">&nbsp;</td><td><b>Total Pedido</b></td><td><b>{{pedido.order_total}}</b></td></tr>
+          </tfoot>
+        </table>
+
+</td></tr></tbody></table>
+
+</div>
+</div>
+<script>
+        function pr(){
+            //$('#email').hide();
+            //$('.img-export').hide();
+            window.print();
+            $('#print').visible=true;
+            //$('#email').visible=true;
+            //$('.img-export').visible=true;
+        }
+    </script>
+</body></html>

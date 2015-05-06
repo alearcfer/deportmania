@@ -1,0 +1,28 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+<div class="container">
+<p>Por favor, para generar una factura es necesario que se rellene los siguientes campos</p>
+<form method="post" action="/generafactura">{% csrf_token %}
+<label form="Nombre">Introduzca su Nombre</label>
+    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" required="">
+<label form="Nombre">Introduzca sus Apellidos</label>
+    <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos" required="">
+<label form="Nombre">Introduzca sus DNI</label>
+    <input type="text" class="form-control" name="dni" placeholder="DNI" required="">
+<label form="Nombre">Introduzca el nombre de su empresa(en caso de poseerla)</label>
+    <input type="text" class="form-control" name="empresa" placeholder="Nombre Empresa">
+<label form="Nombre">Introduzca el nif de su empresa(en caso de poseerla)</label>
+    <input type="text" class="form-control" name="nif" placeholder="NIF">
+    <div class="col-md-offset-9 padding-top-2"></div>
+    <input type="hidden" name="pedido" value="{{ order_id }}">
+    <input type="submit" class="btn-success btn center-block" value="Generar Factura">
+
+</form>
+
+
+
+</div>
+
+{% endblock %}

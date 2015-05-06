@@ -19,10 +19,12 @@ from deportmania.recommendations import valoraciones
 from deportmania.recommendations import getRecommendations
 from deportmania.recommendations import sim_pearson
 from shop.models.cartmodel import CartItem
+from shop.models.ordermodel import OrderItem
 from shop.models.defaults.product import Product as usar
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail
+from django.views.decorators.csrf import csrf_exempt
 
 def recomendacion(request):
     djangouser = request.user.id
@@ -85,7 +87,17 @@ def articulo(request,articulo_id):
         if recomendar == 'si':
             res=True
         print(recomendar)
-        if valoracion <= 5:
+        comentariorepetido= ComentaArticulo.objects.filter(opinion=opinion,valoracion=valoracion,recomendar=res)
+        if len(comentariorepetido) != 0:
+            msg="No se permite introducir comentarios repetidos"
+            return render_to_response('articulo.html',{'articulo':objeto,'familias':familias,
+                                               'comenarticulo':comenarticulo,
+                                               'existencias':existencias,
+                                               'talla':tallaarticulo,
+                                              'producto':producto,
+                                              'recomendaciones':resultado,
+                                               'msg':msg}, context_instance=RequestContext(request))
+        if int(valoracion) <= 5:
             ComentaArticulo.objects.create(valoracion=valoracion,opinion=opinion,articulo=objeto,user=user,fecha=date.today(),recomendar=res)
         else:
             msg="La valoracion no puede tener un valor superior a 5"
@@ -745,19 +757,6 @@ def pedidos(request):
     pedidos=Order.objects.all().filter(user=djangouser)
     return render_to_response('pedidos.html',locals(),context_instance=RequestContext(request))
 
-from reportlab.pdfgen import canvas
-
-def factura(request):
-    response = HttpResponse(mimetype='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=hello.pdf'
-    p = canvas.Canvas(response)
-    p.drawString(100,100,"Prueba")
-    p.showPage()
-    p.save()
-    return response
-
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.csrf import csrf_protect
 
 @csrf_exempt
 def finalizarorder(request):
@@ -770,3 +769,24 @@ def finalizarorder(request):
     return render_to_response('shop/checkout/thank_you.html',locals(),context_instance=RequestContext(request))
 
 
+def infofactura(request,order_id):
+    order_id=order_id
+    return render_to_response('informacionfactura.html',locals(),context_instance=RequestContext(request))
+
+@csrf_exempt
+def factura(request):
+    nombre=request.POST['nombre']
+    apellidos=request.POST['apellidos']
+    dni=request.POST['dni']
+    empresa=request.POST['empresa']
+    nif=request.POST['nif']
+    idpedido=request.POST['pedido']
+    pedido=get_object_or_404(Order,id=idpedido)
+    deporuser=get_object_or_404(DeporUser,djangoUser=request.user)
+    fact=Factura.objects.create(nombre=nombre,apellidos=apellidos,dni=dni,empresa=empresa,nifempresa=nif,comprador=deporuser
+                            ,pedido=pedido,fecha=date.today(),total=pedido.order_total)
+    fact.save()
+    pedido.tienefactura=True
+    pedido.save()
+    articulos=OrderItem.objects.all().filter(order=pedido.id)
+    return render_to_response('factura.html',locals(),context_instance=RequestContext(request))

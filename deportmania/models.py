@@ -119,15 +119,17 @@ class ComentaArticulo(models.Model):
 
 
 class Factura(models.Model):
-    nfactura= models.IntegerField()
-    nif= models.CharField(max_length=255)
-    precio=models.DecimalField(max_digits=5, decimal_places=2)
-    direccion= models.CharField(max_length=255)
-    compra = models.ForeignKey(Order)
-    precioenvio= models.DecimalField(max_digits=5, decimal_places=2)
-
+    nombre= models.CharField(max_length=255)
+    apellidos= models.CharField(max_length=255)
+    dni= models.CharField(max_length=255)
+    empresa=models.CharField(max_length=255,blank=True)
+    nifempresa=models.CharField(max_length=255)
+    total = models.IntegerField()
+    comprador = models.OneToOneField(DeporUser)
+    pedido = models.OneToOneField(Order)
+    fecha = models.DateField()
     def __unicode__(self):
-        return self.nfactura
+        return u"%s %s"%(self.comprador,self.fecha)
 
 
 class Gusto(models.Model):

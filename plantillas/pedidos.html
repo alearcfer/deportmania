@@ -17,27 +17,27 @@
         </tr>
       </thead>
       <tbody>
-      {% for pedido in pedidos %}
-          <form method="post" action="/factura">{% csrf_token %}
+      {% for elem in pedidos %}
+          <form method="post" action="{% url 'factura' order_id=elem.id %}">{% csrf_token %}
         <tr>
-          <th>{{ pedido.id }}</th>
-          <td>{{ pedido.user }}</td>
-          <td>{% if pedido.status == 10 %}
+          <th>{{ elem.id }}</th>
+          <td>{{ elem.user }}</td>
+          <td>{% if elem.status == 10 %}
                 Procesando
-              {% elif pedido.status == 20 %}
+              {% elif elem.status == 20 %}
                 Confirmando
-              {% elif pedido.status == 30 %}
+              {% elif elem.status == 30 %}
                 Confirmado
-              {% elif pedido.status == 40 %}
+              {% elif elem.status == 40 %}
                 Completado
-              {% elif pedido.status == 50 %}
+              {% elif elem.status == 50 %}
                 Enviado
-              {% elif pedido.status == 60 %}
+              {% elif elem.status == 60 %}
                 Cancelado
               {% endif %}
           </td>
-          <td >{{ pedido.order_total }}</td>
-          <td>{{ pedido.created }}</td>
+          <td >{{ elem.order_total }}</td>
+          <td>{{ elem.created }}</td>
           <td>
               <input type="submit" class="btn btn-primary" value="descargar">
           </td>

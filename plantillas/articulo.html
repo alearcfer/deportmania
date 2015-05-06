@@ -47,7 +47,7 @@
                     {% endfor %}
                 </select>
                 <tr>
-            <td class="text-center">Existencias: {{ existencias }}</td>
+            <td class="text-center" name="existencias">Existencias: {{ existencias }}</td>
                 </tr>
             {% else %}
                <td class="bg-danger text-danger">Producto agotado temporalmente.</td>
@@ -68,7 +68,7 @@
                      <input type="hidden" name="add_item_id" value="{{producto.id}}">
                      <input type="hidden" name="add_item_quantity" value="1">
                      <input type="submit" class="btn btn-primary" value="Añadir al carrito">
-                 </form>
+        </form>
             </td>
         </tr>
         {% endif %}
@@ -147,15 +147,15 @@ Por favor, use un lenguaje apropiado, no se permitirán opiniones ofensivas. Tam
     </div>
     <div>
     <label for="opinion">Opinion</label>
-    <textarea class="form-control" id="opinion" name="opinion" cols="50" rows="5"></textarea>
+    <textarea required="" class="form-control" id="opinion" name="opinion" cols="50" rows="5"></textarea>
     </div>
     <label for="valoracion">Valoración(de 1 a 5)</label>
-    <input type="number" id="valoracion" name="valoracion" placeholder="Valoracion" class="form-control" >
+    <input required="" type="number" id="valoracion" name="valoracion" placeholder="Valoracion" class="form-control" >
          <div class="padding-top-2"></div>
     <div>
     <label for="recomendar">¿Recomendaria este producto?</label>
-    Si<input type="radio" value="si"  name="recomendar" id="recomendar">
-    No<input type="radio" value="no" name="recomendar" id="recomendar">
+    Si<input required="" type="radio" value="si"  name="recomendar" id="recomendar">
+    No<input required="" type="radio" value="no" name="recomendar" id="recomendar">
     </div>
 
     <input class="btn btn-info" type="submit" value="Insertar opinion" id="submit" name="submit">
