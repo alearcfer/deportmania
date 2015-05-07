@@ -18,7 +18,8 @@
       </thead>
       <tbody>
       {% for elem in pedidos %}
-          <form method="post" action="{% url 'factura' order_id=elem.id %}">{% csrf_token %}
+      {% if elem.tienefactura == True %}
+        <form action="/generafactura" method="post"> {% csrf_token %}
         <tr>
           <th>{{ elem.id }}</th>
           <td>{{ elem.user }}</td>
@@ -39,10 +40,41 @@
           <td >{{ elem.order_total }}</td>
           <td>{{ elem.created }}</td>
           <td>
-              <input type="submit" class="btn btn-primary" value="descargar">
-          </td>
+              <input type="hidden" value="{{ elem.id }}" name="pedido">
+              <input type="submit" class="btn btn-primary" name="descargar" value="descargar"
+                         </td>
         </tr>
           </form>
+              {% else %}
+
+               <form method="post" action="{% url 'factura' order_id=elem.id %}">{% csrf_token %}
+                   <tr>
+          <th>{{ elem.id }}</th>
+          <td>{{ elem.user }}</td>
+          <td>{% if elem.status == 10 %}
+                Procesando
+              {% elif elem.status == 20 %}
+                Confirmando
+              {% elif elem.status == 30 %}
+                Confirmado
+              {% elif elem.status == 40 %}
+                Completado
+              {% elif elem.status == 50 %}
+                Enviado
+              {% elif elem.status == 60 %}
+                Cancelado
+              {% endif %}
+          </td>
+          <td >{{ elem.order_total }}</td>
+          <td>{{ elem.created }}</td>
+          <td>
+              <input type="hidden" value="{{ elem.id }}" name="pedido">
+              <input type="submit" class="btn btn-primary" name="generar" value="generar">
+                         </td>
+        </tr>
+          </form>
+      {% endif %}
+
       {% endfor %}
       </tbody>
 </table>

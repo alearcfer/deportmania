@@ -775,18 +775,25 @@ def infofactura(request,order_id):
 
 @csrf_exempt
 def factura(request):
-    nombre=request.POST['nombre']
-    apellidos=request.POST['apellidos']
-    dni=request.POST['dni']
-    empresa=request.POST['empresa']
-    nif=request.POST['nif']
-    idpedido=request.POST['pedido']
-    pedido=get_object_or_404(Order,id=idpedido)
-    deporuser=get_object_or_404(DeporUser,djangoUser=request.user)
-    fact=Factura.objects.create(nombre=nombre,apellidos=apellidos,dni=dni,empresa=empresa,nifempresa=nif,comprador=deporuser
-                            ,pedido=pedido,fecha=date.today(),total=pedido.order_total)
-    fact.save()
-    pedido.tienefactura=True
-    pedido.save()
-    articulos=OrderItem.objects.all().filter(order=pedido.id)
-    return render_to_response('factura.html',locals(),context_instance=RequestContext(request))
+    if 'descargar' in request.POST:
+        idpedido=request.POST['pedido']
+        pedido=get_object_or_404(Order,id=idpedido)
+        articulos=OrderItem.objects.all().filter(order=pedido.id)
+        fact=get_object_or_404(Factura,pedido=idpedido)
+        return render_to_response('factura.html',locals(),context_instance=RequestContext(request))
+    else:
+        nombre=request.POST['nombre']
+        apellidos=request.POST['apellidos']
+        dni=request.POST['dni']
+        empresa=request.POST['empresa']
+        nif=request.POST['nif']
+        idpedido=request.POST['pedido']
+        pedido=get_object_or_404(Order,id=idpedido)
+        deporuser=get_object_or_404(DeporUser,djangoUser=request.user)
+        fact=Factura.objects.create(nombre=nombre,apellidos=apellidos,dni=dni,empresa=empresa,nifempresa=nif,comprador=deporuser
+                                ,pedido=pedido,fecha=date.today(),total=pedido.order_total)
+        fact.save()
+        pedido.tienefactura=True
+        pedido.save()
+        articulos=OrderItem.objects.all().filter(order=pedido.id)
+        return render_to_response('factura.html',locals(),context_instance=RequestContext(request))

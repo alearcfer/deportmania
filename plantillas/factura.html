@@ -1,19 +1,29 @@
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Factura Pedido {{ pedido.id }}</title>
-    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="{{ STATIC_URL }}css/custom.css" rel="stylesheet">
-
-    <link href="{{ STATIC_URL }}css/style.css" rel="stylesheet">
-</head>
-
-<body>
+{% extends 'master.html' %}
+{% block content %}
 <div class="container">
-<div class="container-fluid content">
- <button class="glyphicon glyphicon-envelope glyphicon-topright2 glyphicon-print" onclick="pr();"></button>
-<table class="col-centered padding-top-8" width="950" border="0" cellpadding="0" cellspacing="0">
+<table class="col-centered">
+      <tbody><tr>
+        <th scope="col" >&nbsp;</th>
+        <th scope="col" >&nbsp;</th>
+          <img class="center-block" src="{{ STATIC_URL }}img/logotrans.png" height="62" width="226">
+      </tr>
+
+      <tr>
+        <td>Deportmania</td>
+        <td colspan="6" >Mail: deportmania@pointsport.com</td>
+      </tr>
+
+      <tr>
+        <td>C/ Fuentevieja 14</td>
+          <td colspan="6">Telefono: 3652145978</td>
+      </tr>
+
+
+    </tbody></table>
+
+<table class="col-centered padding-top-8 table-responsive" border="0" cellpadding="0" cellspacing="0">
+<button class="glyphicon glyphicon-envelope glyphicon-topright2 glyphicon-print" onclick="pr();"></button>
+
   <tbody><tr>
     <th scope="col" width="10">&nbsp;</th>
 
@@ -21,28 +31,6 @@
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td><table width="650" border="0" cellpadding="0" cellspacing="0">
-      <tbody><tr>
-        <th scope="col" width="388">&nbsp;</th>
-        <th scope="col" width="241">&nbsp;</th>
-      </tr>
-
-      <tr>
-        <td><span class="">Deportmania</span></td>
-      </tr>
-
-      <tr>
-        <td><span class="">C/ Fuentevieja 14</span><span class=""></span></td>
-        <td>&nbsp;</td>
-      </tr>
-      <tr>
-        <td><span class="">Mail: deportmania@pointsport.com</span><span class=""> Telefono: 3652145978</span></td>
-
-        <td><div align="right"><img src="{{ STATIC_URL }}img/logo.jpg" height="32" width="226"></div></td>
-      </tr>
-
-
-    </tbody></table></td>
     <td>&nbsp;</td>
   </tr>
   <tr>
@@ -52,33 +40,33 @@
 
   </tr>
   <tr>
-    <td><table class="" width="650" border="0" cellpadding="0" cellspacing="0">
-       <tbody>
+    <td>
+
        <tr>
-        <td class="" height="19" width="67">Nombre:</td>
-        <td colspan="6" class="">{{ nombre }}</td>
-        <td class="" width="142">Nº Factura:</td>
-        <td class="" width="126">{{ fact.id }}</td>
+        <td class="padding-top-2" >Nombre:</td>
+        <td colspan="6" class="padding-top-2">{{ fact.nombre }}</td>
+        <td class="padding-top-2 padding-left-10" >Nº Factura:</td>
+        <td  class="padding-top-2">{{ fact.id }}</td>
         </tr>
        <tr>
-        <td class="style6" height="19">Apellidos:</td>
-        <td colspan="6" class="style5">{{ apellidos }}</td>
-        <td class="style6">DNI:</td>
-        <td class="style5">{{ dni }}</td>
+        <td class="padding-top-2" >Apellidos:</td>
+        <td colspan="6" class="padding-top-2">{{ fact.apellidos }}</td>
+        <td class="padding-top-2 padding-left-10">DNI:</td>
+        <td class="padding-top-2">{{ fact.dni }}</td>
         </tr>
        <tr>
-        <td class="style6" height="19">Empresa:</td>
-        <td colspan="6" class="style5">{% if empresa != "" %}{{ empresa }}{% endif %}</td>
-        <td class="style6">NIF Empresa:</td>
-        <td class="style5">{% if nif != "" %}{{ nif }}{% endif %}</td>
+        <td class="padding-top-2" >Empresa:</td>
+        <td colspan="6" class="padding-top-2">{% if empresa != "" %}{{ fact.empresa }}{% endif %}</td>
+        <td class="padding-top-2 padding-left-10">NIF Empresa:</td>
+        <td class="padding-top-2">{% if nif != "" %}{{ fact.nifempresa }}{% endif %}</td>
         </tr>
       <tr>
-        <td class="style6" height="19">Direccion:</td>
-        <td colspan="6" class="style5">{{ pedido.billing_address_text }}</td>
-        <td class="style6">Fecha de Emisión:</td>
-        <td class="style5">{{ fact.fecha }}</td>
+        <td class="padding-top-2" >Direccion:</td>
+        <td colspan="6" class="padding-top-2">{{ pedido.billing_address_text }}</td>
+        <td class="padding-top-2 padding-left-10">Fecha de Emisión:</td>
+        <td class="padding-top-2">{{ fact.fecha }}</td>
         </tr>
-    </tbody></table></td>
+</td>
     <td>&nbsp;</td>
   </tr>
   <tr>
@@ -89,8 +77,8 @@
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td>
-        <table class="table table-hover">
+  </tr></tbody></table>
+        <table class="table table-hover col-md-8">
           <thead>
             <tr>
             <th>Articulo</th>
@@ -127,9 +115,8 @@
           </tfoot>
         </table>
 
-</td></tr></tbody></table>
 
-</div>
+
 </div>
 <script>
         function pr(){
@@ -141,4 +128,4 @@
             //$('.img-export').visible=true;
         }
     </script>
-</body></html>
+{% endblock %}

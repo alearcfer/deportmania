@@ -46,9 +46,9 @@
 }
 
 .glyphicon-topright2 {
-    position: absolute;
-    top: 2%;
-    right: 5%;
+    position:relative;
+
+   left: 96%;
 }
 
 .glyphicon-topright:hover {
