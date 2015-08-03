@@ -22,3 +22,4 @@ virtualenv==12.0.7
 wsgiref==0.1.2
 xattr==0.6.4
 zope.interface==4.1.2
+pycurl==7.19.3.1
