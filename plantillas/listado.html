@@ -1,0 +1,20 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+<div class="container">
+
+<div class="container-fluid">
+        <ul class="list-unstyled">
+        {% for elem in articulos %}
+         <li>
+        <a href="{% url 'comen_info' articulo_id=elem.id %}">Comentarios del articulo {{ elem.name }}</a>
+         </li>
+        {% endfor %}
+        </ul>
+</div>
+
+</div>
+
+
+{% endblock %}

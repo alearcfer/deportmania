@@ -1,0 +1,31 @@
+{% extends 'master.html' %}
+
+
+
+{% block content %}
+<div class="container">
+<h3>Información del usuario {{ usuario.djangoUser }}</h3>
+<form method="post" class="form-horizontal">
+
+    <label class="control-label">Correo</label>
+       <p class="form-control-static">{{ usuario.djangoUser.email }}</p>
+
+    <label class=" control-label">Genero</label>
+    <p class="form-control-static">{% if usuario.gender == "m" %}Hombre
+        {% else %}
+            Mujer
+            {% endif %}</p>
+
+    <label class="control-label">Poblacion</label>
+    <p class="form-control-static">{{ usuario.poblacion }}</p>
+
+    <label class="control-label">Nacimiento</label>
+    <p class="form-control-static">{{ usuario.birthday }}</p>
+    <br/>
+    <input type="submit" class="btn btn-danger" name="eliminar" value="Eliminar cuenta">
+</form>
+
+
+</div>
+
+{% endblock %}

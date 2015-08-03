@@ -1,0 +1,19 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+
+<div class="container">
+
+<h2 class="text-center">Creacion de una nueva talla</h2>
+
+<form method="post"¡ action="">{% csrf_token %}
+
+<label>Nombre de la talla</label>
+    <input type="text" class="form-control" name="nombre" placeholder="Nombre" required="">
+    <br/>
+    <input type="submit" name="submit" class="btn btn-success " value="Crear">
+</form>
+</div>
+
+{% endblock %}

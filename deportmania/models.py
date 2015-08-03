@@ -74,7 +74,7 @@ class Articulo(Product):
 
 class Articulo_rating(models.Model):
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-    user = models.ForeignKey(DeporUser, related_name="rating_articulo_luser")
+    user = models.ForeignKey(DeporUser, related_name="rating_articulo_user")
     articulo= models.ForeignKey(Articulo)
 
     def __unicode__(self):
@@ -136,5 +136,4 @@ class Gusto(models.Model):
     fecha= models.DateField()
     deporuser = models.ForeignKey(DeporUser)
     marca= models.ManyToManyField(Marca)
-
 

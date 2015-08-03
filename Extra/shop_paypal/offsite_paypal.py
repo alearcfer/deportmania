@@ -83,12 +83,8 @@ class OffsitePaypalBackend(object):
             "amount": self.shop.get_order_total(order),
             "item_name":"Pedido "+ self.shop.get_order_short_name(order),
             "invoice": self.shop.get_order_unique_id(order),
-            # NOTE: defined by django-paypal
             "notify_url":"https://127.0.0.1:8000" + reverse('paypal-ipn'),
-            # NOTE: That's this classe's view
             "return_url":'%s://%s' % (url_scheme,'127.0.0.1:8000/shop/checkout/gracias/'),
-            #La buena es http://127.0.0.1:8000/shop/checkout/thank_you/
-            # NOTE: A generic one
             "cancel_return": '%s://%s%s' % (url_scheme, url_domain,
                                             self.shop.get_cancel_url()),
         }

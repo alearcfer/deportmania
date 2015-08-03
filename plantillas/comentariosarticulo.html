@@ -1,0 +1,28 @@
+{% extends 'master.html' %}
+
+
+
+{% block content %}
+<div class="container">
+ <p class="text-green">{{ msg }}</p>
+
+        {% for elem in comentarios %}
+    <form method="post">{% csrf_token %}
+      <div class="thumbnail">
+       <input type="submit" name="comentario" class="btn btn-danger" value="Eliminar" style="float:right">
+      <h4 style="color: #808080">{{ elem.user.username }}</h4>
+      <p>{{ elem.opinion }}</p>
+      <p>¿Recomendarias su compra?:{% if elem.recomendar == True %}
+      Si{% else %}
+      No{% endif %}</p>
+      <p>Valoracion: {{ elem.valoracion }} /5  </p>
+      <input type="hidden" name="id" value="{{ elem.id }}">
+      </div>
+
+    </form>
+        {% endfor %}
+
+</div>
+
+
+{% endblock %}

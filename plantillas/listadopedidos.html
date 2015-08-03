@@ -1,0 +1,21 @@
+{% extends 'master.html' %}
+
+
+
+{% block content %}
+<div class="container">
+
+<div class="container-fluid">
+     <p class="text-green">{{ msg }}</p>
+        <ul class="list-unstyled">
+        {% for elem in pedidos %}
+         <li>
+        <a href="{% url 'pedido_info' pedido_id=elem.id %}">ID:{{ elem.id }} , Usuario: {{ elem.user }}</a>
+         </li>
+        {% endfor %}
+        </ul>
+</div>
+</div>
+
+
+{% endblock %}

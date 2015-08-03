@@ -4,15 +4,15 @@
 
     <div class="row padding-top-2  container center-block">
         <div class="padding-left-25 padding-right-25">
-            <div class="panel col-lg-12 ">
+            <div class=" col-lg-12 thumbnail ">
                  <h1 class="text-center padding-top-2" style="color: deepskyblue">Registro</h1>
-                {% if not djangoform.is_valid %}
+                {% if res %}
                 <div class="alert alert-danger">
                 {{ djangoform.errors }}
 
 
                 {% endif %}
-               {% if not userform.is_valid %}
+                {% if res %}
 
 
                 {{ userform.errors }}

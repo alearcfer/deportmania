@@ -1,0 +1,24 @@
+{% extends 'master.html' %}
+
+
+
+{% block content %}
+
+<div class="container">
+
+
+<h2 class="text-center"> Modificar una talla</h2>
+     <p class="text-danger">{{ msg }}</p>
+<p>A la hora de modificar una talla, tenga en cuenta que no puedo actualizarla con el mismo nombre de una talla ya existente</p>
+
+<form action="" method="post">{% csrf_token %}
+    <label>Nombre de la talla</label>
+    <input type="text" class="form-control" name="nombre" placeholder="{{ tallaconcreta.nombre }}">
+    <br/>
+    <input type="submit" name="modify" value="Modificar" class="btn btn-info">
+    <input type="submit" name="delete" value="Eliminar" class="btn btn-danger">
+</form>
+
+</div>
+
+{% endblock %}

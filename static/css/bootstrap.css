@@ -2728,7 +2728,7 @@ fieldset[disabled] .btn-warning.active {
 }
 
 .btn-warning .badge {
-    color: #f0ad4e;
+    color: #00BFFF;;
     background-color: #fff;
 }
 
@@ -5586,7 +5586,7 @@ a.thumbnail.active {
 }
 
 .progress-bar-warning {
-    background-color: #f0ad4e;
+    background-color: #00BFFF;;
 }
 
 .progress-striped .progress-bar-warning {

@@ -1,0 +1,14 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+    <div class="container">
+    <ul class="list-unstyled">
+    {% for elem in tallas %}
+    <li><a href="{% url 'mod_talla' talla_id=elem.id %}">Talla {{ elem.nombre }}</a></li>
+
+    {% endfor %}
+    </ul>
+    </div>
+
+{% endblock %}

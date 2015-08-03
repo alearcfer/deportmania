@@ -26,10 +26,24 @@ from django.core.mail import EmailMessage
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 
+def creavaloraciones():
+    valora={}
+    users=User.objects.all()
+    for user in users:
+        articulos_rating=Articulo_rating.objects.all().filter(user=user)
+        valora1={}
+        for elem in articulos_rating:
+            valora1[elem.articulo.name]=(elem.rating * 1.0)
+        valora[user.username]=valora1
+    return valora
+
+
 def recomendacion(request):
     djangouser = request.user.id
     usuarioactual=get_object_or_404(User,id=djangouser)
-    resultado = getRecommendations(valoraciones,usuarioactual.username,similarity=sim_pearson)
+    valora=creavaloraciones()
+    print("Valora",valora)
+    resultado = getRecommendations(valora,usuarioactual.username,similarity=sim_pearson)
     res=[]
     for elem in resultado:
         art=get_object_or_404(Articulo,name=elem[1])
@@ -78,6 +92,7 @@ def articulo(request,articulo_id):
         existencias=existencias+elem.existencias
     print("post",request.POST)
     if request.method == 'POST' and 'submit' in request.POST:
+        deporuser=get_object_or_404(DeporUser,djangoUser=request.user)
         print("entra")
         user=User.objects.get(username=request.POST['user'])
         opinion=request.POST['opinion']
@@ -88,6 +103,8 @@ def articulo(request,articulo_id):
             res=True
         print(recomendar)
         comentariorepetido= ComentaArticulo.objects.filter(opinion=opinion,valoracion=valoracion,recomendar=res)
+        Articulo_rating.objects.create(rating=valoracion,user=deporuser,articulo=objeto)
+
         if len(comentariorepetido) != 0:
             msg="No se permite introducir comentarios repetidos"
             return render_to_response('articulo.html',{'articulo':objeto,'familias':familias,
@@ -99,6 +116,7 @@ def articulo(request,articulo_id):
                                                'msg':msg}, context_instance=RequestContext(request))
         if int(valoracion) <= 5:
             ComentaArticulo.objects.create(valoracion=valoracion,opinion=opinion,articulo=objeto,user=user,fecha=date.today(),recomendar=res)
+            print("comentario creado")
         else:
             msg="La valoracion no puede tener un valor superior a 5"
     return render_to_response('articulo.html',{'articulo':objeto,'familias':familias,
@@ -162,9 +180,41 @@ def contacto(request):
         msg=""
         mensaje=request.POST['comentario']
         email=request.POST['email']
-        send_mail('Duda Deportmania', mensaje, email, ['alemaki92@gmail.com'], fail_silently=False)
+        to=['alemaki92@gmail.com']
+        duda= 'Duda Deportmania'
+        #send_mail('Duda Deportmania', mensaje, email, ['alemaki92@gmail.com'], fail_silently=False)
+        from smtplib import SMTP
+        s = SMTP()
+        s.connect('smtp.gmail.com:587')
+        s.ehlo()
+        s.starttls()
+        s.login('alemaki92@gmail.com','aleyalmu12708')
+        s.sendmail(email,to,mensaje,duda)
         msg="Mensaje enviado correctamente"
-        return render_to_response('home.html',{'msg':msg},context_instance=RequestContext(request))
+        print(msg)
+        articulos1= Articulo.objects.all().filter(esoferta=False)
+        familias=Familia.objects.all()
+        resultado=[]
+        if request.user.is_authenticated():
+            if request.user.is_superuser == 0:
+                resultado=recomendacion(request)
+        productos=[]
+        for elem in articulos1:
+           prod=get_object_or_404(Product,id=elem.product_ptr_id)
+           productos.append(prod)
+        duser=request.user
+        paginator = Paginator(articulos1, 6)
+        page = request.GET.get('page')
+        try:
+            contacts = paginator.page(page)
+        except PageNotAnInteger:
+            # Si page no es un Integer, devolver la primera pagina
+            contacts = paginator.page(1)
+        except EmptyPage:
+            # Si esta vacio(Ultima pagina)devolver el ultimo resultado
+            contacts = paginator.page(paginator.num_pages)
+        return render_to_response('home.html', {'msg':msg,'contacts':contacts,'recomendaciones':resultado,'articulos':articulos1,'productos':productos,'user':duser,'familias':familias}, context_instance=RequestContext(request))
+
     return render_to_response('contacto.html',context_instance=RequestContext(request))
 
 
@@ -173,6 +223,7 @@ def politica(request):
 
 
 def register(request):
+    res=False
     if request.method == 'POST' and "submit" in request.POST:
         print("entra al formulario")
         userform = DeporUserRegistrationForm(request.POST)
@@ -194,6 +245,7 @@ def register(request):
             login(request, UserAccount)
             return HttpResponseRedirect('/home')
         else:
+            res=True
             print(djangoform.errors)
             print(userform.errors)
             return render_to_response('register.html',locals(), context_instance=RequestContext(request))
@@ -475,6 +527,7 @@ def familia(request, familia_id):
         print("Familia despues",famili)
         return render_to_response('homeadmin.html',{'msg':msg},context_instance=RequestContext(request))
     if request.method == 'POST' and 'modify' in request.POST:
+        print("Preparando modificacion")
         msg=""
         nombre=request.POST['nombre']
         peso=request.POST['pesomedio']
@@ -487,6 +540,7 @@ def familia(request, familia_id):
             msg="Familia Actualizada"
             print(msg)
         return render_to_response('homeadmin.html',{'msg':msg},context_instance=RequestContext(request))
+    print("No hace nada")
     return render_to_response('modfamilia.html',{'fam':fam}, context_instance=RequestContext(request))
 
 @login_required(login_url='/home')
@@ -591,9 +645,9 @@ def categoria(request,familia_id):
 def perfil(request):
     djangouser=request.user
     deportuser=DeporUser.objects.get(djangoUser=djangouser)
-    pedidos=[]
-    print(pedidos)
-    return render_to_response('perfil.html',{'user':deportuser},context_instance=RequestContext(request))
+    pedidos=Order.objects.all().filter(user=djangouser)
+    tamano= len(pedidos)
+    return render_to_response('perfil.html',locals(),context_instance=RequestContext(request))
 
 
 @login_required(login_url='/home')
@@ -670,13 +724,8 @@ def editarperfil(request):
     return render_to_response('editarperfil.html',{'deportuser':deportuser},context_instance=RequestContext(request))
 
 
-
-
-def search(request):
-    # Es necesario ejecutar el siguiente codigo en la db para que esto funcione
-    # CREATE FULLTEXT INDEX shop_product_name ON shop_product(name)
-    # Usarlo con un SELECT;
-    search_query = request.POST['search']
+def buscaarticulo(request):
+    search_query = request.GET['texto']
     res = Product.objects.filter(name__icontains=search_query)
     return render_to_response('resultadobusqueda.html', {'res': res}, context_instance=RequestContext(request))
 
@@ -796,4 +845,107 @@ def factura(request):
         pedido.tienefactura=True
         pedido.save()
         articulos=OrderItem.objects.all().filter(order=pedido.id)
+        print("Factura creada")
         return render_to_response('factura.html',locals(),context_instance=RequestContext(request))
+
+
+@login_required(login_url='/home')
+def listausuarios(request):
+    todoslosusuarios=DeporUser.objects.all()
+    res=[]
+    for elem in todoslosusuarios:
+        if elem.djangoUser.is_superuser  == 0:
+            res.append(elem)
+    return render_to_response('usuarios.html',locals(),context_instance=RequestContext(request))
+
+
+@login_required(login_url='/home')
+def usuarioconcreto(request,usuario_id):
+    usuario=get_object_or_404(DeporUser,id=usuario_id)
+    if 'eliminar' in request.POST:
+        usuario.delete()
+        msg="Usuario Eliminado"
+        return render_to_response('homeadmin.html', {'msg':msg}, context_instance=RequestContext(request))
+    return render_to_response('usuarioconcreto.html',locals(),context_instance=RequestContext(request))
+
+
+@login_required(login_url='/home')
+def listapedidos(request):
+    pedidos=Order.objects.all()
+    return render_to_response('listadopedidos.html',locals(),context_instance=RequestContext(request))
+
+
+@login_required(login_url='/home')
+def pedidoconcreto(request,pedido_id):
+    pedido=get_object_or_404(Order,id=pedido_id)
+    articuloscomprados=OrderItem.objects.all().filter(order_id=pedido_id)
+    print("request",request.POST)
+    if 'eliminar' in request.POST:
+        pedido.delete()
+        msg="Pedido Eliminado"
+        return render_to_response('homeadmin.html', {'msg':msg}, context_instance=RequestContext(request))
+    elif 'submit' in request.POST:
+        estado=request.POST['estado']
+        pedido.status=estado
+        pedido.save()
+        msg="Pedido Actualizado"
+        return render_to_response('homeadmin.html', {'msg':msg}, context_instance=RequestContext(request))
+    return render_to_response('pedidoconcreto.html',locals(),context_instance=RequestContext(request))
+
+
+@login_required(login_url='/home')
+def listado(request):
+    articulos=Articulo.objects.all()
+    return render_to_response('listado.html',locals(),context_instance=RequestContext(request))
+
+
+@login_required(login_url='/home')
+def comentariosarticulo(request,articulo_id):
+    articulo=get_object_or_404(Articulo,id=articulo_id)
+    comentarios=ComentaArticulo.objects.all().filter(articulo=articulo)
+    msg=""
+    if 'comentario' in request.POST:
+        id=request.POST['id']
+        print(id)
+        coment=get_object_or_404(ComentaArticulo,id=id)
+        coment.delete()
+        msg="Comentario eliminado"
+    return render_to_response('comentariosarticulo.html',locals(),context_instance=RequestContext(request))
+
+
+@login_required(login_url='/home')
+def creartalla(request):
+    msg=""
+    if request.method == "POST":
+        nombre=request.POST['nombre']
+        Talla.objects.create(nombre=nombre)
+        msg="Talla creada"
+        return render_to_response('homeadmin.html', {'msg':msg}, context_instance=RequestContext(request))
+    return render_to_response('creartalla.html',locals(),context_instance=RequestContext(request))
+
+
+@login_required(login_url='/home')
+def listatalla(request):
+    tallas=Talla.objects.all()
+    return render_to_response('listatallas.html',locals(),context_instance=RequestContext(request))
+
+
+@login_required(login_url='/home')
+def modtalla(request,talla_id):
+    msg=""
+    tallaconcreta=get_object_or_404(Talla,id=talla_id)
+    if request.method == "POST" and "delete" in request.POST:
+        tallaconcreta.delete()
+        msg="Talla eliminada correctamente"
+        return render_to_response('homeadmin.html', {'msg':msg}, context_instance=RequestContext(request))
+    if request.method == "POST" and 'modify' in request.POST:
+        nombre=request.POST['nombre']
+        tallarepetida=Talla.objects.filter(nombre=nombre)
+        if len(tallarepetida) != 0:
+            msg="Ya existe una talla con ese nombre en el sistema"
+        else:
+            tallaconcreta.nombre=nombre
+            tallaconcreta.save()
+            msg="Talla modificada satisfactoriamente"
+            return render_to_response('homeadmin.html', {'msg':msg}, context_instance=RequestContext(request))
+    return render_to_response('modtalla.html',locals(),context_instance=RequestContext(request))

@@ -1,0 +1,100 @@
+{% extends 'master.html' %}
+
+
+{% block content %}
+<div class="container">
+
+<div class="container-fluid">
+
+    <form class="form-horizontal" method="post">{% csrf_token %}
+    <label class="control-label">ID pedido</label>
+    <p class="form-control-static">{{ pedido.id }}</p>
+     <label class="control-label">Estado</label>
+    <select name="estado" class="form-control">
+        {% if pedido.status == 10 %}
+       <option value="10" class="active" selected>
+           Procesando
+        </option>
+        {% else %}
+        <option value="10" selected>
+           Procesando
+        </option>
+        {% endif %}
+            {% if pedido.status == 20 %}
+       <option value="20" class="active" selected>
+           Confirmado
+        </option>
+        {% else %}
+        <option value="20">
+           Confirmado
+        </option>
+        {% endif %}
+        {% if pedido.status == 30 %}
+       <option value="30" class="active" selected>
+           Completado
+        </option>
+        {% else %}
+        <option value="30">
+           Completado
+        </option>
+        {% endif %}
+         {% if pedido.status == 40 %}
+       <option value="40" class="active" selected>
+           Enviado
+        </option>
+        {% else %}
+        <option value="40">
+            Enviado
+        </option>
+        {% endif %}
+        {% if pedido.status == 50 %}
+       <option value="50" class="active" selected>
+           Cancelado
+        </option>
+        {% else %}
+        <option value="50">
+           Cancelado
+        </option>
+        {% endif %}
+    </select>
+
+    <label class="control-label">Dirección de envio</label>
+    <p class="form-control-static">{{ pedido.shipping_address_text }}</p>
+    <label class="control-label">Dirección de facturación</label>
+    <p class="form-control-static">{{ pedido.billing_address_text }}</p>
+
+    <h4 class="text-center padding-top-5">Articulos comprados</h4>
+
+
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+        <th>Nombre Producto</th>
+        <th>Precio</th>
+        <th>Cantidad</th>
+        <th>Subtotal</th>
+        <th>Total</th>
+        </thead>
+        </tr>
+        <tbody>
+        {% for elem in articuloscomprados %}
+        <tr>
+        <td>{{ elem.product_name }}</td>
+        <td>{{ elem.unit_price }}</td>
+        <td>{{ elem.quantity }}</td>
+        <td>{{ elem.line_subtotal }}</td>
+        <td>{{ elem.line_total }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <input type="submit" class="btn btn-info" name="submit" value="Actualizar estado pedido" >
+    <input type="submit" class="btn btn-danger" value="Eliminar pedido" name="eliminar">
+</form>
+
+</div>
+
+</div>
+
+
+{% endblock %}

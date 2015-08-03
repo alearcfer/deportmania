@@ -2,7 +2,10 @@
 
 {% block content %}
     {% if msg != "" %}
-        <div class="text-green" xmlns="http://www.w3.org/1999/html">{{ msg }}</div>
+        <div class=" text-center col-centered" xmlns="http://www.w3.org/1999/html">
+            <p class="mensajecorreo col-centered text-green  "><span class="alert-success">{{ msg }}</span>
+            </p>
+        </div>
     {% endif %}
 <div class="container-fluid row-fluid">
 <div class="float-left padding-left-4 col-md-2">

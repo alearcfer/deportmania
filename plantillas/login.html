@@ -9,7 +9,7 @@
                     <img src="{{ STATIC_URL }}img/logo.jpg" style="width: 200px;height: 100px;" class="center-block img-rounded img-responsive">
                     <h4 class="modal-title text-center">
 
-                        Log in
+                        Acceso al sistema
                     </h4>
                 </div>
                 {% if error == True %}
@@ -33,7 +33,7 @@
 
                                     <div class="input-group col-md-10">
 
-                                        <input id="passwordx" type="password" name="passwordlogin" class="form-control"
+                                        <input id="password" type="password" name="passwordlogin" class="form-control"
                                                placeholder="password">
                                     </div>
 
@@ -61,3 +61,16 @@
     </div>
 
 {% endblock %}
+
+<script>
+
+    $('.hide-password').on('click', function(){
+  var $this= $(this),
+    $password_field = $this.prev('input');
+
+    ( 'password' == $password_field.attr('type') ) ? $password_field.attr('type', 'text') : $password_field.attr('type', 'password');
+    ( 'Ocultar' == $this.text() ) ? $this.text('Mostrar') : $this.text('Ocultar');
+    //focus and move cursor to the end of input field
+    $password_field.putCursorAtEnd();
+});
+</script>
