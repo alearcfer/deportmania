@@ -33,7 +33,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admindocs',
     'south',
-    'django_nose',
     'polymorphic',  # We need polymorphic installed for the shop
     'shop',  # The django SHOP application
     'shop_simplevariations',
@@ -98,22 +97,19 @@ SOUTH_DATABASE_ADAPTERS = {
     'default': 'south.db.mysql'
 }
 
-#DATABASES = {
- #   'default': {
-  #      'ENGINE': 'django.db.backends.mysql',
-   #     'NAME': 'deportmania',  # Or path to database file if using sqlite3.
-    #    'USER': 'root',  # Not used with sqlite3.
-     #   'PASSWORD': '',  # Not used with sqlite3.
-      #  'HOST': '',  # Set to empty string for localhost. Not used with sqlite3.
-       # 'PORT': '',  # Set to empty string for default. Not used with sqlite3.
-        #'TEST_NAME': 'deportmania',
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'deportmania',  # Or path to database file if using sqlite3.
+        'USER': 'root',  # Not used with sqlite3.
+        'PASSWORD': 'alejandro21992',  # Not used with sqlite3.
+        'HOST': '',  # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',  # Set to empty string for default. Not used with sqlite3.
+        'TEST_NAME': 'deportmania',
 
-    #},
+    },
 
-#}
-
-import dj_database_url
-DATABASES  =  dj_database_url.config()
+}
 
 
 

@@ -55,19 +55,19 @@
   <!-- Wrapper for slides -->
   <div class="carousel-inner" role="listbox">
     <div class="item active">
-      <img src="{{ STATIC_URL }}img/te_odiaran_predator_f50.jpg" alt="Chania">
+      <img class="img-responsive" src="{{ STATIC_URL }}img/te_odiaran_predator_f50.jpg" alt="Chania">
     </div>
 
     <div class="item">
-      <img src="{{ STATIC_URL }}img/asics-gel-nimbus-17.jpg" alt="Chania">
+      <img class="img-responsive" src="{{ STATIC_URL }}img/asics-gel-nimbus-17.jpg" alt="Chania">
     </div>
 
     <div class="item">
-      <img src="{{ STATIC_URL }}img/adidas.jpg" alt="Flower">
+      <img class="img-responsive" src="{{ STATIC_URL }}img/adidas.jpg" alt="Flower">
     </div>
 
     <div class="item">
-      <img src="{{ STATIC_URL }}img/asics-gel-nimbus-17.jpg" alt="Flower">
+      <img class="img-responsive" src="{{ STATIC_URL }}img/asics-gel-nimbus-17.jpg" alt="Flower">
     </div>
   </div>
 
@@ -111,15 +111,15 @@ LO MÁS NUEVO
  <ul class="pager">
             <span class="step-links">
         {% if contacts.has_previous %}
-          <li><a  href="?page={{ contacts.previous_page_number }}">previous</a></li>
+          <li><a  href="?page={{ contacts.previous_page_number }}">anterior/a></li>
         {% endif %}
 
         <span class="current">
-            Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+            Pagina {{ contacts.number }} de {{ contacts.paginator.num_pages }}.
         </span>
 
         {% if contacts.has_next %}
-           <li><a href="?page={{ contacts.next_page_number }}">next</a></li>
+           <li><a href="?page={{ contacts.next_page_number }}">siguiente</a></li>
         {% endif %}
     </span>
 </ul>

@@ -202,13 +202,13 @@ float:right;
 }
 
 .navbar-deportmania{
-    max-width: 1200px;
-margin-left: 83px;
+    margin-right: 83px;
+    margin-left: 83px;
 }
 
 .mensajecorreo{
     width: 350px;
     height: 50px;
     padding-top: 1%;
-}
+
 }
